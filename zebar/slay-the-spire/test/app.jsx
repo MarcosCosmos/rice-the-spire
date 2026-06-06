@@ -116,7 +116,7 @@ const Weather = ({info}) => {
   const temp = Math.round(info?.celsiusTemp || 0);
   return (
     <div className={`weather weather--${state}`}>
-      <svg className="weather__icon" viewBox={state_viewbox} preserveAspectRatio="xMidYMid meet" alt={state.replace('_', ' ')}>
+      <svg className="weather__icon" viewBox={state_viewbox} preserveAspectRatio="xMidYMid meet" alt={status.replace('_', ' ')}>
         <image href="https://www.spireology.com/v0.103.2/assets/sprites/powers.webp" preserveAspectRatio="none"></image>
       </svg>
       <span>{temp}°C</span>
