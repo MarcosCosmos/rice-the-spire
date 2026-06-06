@@ -84,7 +84,6 @@ const weatherMap = {
 const Weather = ({info}) => {
   let state;
   let status = info?.status || 'clear_day';
-  status = 'clear_night';
   switch (status) {
     case 'clear_day':
     case 'clear_night':
