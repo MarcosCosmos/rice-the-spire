@@ -1,0 +1,98 @@
+body {
+  color: rgb(255 255 255 / 90%);
+  font-family: monospace;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app {
+  text-align: center;
+  display: block;
+}
+
+.chip {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgb(84, 66, 220);
+  margin-right: 4px;
+}
+
+.app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: transparent;
+  align-items: stretch;
+  background: #111B20;
+  gap: 1px;
+}
+
+.bar {
+  padding: 3px;
+  background: #2A424D;
+  border: 3px solid #304C59;
+  border-top: none;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.bar:last-child {
+  border-inline-end: none;
+}
+
+.bar:first-child {
+  border-inline-start: none;
+}
+
+.battery {
+  background-image: url("../resources/StS2_EnergyDefect.webp");
+  mask-image: url("../resources/StS2_EnergyDefect.webp");
+  mask-size: contain;
+  background-size: contain;
+  mask-position: left top;
+  width: 30.5px;
+  height: 31px;
+  text-shadow: 1px 1px 2px black, 0 0 1px black;
+  font-size: 20px;
+}
+
+.battery__inner {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.battery--discharging .battery__inner, .battery--empty .battery__inner {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: lightcoral;
+}
+
+.weather {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+svg {
+  width: 2em;
+  height: 2em;
+}
+image {
+  image-rendering: auto;
+}
