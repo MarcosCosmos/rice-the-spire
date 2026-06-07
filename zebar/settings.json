@@ -1,10 +1,8 @@
 {
   "$schema": "https://github.com/glzr-io/zebar/raw/v3.1.1/resources/settings-schema.json",
-  "startupConfigs": [
-    {
-      "pack": "echosonusharma.neon",
-      "widget": "neon",
-      "preset": "default"
-    }
-  ]
+  "startupConfigs": [{
+    "pack": "slay-the-spire",
+    "widget": "test",
+    "preset": "default"
+  }]
 }
