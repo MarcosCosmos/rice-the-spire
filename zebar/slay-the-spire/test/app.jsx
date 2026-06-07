@@ -1,9 +1,29 @@
 import React, {
   useState,
   useEffect,
-} from 'https://esm.sh/react@18?dev';
-import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+  useId,
+  createContext,
+  useContext,
+} from 'https://esm.sh/react@19.2?dev';
+import { createRoot } from 'https://esm.sh/react-dom@19.2/client?dev';
 import * as zebar from 'https://esm.sh/zebar@3.0';
+const spireologyUrl = 'https://www.spireology.com/v0.103.2/assets/sprites/manifest.json';
+const dummyZebar = {
+  battery: {
+    state: 'discharging',
+    chargePercent: 70,
+  },
+  weather: {
+    status: 'light_rain_day',
+    celsiusTemp: 20,
+  }
+};
+
+const useDummy = false;
+
+const Zebar = createContext(null);
+const Spireology = createContext(null);
+
 const providers = zebar.createProviderGroup({
   glazewm: { type: 'glazewm' },
   date: { type: 'date', formatting: 'EEE, MMM yyyy d, h:mm a' },
@@ -16,112 +36,337 @@ const providers = zebar.createProviderGroup({
 });
 
 const App = () => {
-  const [output, setOutput] = useState(providers.outputMap);
+  const [output, setOutput] = useState(null);
+  const [spireology, setSpireology] = useState(null);
 
-  useEffect(() => {
-    providers.onOutput(() => setOutput(providers.outputMap));
+  useEffect(() => {    
+    providers.onOutput(() => {
+      const result = useDummy ? {...providers.outputMap, ...dummyZebar} : providers.outputMap;
+      setOutput(result);
+    });
   }, []);
 
-  console.log(output);
-
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(spireologyUrl);
+      if (response.ok) {
+        setSpireology(await response.json());
+      } else {
+        throw new Error(`Failed to fetch Spireology manifest @ ${spireologyUrl}`);
+      }
+    })();
+  }, []);
+  const hasMode = output?.glazewm?.bindingModes.length > 0;
   return (
-    <div className="app">
-      <Bar><Workspaces workspaces={output.glazewm?.currentWorkspaces}></Workspaces></Bar>
-      <Bar>{output.date?.formatted}</Bar>
-      <Bar>
-        <Battery info={output.battery}></Battery>
-        <Weather info={output.weather}></Weather>
-      </Bar>
+    <div className={`app ${!hasMode && 'app--no-binding-mode'}`} role="menubar">
+      <Zebar value={output}>
+          <Spireology value={spireology}>
+            <div className="section">
+              <Workspaces />
+            </div>
+            <div className="section">
+              <DateTime />
+            </div>
+            <div className="section">
+              <WmControls />
+              <Bar className="statuses" aria-label="Statuses">
+                <Battery />
+                <Audio />
+                <Weather />
+              </Bar>    
+            </div>
+          </Spireology>
+      </Zebar>
     </div>
   );
 }
 
-const Bar = ({children}) => (
-  <div className="bar">
-    {children}
-  </div>
-);
-
-const Workspaces = ({ workspaces }) => workspaces?.map(Workspace);
-
-const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
-  const style = 'glass';
-  const isEmpty = !children || children.length === 0;
+const Bar = ({className, children, ...fallthrough}) => {
+  className = className || '';
   return (
-    <div key={name} className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'}`}>
-      {displayName || name}
+    <div className={`bar ${className}`} role="region" {...fallthrough}>
+      <div className="bar__inner">
+        {children}
+      </div>
     </div>
   );
 };
 
-const Battery = ({ info }) => {
-  info = info || {
-    state: 'unknown',
-    chargePercent: 0,
-  };
-  const state = info.state;
-  if (state !== 'unknown') {
-    const value = state === 'unknown' || state === 'full' ? '' : Math.min(99, info?.chargePercent || 0);
-    return (
-      <div className={`battery battery--${state}`}>
-        <div className="battery__inner">
-          {value}
-        </div>
+const DateTime = () => {
+  const zebar = useContext(Zebar);
+  return (
+    <Bar aria-label="Date and time">
+      <div className="datetime" role="menuitem" aria-disabled="true" tabIndex="0">
+        <OutlinedText>{zebar?.date?.formatted}</OutlinedText>
       </div>
+    </Bar>
+  );
+};
+
+const Workspaces = () => {
+  const zebar = useContext(Zebar);
+  return zebar?.glazewm && (
+    <Bar className="workspaces" aria-label={"Workspaces"}>
+      { zebar?.glazewm?.currentWorkspaces?.map(Workspace) }
+    </Bar>
+  );
+}
+
+const workspaceStateMap = {
+  'focused': 'lightning_orb',
+  'displayed': 'plasma_orb',
+  'empty': 'empty_slot',
+  'full_a': 'glass_orb',
+  'full_b': 'frost_orb',
+  'full_c': 'dark_orb'
+};
+const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
+  const zebar = useContext(Zebar);
+  let style;
+  const isEmpty = !children || children.length === 0;
+  if (hasFocus) {
+    style = 'focused';
+  } else if (isDisplayed) {
+    style = 'displayed';
+  } else if (isEmpty) {
+    style = 'empty';
+  } else {
+    style = 'full_b';
+  }
+  const path = workspaceStateMap[style];
+  displayName = displayName || name;
+  const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
+  const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
+  return (
+    <Status
+      key={name}
+      className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'}`}
+      path={`orb/${path}`}
+      desc={workspaceDesc}
+      onClick={onClick}
+    >
+      {displayName || name}
+    </Status>
+  );
+};
+
+const WmControls = () => {
+  const zebar = useContext(Zebar);
+  return zebar?.glazewm && (
+    <Bar className="wm-controls" aria-label="Window Manager controls">
+      <WmPause />
+      <WmDirection />
+      <WmModes />
+    </Bar>
+  );
+}
+
+const WmPause = () => {
+  const zebar = useContext(Zebar);
+  const onClick = () => zebar.glazewm.runCommand('wm-toggle-pause');
+  zebar?.glazewm?.isPaused && (
+    <Status className="paused" path="intent/sleep" aria-label="paused" desc="Unpause" onClick={onClick} />
+  );
+};
+
+const WmDirection = () => {
+  const zebar = useContext(Zebar);
+  const direction = zebar?.glazewm?.tilingDirection;
+  const path = {
+    'horizontal': 'intent/escape',
+    'vertical': 'intent/debuff'
+  }[direction];
+  const onClick = () => zebar.glazewm.runCommand('toggle-tiling-direction');
+  return (
+    <Status className={`wm-tiling-direction wm-tiling-direction--${direction}`} path={path} aria-label={direction} desc="Swap tiling direction" onClick={onClick} />
+  );
+};
+
+const modeMap = {
+  'focus': 'intent/statuscard_00',
+}
+const WmModes = () => {
+  const zebar = useContext(Zebar);
+  return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
+    displayName = displayName || name;
+    const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
+    return (
+      <Status key={name} aria-label={displayName} desc={`Disable ${displayName} mode`} path={modeMap[name]} onClick={onClick}/>
+    );
+  });
+};
+
+const Battery = ({ tooltipSide }) => {
+  const zebar = useContext(Zebar);
+  const data = zebar?.battery || {
+    state: 'unknown',
+  };
+  if (data.state !== 'unknown') {
+    const value = data.state === 'full' ? '' : Math.min(99, data.chargePercent || 0);
+    return (
+      <Tooltip side={tooltipSide} anchor={ tooltipId =>
+          <div className={`battery battery--${data.state}`} role="menuitem" aria-disabled="true" tabIndex="0" aria-describedby={tooltipId}>
+            <div className="battery__outer">
+              <OutlinedText className="battery__inner">
+                {value}
+              </OutlinedText>
+            </div>
+          </div>
+        }
+      >
+        Battery: {data.state} ({value}%)
+      </Tooltip>
     );
   }
 };
 
+const Audio = ({...fallthrough}) => {
+  const zebar = useContext(Zebar);
+  const audio = zebar?.audio?.defaultPlaybackDevice || {
+    volume: 0,
+  };
+  const displayVolume = `${audio.volume}%`;
+  const desc = `Volume: ${displayVolume}`
+  return (
+    <Status className="volume" path="power/ringing" desc={desc} aria-disabled="true" {...fallthrough}>
+      {displayVolume}
+    </Status>
+  );
+};
+
 const weatherMap = {
-  clear_day: '2048 2560 256 256', // radiance https://www.spireology.com/powers/RADIANCE_POWER
-  clear_night: '4096 0 256 256', // https://www.spireology.com/powers/BLACK_HOLE_POWER
-  cloudy: '0 2304 256 256', // noxious fumes https://www.spireology.com/powers/NOXIOUS_FUMES_POWER
-  light_rain: '2304 1280 256 256', // https://www.spireology.com/powers/FRIENDSHIP_POWER
-  heavy_rain: '2560 3328 256 256', // https://www.spireology.com/powers/STORM_POWER
-  snow: '256 1536 256 256', // https://www.spireology.com/powers/HAILSTORM_POWER
-  thunder: '4096 3584 256 256', // https://www.spireology.com/powers/THUNDER_POWER
+  clear_day: 'radiance',
+  clear_night: 'black_hole',
+  cloudy: 'blur',
+  light_rain: 'friendship',
+  heavy_rain: 'storm',
+  snow: 'hailstorm',
+  thunder: 'thunder',
 }
-const Weather = ({info}) => {
-  let state;
-  let status = info?.status || 'clear_day';
-  switch (status) {
+const Weather = ({ ...fallthrough }) => {
+  const zebar = useContext(Zebar);
+  const data = zebar?.weather ?? {
+    status: 'clear_day',
+    celsiusTemp: '?',
+  };
+  const cleanStatus = data.status.replace(/_/g, ' ');
+  const displayTemp = `${Math.round(data.celsiusTemp)}°C`;
+  const description = `Weather: ${cleanStatus} ${displayTemp}`;
+  let simplifiedStatus;
+  switch (data.status) {
     case 'clear_day':
     case 'clear_night':
-      state = status;
+      simplifiedStatus = data.status;
       break;
     case 'cloudy_day':
     case 'cloudy_night':
-      state = 'cloudy';
+      simplifiedStatus = 'cloudy';
       break;
     case 'light_rain_day':
     case 'light_rain_night':
-      state = 'light_rain';
+      simplifiedStatus = 'light_rain';
       break;
     case 'heavy_rain_day':
     case 'heavy_rain_night':
-      state = 'heavy_rain';
+      simplifiedStatus = 'heavy_rain';
       break;
     case 'snow_day':
     case 'snow_night':
-      state = 'snow';
+      simplifiedStatus = 'snow';
       break;
     case 'thunder_day':
     case 'thunder_night':
-      state = 'thunder';
+      simplifiedStatus = 'thunder';
       break;
     default:
-      state = 'clear';
+      simplifiedStatus = 'clear';
   }
-  const state_viewbox = weatherMap[state];
-  const temp = Math.round(info?.celsiusTemp || 0);
+  const power = weatherMap[simplifiedStatus];
   return (
-    <div className={`weather weather--${state}`}>
-      <svg className="weather__icon" viewBox={state_viewbox} preserveAspectRatio="xMidYMid meet" alt={status.replace('_', ' ')}>
-        <image href="https://www.spireology.com/v0.103.2/assets/sprites/powers.webp" preserveAspectRatio="none"></image>
-      </svg>
-      <span>{temp}°C</span>
+    <Status className={`weather weather--${simplifiedStatus}`} path={`power/${power}`} desc={description} aria-disabled="true" {...fallthrough}>
+      {displayTemp}
+    </Status>
+  );
+};
+
+const useSpireology = (path) => {
+  const manifest = useContext(Spireology);
+  const [category, entry] = path.split('/');
+  const categoryPlural = `${category}s`;
+  let key;
+  switch(category) {
+    case 'power':
+      key = `${entry.toUpperCase()}_${category.toUpperCase()}`;
+      break;
+    default:
+      key = entry.toUpperCase();
+  }
+  const result = manifest?.[categoryPlural]?.[key];
+  return result || {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+    sheet: 'unknown',
+  };
+};
+
+const SpireolgyIcon = ({className, path}) => {
+  className = className || '';
+  const { x, y, w, h, sheet } = useSpireology(path);
+  return (
+    <svg className={`spireology-icon ${className}`} viewBox={`${x} ${y} ${w} ${h}`} preserveAspectRatio="xMidYMid meet" role="presentation" data-path={path}>
+      <image className="spireology-icon__image" href={`https://www.spireology.com/v0.103.2/assets/sprites/${sheet}.webp`} preserveAspectRatio="none"></image>
+    </svg>
+  )
+};
+
+const OutlinedText = ({className, children}) => {
+  className = className || '';
+  return (
+    <span className={`outlined-text ${className}`}>
+      <span className="outlined-text__foreground">{children}</span>
+      <span className="outlined-text__background" aria-hidden="true">{children}</span>
+    </span>
+  );
+}
+
+const Tooltip = ({anchor, children}) => {
+  const id = useId();
+  return (
+    <div className="tooltip-shrinkwrap">
+      {anchor(id)}
+      <div id={id} className="tooltip" role="tooltip">
+        {children}
+      </div>
     </div>
   );
 };
+
+const Status = ({ className, path, children, ...fallthrough }) => {
+  className = className || '';
+  return (
+      <MenuItem className={`status ${className}`} {...fallthrough}>
+        <SpireolgyIcon path={path} />
+        <div className="status__suffix">
+          <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
+        </div>
+      </MenuItem>
+  );
+}
+
+const MenuItem = ({className, children, desc, ...fallthrough}) => {
+  className = className || '';
+  return (
+    <Tooltip anchor={ tooltipId =>
+        <button className={`menu-item ${className}`} role="menuitem" tabIndex="0" aria-describedby={tooltipId} {...fallthrough}>
+          {children}
+        </button>
+      }
+    >
+      {desc}
+    </Tooltip>
+  );
+}
 
 createRoot(document.getElementById('root')).render(<App />);
