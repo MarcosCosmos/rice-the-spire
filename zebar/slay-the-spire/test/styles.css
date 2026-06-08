@@ -171,7 +171,7 @@ body,
   display: block;
   font-family: inherit;
   font-size: inherit;
-  color: oklch(0.97 0.06 102);
+  color: #FFF6E2;
 }
 
 .status__suffix-inner {
@@ -200,8 +200,11 @@ body,
   align-items: center;
 }
 
-.battery--discharging .battery__inner, .battery--empty .battery__inner {
-  background-color: rgba(0, 0, 0, 0.3);
+.battery--charging * {
+  color: lightgreen;
+}
+
+.battery--discharging * {
   color: coral;
 }
 

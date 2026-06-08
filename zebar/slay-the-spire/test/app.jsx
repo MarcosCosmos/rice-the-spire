@@ -10,7 +10,7 @@ import * as zebar from 'https://esm.sh/zebar@3.0';
 const spireologyUrl = 'https://www.spireology.com/v0.103.2/assets/sprites/manifest.json';
 const dummyZebar = {
   battery: {
-    state: 'discharging',
+    state: 'charging',
     chargePercent: 70,
   },
   weather: {
@@ -201,20 +201,15 @@ const Battery = ({ tooltipSide }) => {
     state: 'unknown',
   };
   if (data.state !== 'unknown') {
-    const value = data.state === 'full' ? '' : Math.min(99, data.chargePercent || 0);
+    const value = data.state === 'full' ? '' : Math.min(99, data.chargePercent || 0) + '%';
     return (
-      <Tooltip side={tooltipSide} anchor={ tooltipId =>
-          <div className={`battery battery--${data.state}`} role="menuitem" aria-disabled="true" tabIndex="0" aria-describedby={tooltipId}>
-            <div className="battery__outer">
-              <OutlinedText className="battery__inner">
-                {value}
-              </OutlinedText>
-            </div>
-          </div>
-        }
-      >
-        Battery: {data.state} ({value}%)
-      </Tooltip>
+      <Status
+        className={`battery battery--${data.state}`} 
+        aria-disabled="true"
+        label={value}
+        desc={`Battery: ${data.state} (${value})`}
+        path="relic/power_cell"
+      />
     );
   }
 };
