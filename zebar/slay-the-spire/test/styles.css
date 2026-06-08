@@ -90,7 +90,6 @@ body,
 .outlined-text {
   display: inline-block;
   position: relative;
-  text-align: start;
   -webkit-text-stroke-width: round(up, 0.2em, 1px);
   -webkit-text-stroke-color: black;
   
@@ -178,6 +177,7 @@ body,
     margin-left: 1em;
     z-index: 10;
     display: block;
+    text-align: end;
   }
 
   .status__suffix-inner {

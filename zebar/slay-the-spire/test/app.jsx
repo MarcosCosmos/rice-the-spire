@@ -272,9 +272,9 @@ const Network = () => {
         tooltip={`Network: {{TODO}}`}
       >
         <Status path="relic/gold_plated_cables">
-          ▲ {traffic?.transmitted && useDataSize(traffic?.transmitted) || '-'}
+          {traffic?.transmitted && useDataSize(traffic?.transmitted) || '-'} ▲
           <br />
-          ▼ {traffic?.received && useDataSize(traffic?.received) || '-'}
+          {traffic?.received && useDataSize(traffic?.received) || '-'} ▼
         </Status>
         { !currentInterface && <SpireolgyIcon className="network-none-icon" path="power/well_laid_plans" /> }
       </MenuItem>
