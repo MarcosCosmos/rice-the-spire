@@ -15,7 +15,7 @@ const dummyZebar = {
   },
 };
 
-const useDummy = true;
+const useDummy = false;
 
 const Zebar = createContext(null);
 const Spireology = createContext(null);
@@ -68,9 +68,9 @@ const App = () => {
               <WmControls />
               <Bar className="resources" aria-label="Resources">
                 <Battery />
-                <Cpu />
+                <Processor />
                 <Memory />
-                <Disk />
+                <FullestDisk />
               </Bar>    
               <Bar className="statuses" aria-label="Statuses">
                 <Audio />
@@ -83,10 +83,16 @@ const App = () => {
   );
 }
 
-const Bar = ({className, children, ...fallthrough}) => {
+const Bar = ({className, ariaLabel, children, ...attrs}) => {
   className = className || '';
+  if (attrs['aria-label']) {
+    attrs = {
+      role: 'region',
+      ...attrs,
+    };
+  }
   return (
-    <div className={`bar ${className}`} role="region" {...fallthrough}>
+    <div className={`bar ${className}`} {...attrs}>
       <div className="bar__inner">
         {children}
       </div>
@@ -110,9 +116,10 @@ const DateTime = () => {
     now: Date.now()
   };
   return (
-    <Bar aria-label="Date and time">
+    <Bar>
       <MenuItem
           className="datetime"
+          aria-label="Date and time"
           disabled
           tooltip={longFormat.format(date.now)}
       >
@@ -202,8 +209,10 @@ const WmDirection = () => {
     'vertical': 'intent/debuff'
   }[direction];
   const onClick = () => zebar.glazewm.runCommand('toggle-tiling-direction');
+  const label = `Tiling direction: ${direction}`;
+  const tooltip = `${label} (click to swap)`;
   return (
-    <MenuItem className={`wm-tiling-direction wm-tiling-direction--${direction}`} aria-label={direction} tooltip="Swap tiling direction" onClick={onClick}>
+    <MenuItem className={`wm-tiling-direction wm-tiling-direction--${direction}`} aria-label={label} tooltip={tooltip} onClick={onClick}>
       <Status path={path} />
     </MenuItem>
   );
@@ -217,52 +226,15 @@ const WmModes = () => {
   return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
     displayName = displayName || name;
     const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
+    const label = `${displayName} mode`;
+    const tooltip = `${label} (click to disable)`;
     return (
-      <MenuItem key={name} tooltip={`Disable ${displayName} mode`} onClick={onClick} >
-        <Status path={modeMap[name]}>{displayName}</Status>
+      <MenuItem key={name} aria-label={label} tooltip={tooltip} onClick={onClick} >
+        <Status path={modeMap[name]} aria-hidden="true">{displayName}</Status>
       </MenuItem>
     );
   });
 };
-
-
-// todo: other resources and tooltip details for resources
-const Cpu = () => {
-  const zebar = useContext(Zebar);
-  const usage = Math.round(zebar?.cpu?.usage || 0);
-  return (
-    <MenuItem className="cpu" disabled>
-      <Status path="relic/cracked_core">{usage}%</Status>
-    </MenuItem>
-  )
-};
-
-const Memory = () => {
-  const zebar = useContext(Zebar);
-  const usage = Math.round(zebar?.memory?.usage || 0);
-  return (
-    <MenuItem className="memory" disabled>
-      <Status path="relic/emotion_chip">{usage}%</Status>
-    </MenuItem>
-  );
-}
-
-const Disk = () => {
-  const zebar = useContext(Zebar);
-  let usage;
-  console.log(zebar);
-  if (zebar?.disk?.disks.length > 0) {
-    let usages = zebar?.disk?.disks.map(disk => Math.round(((disk.totalSpace.bytes-disk.availableSpace.bytes)/disk.totalSpace.bytes)*100));
-    let max = Math.max(...usages);
-    let min = Math.min(...usages);
-    usage = (<>{max}%<br/>{min}%</>);
-  }
-  return (
-    <MenuItem className="disk" disabled>
-      <Status path="relic/data_disk">{usage}</Status>
-    </MenuItem>
-  );
-}
 
 const Battery = () => {
   const zebar = useContext(Zebar);
@@ -276,7 +248,8 @@ const Battery = () => {
       <MenuItem 
         className={`battery battery--${data.state}`} 
         disabled
-        tooltip={`Battery: ${data.state} (${value}%)`}
+        aria-label={`Battery`}
+        tooltip={`Battery: ${value}% (${data.state})`}
       >
         <Status path="relic/power_cell">{value}%</Status>
       </MenuItem>
@@ -284,14 +257,71 @@ const Battery = () => {
   }
 };
 
-const Audio = ({...fallthrough}) => {
+// todo: other resources and tooltip details for resources
+const Processor = () => {
+  const zebar = useContext(Zebar);
+  const cpu = zebar?.cpu;
+  const usage = Math.round(cpu?.usage || 0);
+  const tooltip = cpu && `CPU Usage: ${usage}%`;
+  return (
+    <MenuItem className="cpu" aria-label="CPU" tooltip={tooltip} disabled>
+      <Status path="relic/cracked_core">{usage}%</Status>
+    </MenuItem>
+  )
+};
+
+const Memory = () => {
+  const zebar = useContext(Zebar);
+  const memory = zebar?.memory;
+  const usage = Math.round(memory?.usage || 0);
+  const tooltip = memory && `Memory usage: ${(memory.usedMemory*1e-9).toFixed(2)}GB/${(memory.totalMemory*1e-9).toFixed(2)}GB (${(memory.freeMemory*1e-9).toFixed(2)}GB free)`;
+  return (
+    <MenuItem className="memory" aria-label="Memory" tooltip={tooltip} disabled>
+      <Status path="relic/emotion_chip">{usage}%</Status>
+    </MenuItem>
+  );
+}
+
+const useDataSize = (size) => `${size.siValue.toFixed(2)}${size.siUnit}`;
+const FullestDisk = () => {
+  const zebar = useContext(Zebar);
+  if (zebar?.disk?.disks.length > 0) {
+    const fullest = zebar?.disk?.disks
+      .map(disk => ({
+        ...disk,
+        usage: Math.round(((disk.totalSpace.bytes-disk.availableSpace.bytes)/disk.totalSpace.bytes)*100)
+      }))
+      .sort((a, b) => a.usage - b.usage)
+      [0];
+
+    return (
+      <Disk data={fullest} label="Fullest disk" />
+    );
+  }
+}
+
+const Disk = ({data, label, ...attrs}) => {
+  label = label || 'Disk';
+  const usage = Math.round(((data.totalSpace.bytes-data.availableSpace.bytes)/data.totalSpace.bytes)*100);
+  const name = data.name || data.mountPoint;
+  const tooltip = `${label}: ${name} ${data.isRemovable ? '(removable)' : ''}; usage: ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)}; mounted at: ${data.mountPoint}.`;
+  return (
+    <MenuItem className="disk" disabled tooltip={tooltip} aria-label={label} {...attrs}>
+      <Status path="relic/data_disk">
+        {usage}%
+      </Status>
+    </MenuItem>
+  );
+}
+
+const Audio = ({...attrs}) => {
   const zebar = useContext(Zebar);
   const device = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
     isMuted: true,
   };
   const displayVolume = `${device.volume}%`;
-  const desc = `Audio device: ${device.name}; volume: ${displayVolume}${device.isMuted ? ' (muted)' : ''}`;
+  const desc = `Volume: ${displayVolume}${device.isMuted ? ' (muted)' : ''}; audio device: ${device.name}.`;
   const onClick = () => zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
   const onWheel = (event) => {
     const newVolume = Math.max(0, Math.min(100, device.volume + (event.deltaY < 0 ? 2 : -2)));
@@ -300,7 +330,7 @@ const Audio = ({...fallthrough}) => {
     }
   };
   return (
-    <MenuItem className="volume" tooltip={desc} onClick={onClick} onWheel={onWheel} {...fallthrough}>
+    <MenuItem className="volume" tooltip={desc} onClick={onClick} aria-label="Volume" onWheel={onWheel} {...attrs}>
       <Status path="power/ringing">{displayVolume}</Status>
       { device.isMuted && <SpireolgyIcon className="audio-muted-icon" path="power/well_laid_plans" /> }
     </MenuItem>
@@ -316,7 +346,7 @@ const weatherMap = {
   snow: 'hailstorm',
   thunder: 'thunder',
 }
-const Weather = ({ ...fallthrough }) => {
+const Weather = ({ ...attrs }) => {
   const zebar = useContext(Zebar);
   const data = zebar?.weather ?? {
     status: 'clear_day',
@@ -358,8 +388,9 @@ const Weather = ({ ...fallthrough }) => {
     <MenuItem
       disabled 
       className={`weather weather--${simplifiedStatus}`}
+      aria-label="Weather"
       tooltip={description}
-      {...fallthrough}
+      {...attrs}
     >
       <Status path={`power/${weatherMap[simplifiedStatus]}`}>{displayTemp}</Status>
     </MenuItem>
@@ -420,10 +451,10 @@ const Tooltip = ({anchor, children}) => {
   );
 };
 
-const Status = ({ className, path, children, ...fallthrough }) => {
+const Status = ({ className, path, children, ...attrs }) => {
   className = className || '';
   return (
-      <div className={`status ${className}`} {...fallthrough}>
+      <div className={`status ${className}`} {...attrs}>
         <SpireolgyIcon path={path} />
         <div className="status__suffix">
           <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
@@ -432,17 +463,17 @@ const Status = ({ className, path, children, ...fallthrough }) => {
   );
 }
 
-const MenuButton = ({className, children, disabled, ...fallthrough}) => {
+const MenuButton = ({className, children, disabled, ...attrs}) => {
   className = className || '';
   return (
-    <button className={`menu-item ${className}`} role="menuitem" disabled={disabled} {...fallthrough}>
+    <button className={`menu-item ${className}`} role="menuitem" aria-disabled={disabled} tabIndex="0" {...attrs}>
       {children}
     </button>
   );
 }
 
-const MenuItem = ({children, tooltip, ...fallthrough}) => {
-  const button = tooltipId => <MenuButton aria-describedby={tooltipId} {...fallthrough}>{children}</MenuButton>;
+const MenuItem = ({children, tooltip, ...attrs}) => {
+  const button = tooltipId => <MenuButton aria-describedby={tooltipId} {...attrs}>{children}</MenuButton>;
   return tooltip
     ? (
       <Tooltip anchor={button}>
