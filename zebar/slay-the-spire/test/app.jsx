@@ -115,13 +115,14 @@ const DateTime = () => {
   const date = zebar?.date || {
     now: Date.now()
   };
+  const label = "Date and time";
   return (
     <Bar>
       <MenuItem
           className="datetime"
-          aria-label="Date and time"
+          aria-label={`${label}`}
           disabled
-          tooltip={longFormat.format(date.now)}
+          tooltip={`${label}: longFormat.format(date.now)`}
       >
         <Status className="date" path="relic/stone_calendar">
           {shortDateFormat.format(date.now)}
