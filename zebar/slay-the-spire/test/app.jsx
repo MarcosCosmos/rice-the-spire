@@ -30,6 +30,7 @@ const providers = zebar.createProviderGroup({
   media: { type: 'media' },
   audio: { type: 'audio' },
   disk: { type: "disk" },
+  network: { type: "network" },
 });
 
 const App = () => {
@@ -68,6 +69,7 @@ const App = () => {
               <WmControls />
               <Bar className="resources" aria-label="Resources">
                 <Battery />
+                <Network />  
                 <Processor />
                 <Memory />
                 <FullestDisk />
@@ -127,7 +129,7 @@ const DateTime = () => {
         <Status className="date" path="relic/stone_calendar">
           {shortDateFormat.format(date.now)}
         </Status>
-        <Status className="time" path="relic/pocketwatch">
+        <Status className="time" path="relic/mercury_hourglass">
           {shortTimeFormat.format(date.now)}
         </Status>
       </MenuItem>
@@ -258,6 +260,27 @@ const Battery = () => {
   }
 };
 
+const Network = () => {
+  const zebar = useContext(Zebar);
+  const currentInterface = zebar?.network?.defaultInterface;
+  const traffic = zebar?.network?.traffic;
+  return (
+    <MenuItem 
+        className={`network`} 
+        disabled
+        aria-label={`Network`}
+        tooltip={`Network: {{TODO}}`}
+      >
+        <Status path="relic/gold_plated_cables">
+          ▲ {traffic?.transmitted && useDataSize(traffic?.transmitted) || '-'}
+          <br />
+          ▼ {traffic?.received && useDataSize(traffic?.received) || '-'}
+        </Status>
+        { !currentInterface && <SpireolgyIcon className="network-none-icon" path="power/well_laid_plans" /> }
+      </MenuItem>
+  );
+}
+
 // todo: other resources and tooltip details for resources
 const Processor = () => {
   const zebar = useContext(Zebar);
@@ -283,7 +306,12 @@ const Memory = () => {
   );
 }
 
-const useDataSize = (size) => `${size.siValue.toFixed(2)}${size.siUnit}`;
+const useDataSize = (size, places) => {
+  places = places || 2;
+  let result = size.siValue.toFixed(places).replace(/\.0+$/, '');
+  return `${result}${size.siUnit}`;
+};
+
 const FullestDisk = () => {
   const zebar = useContext(Zebar);
   if (zebar?.disk?.disks.length > 0) {
