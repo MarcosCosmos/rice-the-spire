@@ -144,9 +144,8 @@ const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
       path={`orb/${path}`}
       desc={workspaceDesc}
       onClick={onClick}
-    >
-      {displayName || name}
-    </Status>
+      label={displayName || name}
+    />
   );
 };
 
@@ -191,7 +190,7 @@ const WmModes = () => {
     displayName = displayName || name;
     const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
     return (
-      <Status key={name} aria-label={displayName} desc={`Disable ${displayName} mode`} path={modeMap[name]} onClick={onClick}/>
+      <Status key={name} aria-label={displayName} desc={`Disable ${displayName} mode`} path={modeMap[name]} onClick={onClick} />
     );
   });
 };
@@ -222,14 +221,22 @@ const Battery = ({ tooltipSide }) => {
 
 const Audio = ({...fallthrough}) => {
   const zebar = useContext(Zebar);
-  const audio = zebar?.audio?.defaultPlaybackDevice || {
+  const device = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
+    isMuted: true,
   };
-  const displayVolume = `${audio.volume}%`;
-  const desc = `Volume: ${displayVolume}`
+  const displayVolume = `${device.volume}%`;
+  const desc = `Audio device: ${device.name}; volume: ${displayVolume}${device.isMuted ? ' (muted)' : ''}`;
+  const onClick = () => zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
+  const onWheel = (event) => {
+    const newVolume = Math.max(0, Math.min(100, device.volume + (event.deltaY < 0 ? 2 : -2)));
+    if (newVolume !== device.volume) {
+      zebar?.audio?.setVolume(newVolume, { deviceId: device.deviceId })
+    }
+  };
   return (
-    <Status className="volume" path="power/ringing" desc={desc} aria-disabled="true" {...fallthrough}>
-      {displayVolume}
+    <Status className="volume" path="power/ringing" desc={desc} label={displayVolume} onClick={onClick} onWheel={onWheel} {...fallthrough}>
+       { device.isMuted && <SpireolgyIcon className="audio-muted-icon" path="power/well_laid_plans" /> }
     </Status>
   );
 };
@@ -283,9 +290,14 @@ const Weather = ({ ...fallthrough }) => {
   }
   const power = weatherMap[simplifiedStatus];
   return (
-    <Status className={`weather weather--${simplifiedStatus}`} path={`power/${power}`} desc={description} aria-disabled="true" {...fallthrough}>
-      {displayTemp}
-    </Status>
+    <Status
+      aria-disabled="true" 
+      className={`weather weather--${simplifiedStatus}`}
+      path={`power/${power}`}
+      desc={description}
+      label={displayTemp}
+      {...fallthrough}
+    />
   );
 };
 
@@ -343,14 +355,15 @@ const Tooltip = ({anchor, children}) => {
   );
 };
 
-const Status = ({ className, path, children, ...fallthrough }) => {
+const Status = ({ className, path, label, children, ...fallthrough }) => {
   className = className || '';
   return (
       <MenuItem className={`status ${className}`} {...fallthrough}>
         <SpireolgyIcon path={path} />
         <div className="status__suffix">
-          <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
+          <OutlinedText className="status__suffix-inner">{label}</OutlinedText>
         </div>
+        {children}
       </MenuItem>
   );
 }

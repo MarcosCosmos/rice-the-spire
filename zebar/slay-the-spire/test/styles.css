@@ -1,5 +1,6 @@
 body {
-  color: rgb(255 255 255 / 90%);
+  color: #FFF6E2;
+  text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
   font-family: sans-serif;
   font-size: 12px;
   overflow: hidden;
@@ -14,14 +15,6 @@ body,
 .app {
   text-align: center;
   display: block;
-}
-
-.chip {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: rgb(84, 66, 220);
-  margin-right: 4px;
 }
 
 .app {
@@ -66,12 +59,6 @@ body,
   margin: 0;
 }
 
-.workspaces .bar__inner {
-  display: flex;
-  gap: 3em;
-  justify-items: space-around;
-}
-
 .section {
   display: flex;
   flex-direction: row;
@@ -93,7 +80,6 @@ body,
 .section:last-child .bar:last-child {
   border-inline-start: none;
 }
-
 
 .spireology-icon {
   width: 2em;
@@ -141,12 +127,18 @@ body,
   z-index: 100;
   width: max-content;
 
-  background: oklch(0.3 0.02 219);
-  border: 3px solid oklch(0.4 0.03 198);
-  border-radius: 10px;
-  padding: 3px;
-  color: oklch(0.97 0.06 102);
+  background: #222E33;
+  border-width: 3px;
+  border-style: solid;
+  border-left-color: #475D66;
+  border-right-color: #475D66;
+  border-top-color: #516B76;
+  border-bottom-color: #31505C;
+  border-radius: 5px;
+  padding: 5px;
+  color: #FFF6E2;
   text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
+  box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
 }
 .section:not(:last-child) .tooltip {
   left: calc(100% - 0.5em);
@@ -161,28 +153,6 @@ body,
 .tooltip:focus {
   visibility: visible;
   transition: visibility 0.5s;
-}
-
-.battery__outer {
-  background-image: url("../resources/StS2_EnergyDefect.webp");
-  mask-image: url("../resources/StS2_EnergyDefect.webp");
-  mask-size: contain;
-  background-size: contain;
-  mask-position: left top;
-  width: 30.5px;
-  height: 31px;
-  text-shadow: 1px 1px 2px black, 0 0 1px black;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.battery--discharging .battery__inner, .battery--empty .battery__inner {
-  background-color: rgba(0, 0, 0, 0.3);
-  color: coral;
 }
 
 .status {
@@ -206,4 +176,35 @@ body,
 
 .status__suffix-inner {
   display: block;
+}
+
+.workspaces .bar__inner {
+  display: flex;
+  gap: 3em;
+  justify-items: space-around;
+}
+
+.battery__outer {
+  background-image: url("../resources/StS2_EnergyDefect.webp");
+  mask-image: url("../resources/StS2_EnergyDefect.webp");
+  mask-size: contain;
+  background-size: contain;
+  mask-position: left top;
+  width: 30.5px;
+  height: 31px;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.battery--discharging .battery__inner, .battery--empty .battery__inner {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: coral;
+}
+
+.audio-muted-icon {
+  z-index: 100;
 }
