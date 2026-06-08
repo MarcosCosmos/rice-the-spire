@@ -1,7 +1,7 @@
 body {
   color: #FFF6E2;
   text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
-  font-family: sans-serif;
+  font-family: Kreon, Georgia, sans-serif;
   font-size: 12px;
   overflow: hidden;
 }
