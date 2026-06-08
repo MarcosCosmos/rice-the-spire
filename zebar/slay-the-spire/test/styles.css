@@ -32,31 +32,23 @@ body,
 .bar {
   border: 1px solid #111B20;
   border-top: none;
+  .bar__inner {
+    padding: 3px;
+    background: #2A424D;
+    border: 3px solid #304C59;
+    border-top: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+  }
 }
 
-.bar__inner {
-  padding: 3px;
-  background: #2A424D;
-  border: 3px solid #304C59;
-  border-top: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 100%;
-}
-
-.app--no-binding-mode .bar, .app--no-binding-mode .bar__inner {
-  border-color: transparent;
-  background-color: transparent;
-}
-
-.menu-item {
-  display: inline-block;
-  background: none;
-  border: none;
-  line-height: 100%;
-  padding: 0;
-  margin: 0;
+.app--no-binding-mode {
+  & .bar, & .bar__inner {
+    border-color: transparent;
+    background-color: transparent;
+  }
 }
 
 .section {
@@ -88,32 +80,35 @@ body,
   position: absolute;
   top:0;
   left:0;
+
+  .spireology-icon__image {
+    image-rendering: auto;
+  }
 }
 
-.spireology-icon__image {
-  image-rendering: auto;
-}
 
 .outlined-text {
   display: inline-block;
   position: relative;
   -webkit-text-stroke-width: round(up, 0.2em, 1px);
   -webkit-text-stroke-color: black;
+  
+  .outlined-text__foreground {
+    z-index: 21;
+    position: relative;
+    -webkit-text-stroke-width: inherit;
+    -webkit-text-stroke-color: transparent;
+  }
+  
+  .outlined-text__background {
+    z-index: 20;
+    -webkit-text-stroke-width: inherit;
+    -webkit-text-stroke-color: inherit;
+    position: absolute;
+    right: 0;
+  }
 }
 
-.outlined-text__foreground {
-  z-index: 21;
-  position: relative;
-  -webkit-text-stroke-width: inherit;
-  -webkit-text-stroke-color: transparent;
-}
-.outlined-text__background {
-  z-index: 20;
-  -webkit-text-stroke-width: inherit;
-  -webkit-text-stroke-color: inherit;
-  position: absolute;
-  right: 0;
-}
 
 .tooltip-shrinkwrap {
   display: inline-block;
@@ -136,15 +131,16 @@ body,
   border-bottom-color: #31505C;
   border-radius: 5px;
   padding: 5px;
-  color: #FFF6E2;
+  /* color: #FFF6E2; */
   text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
   box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
-}
-.section:not(:last-child) .tooltip {
-  left: calc(100% - 0.5em);
-}
-.section:last-child .tooltip {
-  right: calc(100% - 0.5em);
+
+  .section:not(:last-child) & {
+    left: calc(100% - 0.5em);
+  }
+  .section:last-child & {
+    right: calc(100% - 0.5em);
+  }
 }
 
 [aria-describedby]:hover + .tooltip,
@@ -155,28 +151,37 @@ body,
   transition: visibility 0.5s;
 }
 
+.menu-item {
+  display: inline-block;
+  background: unset;
+  border: unset;
+  line-height: unset;
+  padding: unset;
+  margin: unset;
+  color: unset;
+}
+
 .status {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   flex-direction: row;
-  justify-content: end;
+  justify-items: end;
   align-items: end;
   min-width: 2em;
   min-height: 2em;
+
+  .status__suffix {
+    line-height: 1em;
+    margin-left: 1em;
+    z-index: 10;
+    display: block;
+  }
+
+  .status__suffix-inner {
+    display: block;
+  }
 }
 
-.status__suffix {
-  line-height: 1em;
-  margin-left: 1em;
-  z-index: 10;
-  display: block;
-  font-family: inherit;
-  font-size: inherit;
-  color: #FFF6E2;
-}
-
-.status__suffix-inner {
-  display: block;
-}
 
 .workspaces .bar__inner {
   display: flex;
@@ -184,30 +189,14 @@ body,
   justify-items: space-around;
 }
 
-.battery__outer {
-  background-image: url("../resources/StS2_EnergyDefect.webp");
-  mask-image: url("../resources/StS2_EnergyDefect.webp");
-  mask-size: contain;
-  background-size: contain;
-  mask-position: left top;
-  width: 30.5px;
-  height: 31px;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+.battery--charging {
+  color: rgb(136, 204, 170);
 }
 
-.battery--charging * {
-  color: lightgreen;
+.battery--discharging {
+  color: rgb(224, 136, 136);
 }
 
-.battery--discharging * {
-  color: coral;
-}
-
-.audio-muted-icon {
+.audio__muted-icon {
   z-index: 100;
 }

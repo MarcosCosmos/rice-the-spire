@@ -13,20 +13,16 @@ const dummyZebar = {
     state: 'charging',
     chargePercent: 70,
   },
-  weather: {
-    status: 'light_rain_day',
-    celsiusTemp: 20,
-  }
 };
 
-const useDummy = false;
+const useDummy = true;
 
 const Zebar = createContext(null);
 const Spireology = createContext(null);
 
 const providers = zebar.createProviderGroup({
   glazewm: { type: 'glazewm' },
-  date: { type: 'date', formatting: 'EEE, MMM yyyy d, h:mm a' },
+  date: { type: 'date' },
   cpu: { type: 'cpu' },
   battery: { type: 'battery' },
   memory: { type: 'memory' },
@@ -69,8 +65,13 @@ const App = () => {
             </div>
             <div className="section">
               <WmControls />
-              <Bar className="statuses" aria-label="Statuses">
+              <Bar className="resources" aria-label="Resources">
                 <Battery />
+                <Cpu />
+                <Memory />
+                <Disk />
+              </Bar>    
+              <Bar className="statuses" aria-label="Statuses">
                 <Audio />
                 <Weather />
               </Bar>    
@@ -92,13 +93,35 @@ const Bar = ({className, children, ...fallthrough}) => {
   );
 };
 
+const shortDateFormat = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "short",
+});
+const shortTimeFormat = new Intl.DateTimeFormat(undefined, {
+  timeStyle: "short",
+});
+const longFormat = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "long",
+  timeStyle: "long",
+});
 const DateTime = () => {
   const zebar = useContext(Zebar);
+  const date = zebar?.date || {
+    now: Date.now()
+  };
   return (
     <Bar aria-label="Date and time">
-      <div className="datetime" role="menuitem" aria-disabled="true" tabIndex="0">
-        <OutlinedText>{zebar?.date?.formatted}</OutlinedText>
-      </div>
+      <MenuItem
+          className="datetime"
+          disabled
+          tooltip={longFormat.format(date.now)}
+      >
+        <Status className="date" path="relic/stone_calendar">
+          {shortDateFormat.format(date.now)}
+        </Status>
+        <Status className="time" path="relic/pocketwatch">
+          {shortTimeFormat.format(date.now)}
+        </Status>
+      </MenuItem>
     </Bar>
   );
 };
@@ -138,14 +161,14 @@ const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
   const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
   const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
   return (
-    <Status
+    <MenuItem
       key={name}
       className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'}`}
-      path={`orb/${path}`}
-      desc={workspaceDesc}
+      tooltip={workspaceDesc}
       onClick={onClick}
-      label={displayName || name}
-    />
+    >
+      <Status path={`orb/${path}`}>{displayName || name}</Status>
+    </MenuItem>
   );
 };
 
@@ -164,7 +187,9 @@ const WmPause = () => {
   const zebar = useContext(Zebar);
   const onClick = () => zebar.glazewm.runCommand('wm-toggle-pause');
   zebar?.glazewm?.isPaused && (
-    <Status className="paused" path="intent/sleep" aria-label="paused" desc="Unpause" onClick={onClick} />
+    <MenuItem className="paused" aria-label="paused" desc="Unpause" onClick={onClick}>
+      <Status path="intent/sleep" />
+    </MenuItem>
   );
 };
 
@@ -177,7 +202,9 @@ const WmDirection = () => {
   }[direction];
   const onClick = () => zebar.glazewm.runCommand('toggle-tiling-direction');
   return (
-    <Status className={`wm-tiling-direction wm-tiling-direction--${direction}`} path={path} aria-label={direction} desc="Swap tiling direction" onClick={onClick} />
+    <MenuItem className={`wm-tiling-direction wm-tiling-direction--${direction}`} aria-label={direction} tooltip="Swap tiling direction" onClick={onClick}>
+      <Status path={path} />
+    </MenuItem>
   );
 };
 
@@ -190,26 +217,61 @@ const WmModes = () => {
     displayName = displayName || name;
     const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
     return (
-      <Status key={name} aria-label={displayName} desc={`Disable ${displayName} mode`} path={modeMap[name]} onClick={onClick} />
+      <MenuItem key={name} tooltip={`Disable ${displayName} mode`} onClick={onClick} >
+        <Status path={modeMap[name]}>{displayName}</Status>
+      </MenuItem>
     );
   });
 };
 
-const Battery = ({ tooltipSide }) => {
+
+// todo: other resources and tooltip details for resources
+const Cpu = () => {
+  const zebar = useContext(Zebar);
+  const usage = Math.round(zebar?.cpu?.usage || 0);
+  return (
+    <MenuItem className="cpu" disabled>
+      <Status path="relic/cracked_core">{usage}%</Status>
+    </MenuItem>
+  )
+};
+
+const Memory = () => {
+  const zebar = useContext(Zebar);
+  const usage = Math.round(zebar?.memory?.usage || 0);
+  return (
+    <MenuItem className="memory" disabled>
+      <Status path="relic/emotion_chip">{usage}%</Status>
+    </MenuItem>
+  );
+}
+
+const Disk = () => {
+  const zebar = useContext(Zebar);
+  const usage = Math.round(zebar?.disk?.usage || 0);
+  return (
+    <MenuItem className="disk" disabled>
+      <Status path="relic/data_disk">{usage}%</Status>
+    </MenuItem>
+  );
+}
+
+const Battery = () => {
   const zebar = useContext(Zebar);
   const data = zebar?.battery || {
     state: 'unknown',
+    chargePercent: 0,
   };
   if (data.state !== 'unknown') {
-    const value = data.state === 'full' ? '' : Math.min(99, data.chargePercent || 0) + '%';
+    const value = Math.round(data.chargePercent);
     return (
-      <Status
+      <MenuItem 
         className={`battery battery--${data.state}`} 
-        aria-disabled="true"
-        label={value}
-        desc={`Battery: ${data.state} (${value})`}
-        path="relic/power_cell"
-      />
+        disabled
+        tooltip={`Battery: ${data.state} (${value}%)`}
+      >
+        <Status path="relic/power_cell">{value}%</Status>
+      </MenuItem>
     );
   }
 };
@@ -230,9 +292,10 @@ const Audio = ({...fallthrough}) => {
     }
   };
   return (
-    <Status className="volume" path="power/ringing" desc={desc} label={displayVolume} onClick={onClick} onWheel={onWheel} {...fallthrough}>
-       { device.isMuted && <SpireolgyIcon className="audio-muted-icon" path="power/well_laid_plans" /> }
-    </Status>
+    <MenuItem className="volume" tooltip={desc} onClick={onClick} onWheel={onWheel} {...fallthrough}>
+      <Status path="power/ringing">{displayVolume}</Status>
+      { device.isMuted && <SpireolgyIcon className="audio-muted-icon" path="power/well_laid_plans" /> }
+    </MenuItem>
   );
 };
 
@@ -283,16 +346,15 @@ const Weather = ({ ...fallthrough }) => {
     default:
       simplifiedStatus = 'clear';
   }
-  const power = weatherMap[simplifiedStatus];
   return (
-    <Status
-      aria-disabled="true" 
+    <MenuItem
+      disabled 
       className={`weather weather--${simplifiedStatus}`}
-      path={`power/${power}`}
-      desc={description}
-      label={displayTemp}
+      tooltip={description}
       {...fallthrough}
-    />
+    >
+      <Status path={`power/${weatherMap[simplifiedStatus]}`}>{displayTemp}</Status>
+    </MenuItem>
   );
 };
 
@@ -350,31 +412,36 @@ const Tooltip = ({anchor, children}) => {
   );
 };
 
-const Status = ({ className, path, label, children, ...fallthrough }) => {
+const Status = ({ className, path, children, ...fallthrough }) => {
   className = className || '';
   return (
-      <MenuItem className={`status ${className}`} {...fallthrough}>
+      <div className={`status ${className}`} {...fallthrough}>
         <SpireolgyIcon path={path} />
         <div className="status__suffix">
-          <OutlinedText className="status__suffix-inner">{label}</OutlinedText>
+          <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
         </div>
-        {children}
-      </MenuItem>
+      </div>
   );
 }
 
-const MenuItem = ({className, children, desc, ...fallthrough}) => {
+const MenuButton = ({className, children, disabled, ...fallthrough}) => {
   className = className || '';
   return (
-    <Tooltip anchor={ tooltipId =>
-        <button className={`menu-item ${className}`} role="menuitem" tabIndex="0" aria-describedby={tooltipId} {...fallthrough}>
-          {children}
-        </button>
-      }
-    >
-      {desc}
-    </Tooltip>
+    <button className={`menu-item ${className}`} role="menuitem" disabled={disabled} {...fallthrough}>
+      {children}
+    </button>
   );
+}
+
+const MenuItem = ({children, tooltip, ...fallthrough}) => {
+  const button = tooltipId => <MenuButton aria-describedby={tooltipId} {...fallthrough}>{children}</MenuButton>;
+  return tooltip
+    ? (
+      <Tooltip anchor={button}>
+        {tooltip}
+      </Tooltip>
+    )
+    : button();
 }
 
 createRoot(document.getElementById('root')).render(<App />);
