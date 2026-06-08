@@ -105,7 +105,8 @@ body,
     -webkit-text-stroke-width: inherit;
     -webkit-text-stroke-color: inherit;
     position: absolute;
-    right: 0;
+    left: 0;
+    top: 0;
   }
 }
 

@@ -29,6 +29,7 @@ const providers = zebar.createProviderGroup({
   weather: { type: 'weather' },
   media: { type: 'media' },
   audio: { type: 'audio' },
+  disk: { type: "disk" },
 });
 
 const App = () => {
@@ -248,10 +249,17 @@ const Memory = () => {
 
 const Disk = () => {
   const zebar = useContext(Zebar);
-  const usage = Math.round(zebar?.disk?.usage || 0);
+  let usage;
+  console.log(zebar);
+  if (zebar?.disk?.disks.length > 0) {
+    let usages = zebar?.disk?.disks.map(disk => Math.round(((disk.totalSpace.bytes-disk.availableSpace.bytes)/disk.totalSpace.bytes)*100));
+    let max = Math.max(...usages);
+    let min = Math.min(...usages);
+    usage = (<>{max}%<br/>{min}%</>);
+  }
   return (
     <MenuItem className="disk" disabled>
-      <Status path="relic/data_disk">{usage}%</Status>
+      <Status path="relic/data_disk">{usage}</Status>
     </MenuItem>
   );
 }
