@@ -125,9 +125,18 @@ const DateTime = () => {
 const GlazeWorkspaces = () => {
   const zebar = useContext(Zebar);
   return zebar?.glazewm && (
-    <Bar className="workspaces" aria-label={"Workspaces"}>
-      { zebar?.glazewm?.currentWorkspaces?.map(GlazeWorkspace) }
-    </Bar>
+    <Workspaces>
+      { zebar?.glazewm?.currentWorkspaces?.map(data => <GlazeWorkspace data={data} />) }
+    </Workspaces>
+  );
+}
+
+const Workspaces = ({className, children, ...attrs}) => {
+  className ||= '';
+  return (
+    <div className={`workspaces ${className}`} role="region" aria-label={"Workspaces"} {...attrs}>
+      {children}
+    </div>
   );
 }
 
@@ -137,8 +146,16 @@ const workspaceStateMap = {
   'empty': 'map_unknown',
   'full': 'map_monster',
 };
-const GlazeWorkspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
+const GlazeWorkspace = ({data, ...attrs}) => {
   const zebar = useContext(Zebar);
+  const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
+  return <Workspace className="glazewm-workspace" data={data} onClick={onClick} {...attrs } />;
+};
+
+const Workspace = ({ className, data, ...attrs }) => {
+  className ||= '';
+  let { name, displayName, hasFocus, isDisplayed, children } = data;
+  displayName ||= name;
   let style;
   const isEmpty = !children || children.length === 0;
   if (hasFocus) {
@@ -151,21 +168,19 @@ const GlazeWorkspace = ({ name, displayName, hasFocus, isDisplayed, children }) 
     style = 'full';
   }
   const path = workspaceStateMap[style];
-  displayName ||= name;
   const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
-  const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
   return (
     <MenuItem
       key={name}
-      className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'}`}
+      className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'} ${className}`}
       tooltip={workspaceDesc}
-      onClick={onClick}
+      {...attrs}
     >
       <SpireImage className="workspace__background" path="ui/map_nodes/map_node_background"/>
       <Status className="workspace__status" path={`ui/map_nodes/${path}`}>{displayName || name}</Status>
     </MenuItem>
   );
-};
+}
 
 const WmControls = () => {
   const zebar = useContext(Zebar);
