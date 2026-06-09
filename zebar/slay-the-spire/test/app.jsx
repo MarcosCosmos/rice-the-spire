@@ -77,7 +77,7 @@ const App = () => {
 }
 
 const Bar = ({className, ariaLabel, children, ...attrs}) => {
-  className = className || '';
+  className ||= '';
   if (attrs['aria-label']) {
     attrs = {
       role: 'region',
@@ -151,7 +151,7 @@ const GlazeWorkspace = ({ name, displayName, hasFocus, isDisplayed, children }) 
     style = 'full';
   }
   const path = workspaceStateMap[style];
-  displayName = displayName || name;
+  displayName ||= name;
   const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
   const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
   return (
@@ -211,7 +211,7 @@ const modeMap = {
 const WmModes = () => {
   const zebar = useContext(Zebar);
   return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
-    displayName = displayName || name;
+    displayName ||= name;
     const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
     const label = `${displayName} mode`;
     const tooltip = `${label} (click to disable)`;
@@ -295,7 +295,7 @@ const Memory = () => {
 }
 
 const useDataSize = (size, places) => {
-  places = places || 2;
+  places ||= 2;
   let result = size.siValue.toFixed(places).replace(/\.0+$/, '');
   return `${result}${size.siUnit}`;
 };
@@ -318,7 +318,7 @@ const FullestDisk = () => {
 }
 
 const Disk = ({data, label, ...attrs}) => {
-  label = label || 'Disk';
+  label ||= 'Disk';
   const usage = Math.round(((data.totalSpace.bytes-data.availableSpace.bytes)/data.totalSpace.bytes)*100);
   const name = data.name || data.mountPoint;
   const tooltip = `${label}: ${name} ${data.isRemovable ? '(removable)' : ''}; usage: ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)}; mounted at: ${data.mountPoint}.`;
@@ -438,14 +438,14 @@ const resolveSpireImage = (path) => {
 };
 
 const SpireImage = ({className, path, ...attrs}) => {
-  className = className || '';
+  className ||= '';
   return (
     <img className={`spire-codex-image ${className}`} src={resolveSpireImage(path)} />
   )
 };
 
 const OutlinedText = ({className, children}) => {
-  className = className || '';
+  className ||= '';
   return (
     <span className={`outlined-text ${className}`}>
       <span className="outlined-text__foreground">{children}</span>
@@ -467,7 +467,7 @@ const Tooltip = ({anchor, children}) => {
 };
 
 const Status = ({ className, path, children, ...attrs }) => {
-  className = className || '';
+  className ||= '';
   return (
       <div className={`status ${className}`} {...attrs}>
         <SpireImage className="status__image" path={path} />
@@ -481,7 +481,7 @@ const Status = ({ className, path, children, ...attrs }) => {
 }
 
 const MenuButton = ({className, children, disabled, ...attrs}) => {
-  className = className || '';
+  className ||= '';
   return (
     <button className={`menu-item ${className}`} role="menuitem" aria-disabled={disabled} tabIndex="0" {...attrs}>
       {children}
