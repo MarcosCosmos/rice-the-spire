@@ -7,7 +7,6 @@ import React, {
 } from 'https://esm.sh/react@19.2?dev';
 import { createRoot } from 'https://esm.sh/react-dom@19.2/client?dev';
 import * as zebar from 'https://esm.sh/zebar@3.0';
-const spireologyUrl = 'https://www.spireology.com/v0.103.2/assets/sprites/manifest.json';
 const dummyZebar = {
   battery: {
     state: 'charging',
@@ -43,24 +42,16 @@ const App = () => {
       setOutput(result);
     });
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(spireologyUrl);
-      if (response.ok) {
-        setSpireology(await response.json());
-      } else {
-        throw new Error(`Failed to fetch Spireology manifest @ ${spireologyUrl}`);
-      }
-    })();
-  }, []);
   const hasMode = output?.glazewm?.bindingModes.length > 0;
+  const bindingModeClasses = hasMode
+    ? output?.glazewm.bindingModes.map(mode => 'app--binding-mode-' + mode).join('')
+    : 'app--no-binding-mode';
   return (
-    <div className={`app ${!hasMode && 'app--no-binding-mode'}`} role="menubar">
+    <div className={`app ${bindingModeClasses}`} role="menubar">
       <Zebar value={output}>
           <Spireology value={spireology}>
             <div className="section">
-              <Workspaces />
+              <GlazeWorkspaces />
             </div>
             <div className="section">
               <DateTime />
@@ -95,9 +86,7 @@ const Bar = ({className, ariaLabel, children, ...attrs}) => {
   }
   return (
     <div className={`bar ${className}`} {...attrs}>
-      <div className="bar__inner">
         {children}
-      </div>
     </div>
   );
 };
@@ -126,35 +115,29 @@ const DateTime = () => {
           disabled
           tooltip={`${label}: longFormat.format(date.now)`}
       >
-        <Status className="date" path="relic/stone_calendar">
-          {shortDateFormat.format(date.now)}
-        </Status>
-        <Status className="time" path="relic/mercury_hourglass">
-          {shortTimeFormat.format(date.now)}
-        </Status>
+        <Status className="date" path="ui/top_bar/timer_icon" />
+        <OutlinedText>{shortDateFormat.format(date.now)} {shortTimeFormat.format(date.now)}</OutlinedText>
       </MenuItem>
     </Bar>
   );
 };
 
-const Workspaces = () => {
+const GlazeWorkspaces = () => {
   const zebar = useContext(Zebar);
   return zebar?.glazewm && (
     <Bar className="workspaces" aria-label={"Workspaces"}>
-      { zebar?.glazewm?.currentWorkspaces?.map(Workspace) }
+      { zebar?.glazewm?.currentWorkspaces?.map(GlazeWorkspace) }
     </Bar>
   );
 }
 
 const workspaceStateMap = {
-  'focused': 'lightning_orb',
-  'displayed': 'plasma_orb',
-  'empty': 'empty_slot',
-  'full_a': 'glass_orb',
-  'full_b': 'frost_orb',
-  'full_c': 'dark_orb'
+  'focused': 'map_elite',
+  'displayed': 'map_unknown_elite',
+  'empty': 'map_unknown',
+  'full': 'map_monster',
 };
-const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
+const GlazeWorkspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
   const zebar = useContext(Zebar);
   let style;
   const isEmpty = !children || children.length === 0;
@@ -165,7 +148,7 @@ const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
   } else if (isEmpty) {
     style = 'empty';
   } else {
-    style = 'full_b';
+    style = 'full';
   }
   const path = workspaceStateMap[style];
   displayName = displayName || name;
@@ -178,7 +161,8 @@ const Workspace = ({ name, displayName, hasFocus, isDisplayed, children }) => {
       tooltip={workspaceDesc}
       onClick={onClick}
     >
-      <Status path={`orb/${path}`}>{displayName || name}</Status>
+      <SpireImage className="workspace__background" path="ui/map_nodes/map_node_background"/>
+      <Status className="workspace__status" path={`ui/map_nodes/${path}`}>{displayName || name}</Status>
     </MenuItem>
   );
 };
@@ -199,7 +183,7 @@ const WmPause = () => {
   const onClick = () => zebar.glazewm.runCommand('wm-toggle-pause');
   zebar?.glazewm?.isPaused && (
     <MenuItem className="paused" aria-label="paused" desc="Unpause" onClick={onClick}>
-      <Status path="intent/sleep" />
+      <Status path="intents/sleep" />
     </MenuItem>
   );
 };
@@ -208,8 +192,8 @@ const WmDirection = () => {
   const zebar = useContext(Zebar);
   const direction = zebar?.glazewm?.tilingDirection;
   const path = {
-    'horizontal': 'intent/escape',
-    'vertical': 'intent/debuff'
+    'horizontal': 'intents/escape',
+    'vertical': 'intents/debuff'
   }[direction];
   const onClick = () => zebar.glazewm.runCommand('toggle-tiling-direction');
   const label = `Tiling direction: ${direction}`;
@@ -222,7 +206,7 @@ const WmDirection = () => {
 };
 
 const modeMap = {
-  'focus': 'intent/statuscard_00',
+  'focus': 'intents/status',
 }
 const WmModes = () => {
   const zebar = useContext(Zebar);
@@ -237,6 +221,10 @@ const WmModes = () => {
       </MenuItem>
     );
   });
+};
+
+const Media = () => {
+
 };
 
 const Battery = () => {
@@ -254,7 +242,7 @@ const Battery = () => {
         aria-label={`Battery`}
         tooltip={`Battery: ${value}% (${data.state})`}
       >
-        <Status path="relic/power_cell">{value}%</Status>
+        <Status path="relics/power_cell">{value}%</Status>
       </MenuItem>
     );
   }
@@ -271,12 +259,12 @@ const Network = () => {
         aria-label={`Network`}
         tooltip={`Network: {{TODO}}`}
       >
-        <Status path="relic/gold_plated_cables">
-          {traffic?.transmitted && useDataSize(traffic?.transmitted) || '-'} ▲
+        <Status path="relics/gold_plated_cables">
+          {traffic?.transmitted && useDataSize(traffic?.transmitted) || '-'}
           <br />
-          {traffic?.received && useDataSize(traffic?.received) || '-'} ▼
+          {traffic?.received && useDataSize(traffic?.received) || '-'}
         </Status>
-        { !currentInterface && <SpireolgyIcon className="network-none-icon" path="power/well_laid_plans" /> }
+        { !currentInterface && <SpireImage className="network-none-icon" path="powers/well_laid_plans" /> }
       </MenuItem>
   );
 }
@@ -289,7 +277,7 @@ const Processor = () => {
   const tooltip = cpu && `CPU Usage: ${usage}%`;
   return (
     <MenuItem className="cpu" aria-label="CPU" tooltip={tooltip} disabled>
-      <Status path="relic/cracked_core">{usage}%</Status>
+      <Status path="relics/cracked_core">{usage}%</Status>
     </MenuItem>
   )
 };
@@ -301,7 +289,7 @@ const Memory = () => {
   const tooltip = memory && `Memory usage: ${(memory.usedMemory*1e-9).toFixed(2)}GB/${(memory.totalMemory*1e-9).toFixed(2)}GB (${(memory.freeMemory*1e-9).toFixed(2)}GB free)`;
   return (
     <MenuItem className="memory" aria-label="Memory" tooltip={tooltip} disabled>
-      <Status path="relic/emotion_chip">{usage}%</Status>
+      <Status path="relics/emotion_chip">{usage}%</Status>
     </MenuItem>
   );
 }
@@ -336,7 +324,7 @@ const Disk = ({data, label, ...attrs}) => {
   const tooltip = `${label}: ${name} ${data.isRemovable ? '(removable)' : ''}; usage: ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)}; mounted at: ${data.mountPoint}.`;
   return (
     <MenuItem className="disk" disabled tooltip={tooltip} aria-label={label} {...attrs}>
-      <Status path="relic/data_disk">
+      <Status path="relics/data_disk">
         {usage}%
       </Status>
     </MenuItem>
@@ -360,8 +348,8 @@ const Audio = ({...attrs}) => {
   };
   return (
     <MenuItem className="volume" tooltip={desc} onClick={onClick} aria-label="Volume" onWheel={onWheel} {...attrs}>
-      <Status path="power/ringing">{displayVolume}</Status>
-      { device.isMuted && <SpireolgyIcon className="audio-muted-icon" path="power/well_laid_plans" /> }
+      <Status path="powers/ringing">{displayVolume}</Status>
+      { device.isMuted && <SpireImage className="audio__muted-mark" path="powers/well_laid_plans" /> }
     </MenuItem>
   );
 };
@@ -421,40 +409,38 @@ const Weather = ({ ...attrs }) => {
       tooltip={description}
       {...attrs}
     >
-      <Status path={`power/${weatherMap[simplifiedStatus]}`}>{displayTemp}</Status>
+      <Status path={`powers/${weatherMap[simplifiedStatus]}`}>{displayTemp}</Status>
     </MenuItem>
   );
 };
 
-const useSpireology = (path) => {
-  const manifest = useContext(Spireology);
-  const [category, entry] = path.split('/');
-  const categoryPlural = `${category}s`;
+const resolveSpireImage = (path) => {
+  let [category, subcategory, entry] = path.split('/');
+  if (!entry) {
+    entry = subcategory;
+    subcategory = '';
+  }
   let key;
   switch(category) {
-    case 'power':
-      key = `${entry.toUpperCase()}_${category.toUpperCase()}`;
-      break;
+    case 'powers':
+    case 'orbs':
+      if (entry === 'empty_slot') {
+        break;
+      } else {
+        key = `${entry}_${category.slice(0, -1)}`;
+        break;
+      }
     default:
-      key = entry.toUpperCase();
+      key = entry;
   }
-  const result = manifest?.[categoryPlural]?.[key];
-  return result || {
-    x: 0,
-    y: 0,
-    w: 0,
-    h: 0,
-    sheet: 'unknown',
-  };
+  const dir = subcategory && [category, subcategory].join('/') || category;
+  return `https://spire-codex.com/static/images/${dir}/${key}.webp`;
 };
 
-const SpireolgyIcon = ({className, path}) => {
+const SpireImage = ({className, path, ...attrs}) => {
   className = className || '';
-  const { x, y, w, h, sheet } = useSpireology(path);
   return (
-    <svg className={`spireology-icon ${className}`} viewBox={`${x} ${y} ${w} ${h}`} preserveAspectRatio="xMidYMid meet" role="presentation" data-path={path}>
-      <image className="spireology-icon__image" href={`https://www.spireology.com/v0.103.2/assets/sprites/${sheet}.webp`} preserveAspectRatio="none"></image>
-    </svg>
+    <img className={`spire-codex-image ${className}`} src={resolveSpireImage(path)} />
   )
 };
 
@@ -484,10 +470,12 @@ const Status = ({ className, path, children, ...attrs }) => {
   className = className || '';
   return (
       <div className={`status ${className}`} {...attrs}>
-        <SpireolgyIcon path={path} />
-        <div className="status__suffix">
-          <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
-        </div>
+        <SpireImage className="status__image" path={path} />
+        { children &&
+          <div className="status__suffix">
+            <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
+          </div>
+        }
       </div>
   );
 }

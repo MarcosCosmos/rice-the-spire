@@ -1,9 +1,14 @@
 body {
+  overflow: hidden;
+}
+
+:root {
   color: #FFF6E2;
-  text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
+  text-shadow: #000000b8 2px 1px 0px;
+  -webkit-text-stroke-color: #373737;
   font-family: Kreon, Georgia, sans-serif;
   font-size: 12px;
-  overflow: hidden;
+  --icon-size: 2rem;
 }
 
 html,
@@ -18,43 +23,38 @@ body,
 }
 
 .app {
-  height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: space-between;
   background: transparent;
   align-items: stretch;
-  gap: 1px;
+  padding-top: 3px;
+  padding-left: 3rch;
+  padding-right: 3rch;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
+  background-size: contain;
+
+  &:not(.app--no-binding-mode) {
+    background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
+  }
 }
 
 .bar {
-  border: 1px solid #111B20;
-  border-top: none;
-  .bar__inner {
-    padding: 3px;
-    background: #2A424D;
-    border: 3px solid #304C59;
-    border-top: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 100%;
-  }
-}
-
-.app--no-binding-mode {
-  & .bar, & .bar__inner {
-    border-color: transparent;
-    background-color: transparent;
-  }
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  height: 100%;
+  gap: 0.5rch;
 }
 
 .section {
   display: flex;
   flex-direction: row;
   justify-self: center;
+  justify-content: space-around;
+  gap: 3rch;
 }
 
 .section:first-child {
@@ -73,25 +73,10 @@ body,
   border-inline-start: none;
 }
 
-.spireology-icon {
-  width: 2em;
-  height: 2em;
-  flex: 0 0 auto;
-  position: absolute;
-  top:0;
-  left:0;
-
-  .spireology-icon__image {
-    image-rendering: auto;
-  }
-}
-
-
 .outlined-text {
   display: inline-block;
   position: relative;
   -webkit-text-stroke-width: round(up, 0.2em, 1px);
-  -webkit-text-stroke-color: black;
   
   .outlined-text__foreground {
     z-index: 21;
@@ -167,14 +152,22 @@ body,
   position: relative;
   display: inline-flex;
   flex-direction: row;
-  justify-items: end;
+  justify-content: end;
   align-items: end;
-  min-width: 2em;
-  min-height: 2em;
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+
+  .status__image {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    position: absolute;
+    top:0;
+    left:0;
+  }
 
   .status__suffix {
     line-height: 1em;
-    margin-left: 1em;
+    margin-left: calc(var(--icon-size) / 2);
     z-index: 10;
     display: block;
     text-align: end;
@@ -186,10 +179,21 @@ body,
 }
 
 
-.workspaces .bar__inner {
+.workspaces {
   display: flex;
-  gap: 3em;
+  gap: 2rem;
   justify-items: space-around;
+  z-index: 10;
+  .workspace__background {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    position: absolute;
+    --icon-size: 3.5rem;
+    top: -.75em;
+    left: -.75em;
+    z-index: -1;
+  }
+
 }
 
 .battery--charging {
@@ -200,6 +204,21 @@ body,
   color: rgb(224, 136, 136);
 }
 
-.audio__muted-icon {
+.datetime {
+  color: #EFC851;
+  -webkit-text-stroke-color:#1C2B31;
+
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.audio__muted-mark {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 100;
 }
