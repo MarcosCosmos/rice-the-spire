@@ -239,56 +239,57 @@ const Workspace = ({ className, data, ...attrs }) => {
   );
 }
 
+const MapNodeGraphic = (() => {
+  const maxNodeWidth = Math.max(...randomisableNodes.map(key => mapNodeTypes[key].width));
+  const maxNodeHeight = Math.max(...randomisableNodes.map(key => mapNodeTypes[key].height));
+  const maxDimension = Math.max(maxNodeWidth, maxNodeHeight);
+  const circleRatio = .9;
+  const circleRadius = maxDimension * circleRatio;
+  const circleStrokeWidth = 2 / 7 * circleRadius;
+  const radiusWithStroke = circleRadius + circleStrokeWidth;
+  const graphicWidth = 2 * radiusWithStroke;
+  const graphicHeight = radiusWithStroke + Math.max(radiusWithStroke, maxNodeHeight / 2 + mapMarkerDetails.height + 2);
+  const halfWidth = graphicWidth / 2;
+  const halfHeight = graphicHeight / 2;
+  const imageScale = Math.max(graphicWidth, graphicHeight) / maxDimension;
+  const midPoint = 0;
+  const pathLength = 2 * Math.PI * circleRadius * .9;
+  const markerX = - mapMarkerDetails.width / 2;
 
-const maxNodeWidth = Math.max(...Object.values(mapNodeTypes).map(({width}) => width));
-const maxNodeHeight = Math.max(...Object.values(mapNodeTypes).map(({height}) => height));
-const maxDimension = Math.max(maxNodeWidth, maxNodeHeight);
-const circleRatio = .9;
-const circleRadius = maxDimension * circleRatio;
-const circleStrokeWidth = 2 / 7 * circleRadius;
-const mapNodeGraphicSize = Math.max(2 * circleRadius + circleStrokeWidth, circleRadius + circleStrokeWidth + ( maxNodeHeight / 2 ) + mapMarkerDetails.height + 2);
-const midPoint = mapNodeGraphicSize / 2;
-const pathLength = 2 * Math.PI * circleRadius * .9;
-const imageScale = mapNodeGraphicSize / maxDimension;
-const MapNodeGraphic = ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
-  const config = useContext(Configuration);
-  const details = mapNodeTypes[nodeType];
+  return ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
+    const config = useContext(Configuration);
+    const details = mapNodeTypes[nodeType];
 
-  let path;
-  if (isEmpty) {
-    if (isDisplayed) {
-      path = 'unknown' + '_' + nodeType; 
+    let path;
+    if (isEmpty) {
+      if (isDisplayed) {
+        path = 'unknown' + '_' + nodeType; 
+      } else {
+        nodeType = 'unknown';
+        path = nodeType;
+      }
     } else {
-      nodeType = 'unknown';
       path = nodeType;
     }
-  } else {
-    path = nodeType;
-  }
 
-  const nodeX = (mapNodeGraphicSize - details.width) / 2;
-  const nodeY = (mapNodeGraphicSize - details.height) / 2;
+    const nodeX = - details.width / 2;
+    const nodeY = - details.height / 2;
 
-  const markerX = (mapNodeGraphicSize - mapMarkerDetails.width) / 2;
-  const markerY = nodeY - details.height - 2;
-  
+    const markerY = - ((details.height / 2) + mapMarkerDetails.height + 2);
+    
+    const style = {
+      '--image-scale': `${imageScale}`,
+    };
 
-  const offsetX = midPoint - (details.width / 2);
-  const offsetY = midPoint - (details.height / 2);
-
-  const style = {
-    '--image-scale': `${imageScale}`,
-    '--circle-stroke-width': `${circleStrokeWidth}px`,
+    return (
+      <svg className="map-node-graphic" viewBox={`-${halfWidth} ${-halfWidth} ${graphicWidth} ${graphicHeight}`} style={style}>
+        { isDisplayed && <circle cx={midPoint} cy={midPoint} r={circleRadius} strokeWidth={circleStrokeWidth} strokeDasharray={pathLength + 'px'} />}
+        <image href={resolveSpireImage(`ui/map_nodes/map_${path}`)} x={nodeX} y={nodeY} width={details.width} height={details.height} />
+        { hasFocus && <image href={resolveSpireImage(`ui/map/map_marker_${config.character}`)} x={markerX} y={markerY} {...mapMarkerDetails} /> }
+      </svg>
+    );
   };
-
-  return (
-    <svg className="map-node-graphic" viewBox={`0 0 ${mapNodeGraphicSize} ${mapNodeGraphicSize}`} style={style}>
-      { isDisplayed && <circle cx={midPoint} cy={midPoint} r={circleRadius} strokeWidth={circleStrokeWidth} strokeDasharray={pathLength + 'px'} />}
-      <image href={resolveSpireImage(`ui/map_nodes/map_${path}`)} x={nodeX} y={nodeY} width={details.width} height={details.height} />
-      { hasFocus && <image href={resolveSpireImage(`ui/map/map_marker_${config.character}`)} x={markerX} y={markerY} {...mapMarkerDetails} /> }
-    </svg>
-  );
-};
+})();
 
 const WmControls = () => {
   const zebar = useContext(Zebar);
