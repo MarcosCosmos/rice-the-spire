@@ -251,7 +251,6 @@ const MapNodeGraphic = (() => {
   const graphicHeight = radiusWithStroke + Math.max(radiusWithStroke, maxNodeHeight / 2 + mapMarkerDetails.height + 2);
   const halfWidth = graphicWidth / 2;
   const halfHeight = graphicHeight / 2;
-  const imageScale = Math.max(graphicWidth, graphicHeight) / maxDimension;
   const midPoint = 0;
   const pathLength = 2 * Math.PI * circleRadius * .9;
   const markerX = - mapMarkerDetails.width / 2;
@@ -285,11 +284,14 @@ const MapNodeGraphic = (() => {
     const markerY = - ((details.height / 2) + mapMarkerDetails.height + 2);
     
     const style = {
-      '--image-scale': `${imageScale}`,
+      '--width-scale': `${graphicWidth/maxDimension}`,
+      '--height-scale': `${graphicHeight/maxDimension}`,
+      '--width-offset': `${radiusWithStroke/maxDimension}`,
+      '--height-offset': `${details.height/maxDimension}`,
     };
 
     return (
-      <svg className="map-node-graphic" viewBox={`-${halfWidth} ${-halfWidth} ${graphicWidth} ${graphicHeight}`} style={style}>
+      <svg className="map-node-graphic" viewBox={`-${halfWidth} -${halfWidth} ${graphicWidth} ${graphicHeight}`} style={style}>
         { isDisplayed && <circle cx={midPoint} cy={midPoint} r={circleRadius} strokeWidth={circleStrokeWidth} strokeDasharray={pathLength + 'px'} />}
         <image href={resolveSpireImage(`ui/map_nodes/map_${path}`)} x={nodeX} y={nodeY} width={details.width} height={details.height} />
         { hasFocus && <image href={resolveSpireImage(`ui/map/map_marker_${config.character}`)} x={markerX} y={markerY} {...mapMarkerDetails} /> }

@@ -220,13 +220,11 @@ body,
     -webkit-text-stroke-color: #2A2521;
 
     .map-node-graphic {
-      --image-size: calc(var(--icon-size) * var(--image-scale));
       position: absolute;
-      --offset: calc((-1 * var(--image-scale) * var(--icon-size) + var(--icon-size)) / 2);
-      left: var(--offset);
-      bottom: var(--offset);
-      width: var(--image-size);
-      height: var(--image-size);
+      left: calc(-1 * var(--width-offset) * var(--icon-size) + (var(--icon-size) / 2));
+      bottom: calc((-1 * (var(--height-scale) - var(--height-offset)) * var(--icon-size)) / 2);
+      width: calc(var(--width-scale) * var(--icon-size));
+      height: calc(var(--height-scale) * var(--icon-size));
 
       circle {
         fill: none;
