@@ -256,10 +256,11 @@ const MapNodeGraphic = ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
 
   let path;
   if (isEmpty) {
-    path = nodeType;
-    nodeType = 'unknown';
     if (isDisplayed) {
-      path = nodeType + '_' + path; 
+      path = 'unknown' + '_' + nodeType; 
+    } else {
+      nodeType = 'unknown';
+      path = nodeType;
     }
   } else {
     path = nodeType;
