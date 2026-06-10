@@ -259,10 +259,17 @@ const MapNodeGraphic = (() => {
   return ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
     const config = useContext(Configuration);
     const details = mapNodeTypes[nodeType];
+    const [isVisited, setVisited] = useState(false);
+    
+    useEffect(() => {
+      if (!isVisited && isDisplayed) {
+        setVisited(true);
+      }
+    }, [isVisited, isDisplayed]);
 
     let path;
     if (isEmpty) {
-      if (isDisplayed) {
+      if (isVisited) {
         path = 'unknown' + '_' + nodeType; 
       } else {
         nodeType = 'unknown';
