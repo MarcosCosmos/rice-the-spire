@@ -207,7 +207,7 @@ body,
   }
 
   .workspaces__content {
-    min-width: 10vw;
+    min-width: 20vw;
     display: flex;
     gap: 2rem;
     justify-content: space-between;
