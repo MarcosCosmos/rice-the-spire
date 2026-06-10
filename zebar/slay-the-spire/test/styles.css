@@ -9,6 +9,7 @@ body {
   font-family: Kreon, Georgia, sans-serif;
   font-size: 12px;
   --icon-size: 2rem;
+  --image-size: var(--icon-size);
 }
 
 html,
@@ -25,11 +26,10 @@ body,
 .app {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr auto 1fr;
   justify-content: space-between;
   background: transparent;
   align-items: stretch;
-  padding-top: 3px;
   padding-left: 3rch;
   padding-right: 3rch;
   height: 100%;
@@ -38,10 +38,12 @@ body,
 
   &:not(.app--no-binding-mode) {
     background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
+
   }
 }
 
 .bar {
+  padding-top: 3px;
   display: flex;
   flex-direction: row;
   align-items: start;
@@ -156,12 +158,11 @@ body,
   align-items: end;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
+  --image-size: var(--icon-size);
 
   .status__image {
-    width: var(--icon-size);
-    height: var(--icon-size);
     position: absolute;
-    top:0;
+    bottom:0;
     left:0;
   }
 
@@ -180,20 +181,105 @@ body,
 
 
 .workspaces {
-  display: flex;
-  gap: 2rem;
-  justify-items: space-around;
-  z-index: 10;
-  .workspace__background {
-    width: var(--icon-size);
-    height: var(--icon-size);
-    position: absolute;
-    --icon-size: 3.5rem;
-    top: -.75em;
-    left: -.75em;
-    z-index: -1;
+  background-size: 100% auto;
+
+  display: grid;
+  grid-template-columns: 7fr 86fr 7fr;
+  background-size: 120%;
+  background-position: top 0px left 40%;
+
+  &::before {
+    content: '';
+  }
+  &::after {
+    content: '';
   }
 
+  &.workspaces--overgrowth {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_overgrowth.webp);
+  }
+  &.workspaces--underdocks {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_underdocks.webp);
+  }
+  &.workspaces--hive {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_hive.webp);
+  }
+  &.workspaces--glory {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_glory.webp);
+  }
+
+  .workspaces__content {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .workspace {
+    --base-node-height-limit: 90px;
+    --node-scale: calc(var(--icon-size) / var(--base-node-height-limit));
+    --node-size: calc(var(--node-scale) * max(var(--base-node-width), var(--base-node-height)));
+
+    --actual-node-width: round(nearest, calc(var(--node-scale) * var(--base-node-width)), 1px);
+    --actual-node-height: round(nearest, calc(var(--node-scale) * var(--base-node-height)), 1px);
+
+    color: #BAA193;
+    -webkit-text-stroke-color: #2A2521;
+    
+    /* here we want the size of the actual image to be dynamic but the element geometry to remain tied to the base size! */
+    
+    &, & .status {
+      --image-size: var(--node-size);
+    }
+
+    &.workspace--monster {
+      --base-node-width: 66px;
+      --base-node-height: 68px;
+    }
+
+    &.workspace--elite {
+      --base-node-width: 89px;
+      --base-node-height: 70px;
+    }
+    
+    &.workspace--shop {
+      --base-node-width: 69px;
+      --base-node-height: 72px;
+    }
+
+    &.workspace--chest {
+      --base-node-width: 84px;
+      --base-node-height: 59px;
+    }
+    
+    &.workspace--rest {
+      --base-node-width: 61px;
+      --base-node-height: 90px;
+    }
+    
+    &.workspace--unknown, &.workspace--empty:not(.workspace--displayed) {
+      /* 
+        note: here empty usually corresponds to the neutral unknown icon unless the workspace is focused,
+        but we include the unknown class for completeness
+      */
+      --base-node-width: 73px;
+      --base-node-height: 72px;
+    }
+    
+    .workspace__marker {
+      --base-marker-height: 64px;
+      --base-marker-width: 49px;
+      --marker-size: calc(var(--node-scale) * max(var(--base-marker-width), var(--base-marker-height)));  
+      --actual-marker-width: round(nearest, calc(var(--node-scale) * var(--base-marker-width)), 1px);
+      --actual-marker-height: round(nearest, calc(var(--node-scale) * var(--base-marker-height)), 1px);
+
+      --image-size: var(--marker-size);
+      position: absolute;
+      bottom: calc(var(--actual-node-height) + 2px);
+      left: calc((var(--actual-node-width) / 2) - (var(--actual-marker-width) / 2));
+      z-index: 100;
+    }
+  }
 }
 
 .battery--charging {
@@ -215,10 +301,14 @@ body,
 }
 
 .audio__muted-mark {
-  width: var(--icon-size);
-  height: var(--icon-size);
   position: absolute;
   top: 0;
   left: 0;
   z-index: 100;
+}
+
+.spire-codex-image {
+  width: var(--image-size);
+  height: var(--image-size);
+  object-fit: contain;
 }

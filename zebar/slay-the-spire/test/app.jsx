@@ -16,8 +16,14 @@ const dummyZebar = {
 
 const useDummy = false;
 
+const acts = ['overgrowth', 'underdocks', 'hive', 'glory'];
+const characters = ['ironclad', 'silent', 'defect', 'regent', 'necrobinder'];
+
 const Zebar = createContext(null);
-const Spireology = createContext(null);
+const Configuration = createContext({
+  act: acts[0],
+  character: characters[0],
+});
 
 const providers = zebar.createProviderGroup({
   glazewm: { type: 'glazewm' },
@@ -34,14 +40,21 @@ const providers = zebar.createProviderGroup({
 
 const App = () => {
   const [output, setOutput] = useState(null);
-  const [spireology, setSpireology] = useState(null);
+  const [config, setConfig] = useState(null);
 
   useEffect(() => {    
     providers.onOutput(() => {
       const result = useDummy ? {...providers.outputMap, ...dummyZebar} : providers.outputMap;
       setOutput(result);
     });
+    const randomConfig = {
+      act: acts[Math.floor(Math.random() * acts.length)],
+      character: characters[Math.floor(Math.random() * characters.length)],
+    }
+    setConfig(randomConfig);
   }, []);
+
+
   const hasMode = output?.glazewm?.bindingModes.length > 0;
   const bindingModeClasses = hasMode
     ? output?.glazewm.bindingModes.map(mode => 'app--binding-mode-' + mode).join('')
@@ -49,7 +62,7 @@ const App = () => {
   return (
     <div className={`app ${bindingModeClasses}`} role="menubar">
       <Zebar value={output}>
-          <Spireology value={spireology}>
+          <Configuration value={config}>
             <div className="section">
               <GlazeWorkspaces />
             </div>
@@ -70,7 +83,7 @@ const App = () => {
                 <Weather />
               </Bar>    
             </div>
-          </Spireology>
+          </Configuration>
       </Zebar>
     </div>
   );
@@ -126,35 +139,52 @@ const GlazeWorkspaces = () => {
   const zebar = useContext(Zebar);
   return zebar?.glazewm && (
     <Workspaces>
-      { zebar?.glazewm?.currentWorkspaces?.map(data => <GlazeWorkspace data={data} />) }
+      { zebar?.glazewm?.currentWorkspaces?.map(data => <GlazeWorkspace key={data.name} data={data} />) }
     </Workspaces>
   );
 }
 
 const Workspaces = ({className, children, ...attrs}) => {
   className ||= '';
+  const config = useContext(Configuration);
   return (
-    <div className={`workspaces ${className}`} role="region" aria-label={"Workspaces"} {...attrs}>
-      {children}
+    <div className={`workspaces workspaces--${config.act} ${className}`} role="region" aria-label={"Workspaces"} {...attrs}>
+      <div className="workspaces__content">
+        {children}
+      </div>
     </div>
   );
 }
 
-const workspaceStateMap = {
-  'focused': 'map_elite',
-  'displayed': 'map_unknown_elite',
-  'empty': 'map_unknown',
-  'full': 'map_monster',
-};
 const GlazeWorkspace = ({data, ...attrs}) => {
   const zebar = useContext(Zebar);
-  const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${name}`);
+  const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${data.name}`);
   return <Workspace className="glazewm-workspace" data={data} onClick={onClick} {...attrs } />;
 };
 
+const obviousnessPerNodeType = {
+  monster: false,
+  elite: false,
+  shop: false,
+  chest: false,
+  rest: true,
+  unknown: true,
+};
+
+const randomisableNodes = Object.entries(obviousnessPerNodeType)
+  .filter(([key, obvious]) => !obvious)
+  .map(([key]) => key);
+
 const Workspace = ({ className, data, ...attrs }) => {
-  className ||= '';
+  const config = useContext(Configuration);
+  const [nodeType, setNodeType] = useState('unknown');
   let { name, displayName, hasFocus, isDisplayed, children } = data;
+  useEffect(() => {
+    const result = randomisableNodes[Math.floor(Math.random()*randomisableNodes.length)];
+    setNodeType(result);
+  }, [name]);
+
+  className ||= '';
   displayName ||= name;
   let style;
   const isEmpty = !children || children.length === 0;
@@ -167,17 +197,33 @@ const Workspace = ({ className, data, ...attrs }) => {
   } else {
     style = 'full';
   }
-  const path = workspaceStateMap[style];
+  let displayType;
+  if (isEmpty) {
+      displayType = 'unknown';
+    if (isDisplayed) {
+      displayType += '_' + nodeType; 
+    }
+  } else {
+    displayType = nodeType;
+  }
   const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
+
+  const filteredClasses = useClassFilter({
+    'workspace--focused': hasFocus,
+    'workspace--displayed': isDisplayed,
+    'workspace--empty': isEmpty,
+  });
+  
+  // todo: the marker positioning doesn't scale well in css due to pixel rounding issues so we'll need to do the whole thing in one svg and then scale that down.
+
   return (
     <MenuItem
-      key={name}
-      className={`workspace workspace--${style} ${hasFocus && 'workspace--focused'} ${isDisplayed && 'workspace--displayed'} ${isEmpty && 'workspace--empty'} ${className}`}
+      className={`workspace workspace--${nodeType} ${filteredClasses} ${className}`}
       tooltip={workspaceDesc}
       {...attrs}
     >
-      <SpireImage className="workspace__background" path="ui/map_nodes/map_node_background"/>
-      <Status className="workspace__status" path={`ui/map_nodes/${path}`}>{displayName || name}</Status>
+      <Status className="workspace__status" path={`ui/map_nodes/map_${displayType}`}>{displayName || name}</Status>
+      {hasFocus && <SpireImage className="workspace__marker" path={`ui/map/map_marker_${config.character}`} /> }
     </MenuItem>
   );
 }
@@ -485,7 +531,7 @@ const Status = ({ className, path, children, ...attrs }) => {
   className ||= '';
   return (
       <div className={`status ${className}`} {...attrs}>
-        <SpireImage className="status__image" path={path} />
+        { path && <SpireImage className="status__image" path={path} /> }
         { children &&
           <div className="status__suffix">
             <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
@@ -516,3 +562,7 @@ const MenuItem = ({children, tooltip, ...attrs}) => {
 }
 
 createRoot(document.getElementById('root')).render(<App />);
+
+const useClassFilter = (classes) => Object.entries(classes)
+  .filter(([key, active]) => active)
+  .map(([key]) => key);
