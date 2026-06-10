@@ -162,21 +162,49 @@ const GlazeWorkspace = ({data, ...attrs}) => {
   return <Workspace className="glazewm-workspace" data={data} onClick={onClick} {...attrs } />;
 };
 
-const obviousnessPerNodeType = {
-  monster: false,
-  elite: false,
-  shop: false,
-  chest: false,
-  rest: true,
-  unknown: true,
+const mapNodeTypes = {
+  monster: {
+    width: 66,
+    height: 68,
+    obvious: false,
+  },
+  elite: {
+    width: 89,
+    height: 70,
+    obvious: false,
+  },
+  shop: {
+    width: 69,
+    height: 72,
+    obvious: false,
+  },
+  chest: {
+    width: 84,
+    height: 59,
+    obvious: false,
+  },
+  rest: {
+    width: 61,
+    height: 90,
+    obvious: true,
+  },
+  unknown: {
+    width: 73,
+    height: 72,
+    obvious: true,
+  },
 };
 
-const randomisableNodes = Object.entries(obviousnessPerNodeType)
-  .filter(([key, obvious]) => !obvious)
+const mapMarkerDetails = {
+  width: 49,
+  height: 64
+};
+
+const randomisableNodes = Object.entries(mapNodeTypes)
+  .filter(([key, { obvious }]) => !obvious)
   .map(([key]) => key);
 
 const Workspace = ({ className, data, ...attrs }) => {
-  const config = useContext(Configuration);
   const [nodeType, setNodeType] = useState('unknown');
   let { name, displayName, hasFocus, isDisplayed, children } = data;
   useEffect(() => {
@@ -186,26 +214,8 @@ const Workspace = ({ className, data, ...attrs }) => {
 
   className ||= '';
   displayName ||= name;
-  let style;
   const isEmpty = !children || children.length === 0;
-  if (hasFocus) {
-    style = 'focused';
-  } else if (isDisplayed) {
-    style = 'displayed';
-  } else if (isEmpty) {
-    style = 'empty';
-  } else {
-    style = 'full';
-  }
-  let displayType;
-  if (isEmpty) {
-      displayType = 'unknown';
-    if (isDisplayed) {
-      displayType += '_' + nodeType; 
-    }
-  } else {
-    displayType = nodeType;
-  }
+  
   const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
 
   const filteredClasses = useClassFilter({
@@ -222,11 +232,62 @@ const Workspace = ({ className, data, ...attrs }) => {
       tooltip={workspaceDesc}
       {...attrs}
     >
-      <Status className="workspace__status" path={`ui/map_nodes/map_${displayType}`}>{displayName || name}</Status>
-      {hasFocus && <SpireImage className="workspace__marker" path={`ui/map/map_marker_${config.character}`} /> }
+
+      <MapNodeGraphic nodeType={nodeType} isEmpty={isEmpty} isDisplayed={isDisplayed} hasFocus={hasFocus} />
+      <OutlinedText className="item-label">{displayName || name}</OutlinedText>
     </MenuItem>
   );
 }
+
+
+const maxNodeWidth = Math.max(...Object.values(mapNodeTypes).map(({width}) => width));
+const maxNodeHeight = Math.max(...Object.values(mapNodeTypes).map(({height}) => height));
+const maxDimension = Math.max(maxNodeWidth, maxNodeHeight);
+const circleRatio = .9;
+const circleRadius = maxDimension * circleRatio;
+const circleStrokeWidth = 2 / 7 * circleRadius;
+const mapNodeGraphicSize = Math.max(2 * circleRadius + circleStrokeWidth, circleRadius + circleStrokeWidth + ( maxNodeHeight / 2 ) + mapMarkerDetails.height + 2);
+const midPoint = mapNodeGraphicSize / 2;
+const pathLength = 2 * Math.PI * circleRadius * .9;
+const imageScale = mapNodeGraphicSize / maxDimension;
+const MapNodeGraphic = ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
+  const config = useContext(Configuration);
+  const details = mapNodeTypes[nodeType];
+
+  let path;
+  if (isEmpty) {
+    path = nodeType;
+    nodeType = 'unknown';
+    if (isDisplayed) {
+      path = nodeType + '_' + path; 
+    }
+  } else {
+    path = nodeType;
+  }
+
+  const nodeX = (mapNodeGraphicSize - details.width) / 2;
+  const nodeY = (mapNodeGraphicSize - details.height) / 2;
+
+  const markerX = (mapNodeGraphicSize - mapMarkerDetails.width) / 2;
+  const markerY = nodeY - details.height - 2;
+  
+
+  const offsetX = midPoint - (details.width / 2);
+  const offsetY = midPoint - (details.height / 2);
+
+  const style = {
+    '--image-scale': `${imageScale}`,
+    '--circle-stroke-width': `${circleStrokeWidth}px`,
+  };
+
+  return (
+    <svg className="map-node-graphic" viewBox={`0 0 ${mapNodeGraphicSize} ${mapNodeGraphicSize}`} style={style}>
+      { isDisplayed && <circle cx={midPoint} cy={midPoint} r={circleRadius} strokeWidth={circleStrokeWidth} strokeDasharray={pathLength + 'px'} />}
+      <image href={resolveSpireImage(`ui/map_nodes/map_${path}`)} x={nodeX} y={nodeY} width={details.width} height={details.height} />
+      { hasFocus && <image href={resolveSpireImage(`ui/map/map_marker_${config.character}`)} x={markerX} y={markerY} {...mapMarkerDetails} /> }
+    </svg>
+  );
+};
 
 const WmControls = () => {
   const zebar = useContext(Zebar);
@@ -420,9 +481,9 @@ const weatherMap = {
   clear_night: 'black_hole',
   cloudy: 'blur',
   light_rain: 'friendship',
-  heavy_rain: 'storm',
+  heavy_rain: 'slippery',
   snow: 'hailstorm',
-  thunder: 'thunder',
+  thunder: 'storm',
 }
 const Weather = ({ ...attrs }) => {
   const zebar = useContext(Zebar);
@@ -532,14 +593,16 @@ const Status = ({ className, path, children, ...attrs }) => {
   return (
       <div className={`status ${className}`} {...attrs}>
         { path && <SpireImage className="status__image" path={path} /> }
-        { children &&
-          <div className="status__suffix">
-            <OutlinedText className="status__suffix-inner">{children}</OutlinedText>
-          </div>
-        }
+        { children && <ItemLabel>{children}</ItemLabel>}
       </div>
   );
 }
+
+const ItemLabel = ({ className, children }) => (
+  <div className="item-label">
+    <OutlinedText>{children}</OutlinedText>
+  </div>
+);
 
 const MenuButton = ({className, children, disabled, ...attrs}) => {
   className ||= '';

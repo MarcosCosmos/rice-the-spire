@@ -151,6 +151,14 @@ body,
 }
 
 .status {
+  .status__image {
+    position: absolute;
+    bottom:0;
+    left:0;
+  }
+}
+
+.status, .workspace {
   position: relative;
   display: inline-flex;
   flex-direction: row;
@@ -159,24 +167,14 @@ body,
   min-width: var(--icon-size);
   min-height: var(--icon-size);
   --image-size: var(--icon-size);
+}
 
-  .status__image {
-    position: absolute;
-    bottom:0;
-    left:0;
-  }
-
-  .status__suffix {
-    line-height: 1em;
-    margin-left: calc(var(--icon-size) / 2);
-    z-index: 10;
-    display: block;
-    text-align: end;
-  }
-
-  .status__suffix-inner {
-    display: block;
-  }
+.item-label {
+  line-height: 1em;
+  margin-left: calc(var(--icon-size) / 2);
+  z-index: 10;
+  display: block;
+  text-align: end;
 }
 
 
@@ -217,68 +215,26 @@ body,
   }
 
   .workspace {
-    --base-node-height-limit: 90px;
-    --node-scale: calc(var(--icon-size) / var(--base-node-height-limit));
-    --node-size: calc(var(--node-scale) * max(var(--base-node-width), var(--base-node-height)));
-
-    --actual-node-width: round(nearest, calc(var(--node-scale) * var(--base-node-width)), 1px);
-    --actual-node-height: round(nearest, calc(var(--node-scale) * var(--base-node-height)), 1px);
-
+    --icon-size: 2rem;
     color: #BAA193;
     -webkit-text-stroke-color: #2A2521;
-    
-    /* here we want the size of the actual image to be dynamic but the element geometry to remain tied to the base size! */
-    
-    &, & .status {
-      --image-size: var(--node-size);
-    }
 
-    &.workspace--monster {
-      --base-node-width: 66px;
-      --base-node-height: 68px;
-    }
-
-    &.workspace--elite {
-      --base-node-width: 89px;
-      --base-node-height: 70px;
-    }
-    
-    &.workspace--shop {
-      --base-node-width: 69px;
-      --base-node-height: 72px;
-    }
-
-    &.workspace--chest {
-      --base-node-width: 84px;
-      --base-node-height: 59px;
-    }
-    
-    &.workspace--rest {
-      --base-node-width: 61px;
-      --base-node-height: 90px;
-    }
-    
-    &.workspace--unknown, &.workspace--empty:not(.workspace--displayed) {
-      /* 
-        note: here empty usually corresponds to the neutral unknown icon unless the workspace is focused,
-        but we include the unknown class for completeness
-      */
-      --base-node-width: 73px;
-      --base-node-height: 72px;
-    }
-    
-    .workspace__marker {
-      --base-marker-height: 64px;
-      --base-marker-width: 49px;
-      --marker-size: calc(var(--node-scale) * max(var(--base-marker-width), var(--base-marker-height)));  
-      --actual-marker-width: round(nearest, calc(var(--node-scale) * var(--base-marker-width)), 1px);
-      --actual-marker-height: round(nearest, calc(var(--node-scale) * var(--base-marker-height)), 1px);
-
-      --image-size: var(--marker-size);
+    .map-node-graphic {
+      --image-size: calc(var(--icon-size) * var(--image-scale));
       position: absolute;
-      bottom: calc(var(--actual-node-height) + 2px);
-      left: calc((var(--actual-node-width) / 2) - (var(--actual-marker-width) / 2));
-      z-index: 100;
+      --offset: calc((-1 * var(--image-scale) * var(--icon-size) + var(--icon-size)) / 2);
+      left: var(--offset);
+      bottom: var(--offset);
+      width: var(--image-size);
+      height: var(--image-size);
+
+      circle {
+        fill: none;
+        stroke-linecap: round;
+        stroke: #2A2521;
+        z-index: -1;
+        stroke-linejoin: miter;
+      }
     }
   }
 }
