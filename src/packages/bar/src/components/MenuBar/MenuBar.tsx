@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-
+import './MenuBar.css';
 export default ({className, children, ...attrs}: {className?: string, children: ReactNode } & Record<string, any>) => {
     className ||= '';
     return (

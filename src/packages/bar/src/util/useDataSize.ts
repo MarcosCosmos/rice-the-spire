@@ -1,0 +1,14 @@
+export interface DataSizeMeasure {
+  bytes: number;
+  siValue: number;
+  siUnit: string;
+  iecValue: number;
+  iecUnit: string;
+}
+
+const useDataSize = (size: DataSizeMeasure, places?: number) => {
+  places ||= 2;
+  let result = size.siValue.toFixed(places).replace(/\.0+$/, "");
+  return `${result}${size.siUnit}`;
+};
+export default useDataSize;

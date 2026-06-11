@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { createProviderGroup, type ProviderConfigMap, type ProviderGroup, type ProviderGroupConfig, type ProviderMap } from 'zebar';
 import ZebarContext from "../../data/ZebarContext";
-import '../old.css';
+import './App.css';
+import './old.css';
 
 export interface AppProps extends Record<string, any> {
     zebar: Partial<ProviderConfigMap>,

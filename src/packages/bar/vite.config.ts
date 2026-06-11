@@ -6,5 +6,13 @@ export default defineConfig({
   plugins: [react({})],
    base: './', 
    server: {
-  },
+
+   },
+   build: {
+    minify: false,
+    terserOptions: {
+      // @ts-ignore
+      mangle: false,
+    },
+   }
 })

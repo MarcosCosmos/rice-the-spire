@@ -1,0 +1,23 @@
+.menubar {
+  text-align: center;
+  display: block;
+}
+
+.menubar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  justify-content: space-between;
+  background: transparent;
+  align-items: stretch;
+  padding-left: 3rch;
+  padding-right: 3rch;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  background-size: contain;
+
+  &:not(.menubar--no-binding-mode) {
+    background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
+
+  }
+}

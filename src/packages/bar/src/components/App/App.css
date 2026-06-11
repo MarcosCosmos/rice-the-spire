@@ -1,0 +1,19 @@
+body {
+  overflow: hidden;
+}
+
+:root {
+  color: #FFF6E2;
+  text-shadow: #000000b8 2px 1px 0px;
+  -webkit-text-stroke-color: #373737;
+  font-family: Kreon, Georgia, sans-serif;
+  font-size: 12px;
+  --icon-size: 2rem;
+  --image-size: var(--icon-size);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}

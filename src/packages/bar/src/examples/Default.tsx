@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import App from "../components/App/App";
-// @ts-ignore
-import { GlazeWorkspaces, DateTime, WmControls, Bar, Battery, Processor, Memory, Weather, Network, FullestDisk, Audio } from "../components/old.jsx";
+import { App, GlazeWorkspaces, DateTime, WmControls, Bar, Battery, Processor, Memory, Weather, Network, FullestDisk, Audio } from "../components";
 import SpireContext, { acts, characters, type SpireConfig, defaultConfig as defaultSpireConfig } from "../data/SpireContext";
 import MenuBar from "../components/MenuBar/MenuBar";
 import ZebarContext from "../data/ZebarContext";
