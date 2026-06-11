@@ -1,93 +1,13 @@
-import React, {
+import {
   useState,
   useEffect,
   useId,
   createContext,
   useContext,
-} from 'https://esm.sh/react@19.2?dev';
-import { createRoot } from 'https://esm.sh/react-dom@19.2/client?dev';
-import * as zebar from 'https://esm.sh/zebar@3.0';
-const dummyZebar = {
-  battery: {
-    state: 'charging',
-    chargePercent: 70,
-  },
-};
+} from 'react';
+import ZebarContext from '../data/ZebarContext';
+import SpireContext from '../data/SpireContext';
 
-const useDummy = false;
-
-const acts = ['overgrowth', 'underdocks', 'hive', 'glory'];
-const characters = ['ironclad', 'silent', 'defect', 'regent', 'necrobinder'];
-
-const Zebar = createContext(null);
-const Configuration = createContext({
-  act: acts[0],
-  character: characters[0],
-});
-
-const providers = zebar.createProviderGroup({
-  glazewm: { type: 'glazewm' },
-  date: { type: 'date' },
-  cpu: { type: 'cpu' },
-  battery: { type: 'battery' },
-  memory: { type: 'memory' },
-  weather: { type: 'weather' },
-  media: { type: 'media' },
-  audio: { type: 'audio' },
-  disk: { type: "disk" },
-  network: { type: "network" },
-});
-
-const App = () => {
-  const [output, setOutput] = useState(null);
-  const [config, setConfig] = useState(null);
-
-  useEffect(() => {    
-    providers.onOutput(() => {
-      const result = useDummy ? {...providers.outputMap, ...dummyZebar} : providers.outputMap;
-      setOutput(result);
-    });
-    const randomConfig = {
-      act: acts[Math.floor(Math.random() * acts.length)],
-      character: characters[Math.floor(Math.random() * characters.length)],
-    }
-    setConfig(randomConfig);
-  }, []);
-
-
-  const hasMode = output?.glazewm?.bindingModes.length > 0;
-  const bindingModeClasses = hasMode
-    ? output?.glazewm.bindingModes.map(mode => 'app--binding-mode-' + mode).join('')
-    : 'app--no-binding-mode';
-  return (
-    <div className={`app ${bindingModeClasses}`} role="menubar">
-      <Zebar value={output}>
-          <Configuration value={config}>
-            <div className="section">
-              <GlazeWorkspaces />
-            </div>
-            <div className="section">
-              <DateTime />
-            </div>
-            <div className="section">
-              <WmControls />
-              <Bar className="resources" aria-label="Resources">
-                <Battery />
-                <Network />  
-                <Processor />
-                <Memory />
-                <FullestDisk />
-              </Bar>    
-              <Bar className="statuses" aria-label="Statuses">
-                <Audio />
-                <Weather />
-              </Bar>    
-            </div>
-          </Configuration>
-      </Zebar>
-    </div>
-  );
-}
 
 const Bar = ({className, ariaLabel, children, ...attrs}) => {
   className ||= '';
@@ -115,7 +35,7 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "long",
 });
 const DateTime = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const date = zebar?.date || {
     now: Date.now()
   };
@@ -136,7 +56,7 @@ const DateTime = () => {
 };
 
 const GlazeWorkspaces = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   return zebar?.glazewm && (
     <Workspaces>
       { zebar?.glazewm?.currentWorkspaces?.map(data => <GlazeWorkspace key={data.name} data={data} />) }
@@ -146,7 +66,7 @@ const GlazeWorkspaces = () => {
 
 const Workspaces = ({className, children, ...attrs}) => {
   className ||= '';
-  const config = useContext(Configuration);
+  const config = useContext(SpireContext);
   return (
     <div className={`workspaces workspaces--${config.act} ${className}`} role="region" aria-label={"Workspaces"} {...attrs}>
       <div className="workspaces__content">
@@ -157,7 +77,7 @@ const Workspaces = ({className, children, ...attrs}) => {
 }
 
 const GlazeWorkspace = ({data, ...attrs}) => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const onClick = () => zebar.glazewm.runCommand(`focus --workspace ${data.name}`);
   return <Workspace className="glazewm-workspace" data={data} onClick={onClick} {...attrs } />;
 };
@@ -256,7 +176,7 @@ const MapNodeGraphic = (() => {
   const markerX = - mapMarkerDetails.width / 2;
 
   return ({ nodeType, isEmpty, isDisplayed, hasFocus }) => {
-    const config = useContext(Configuration);
+    const config = useContext(SpireContext);
     const details = mapNodeTypes[nodeType];
     const [isVisited, setVisited] = useState(false);
     
@@ -301,7 +221,7 @@ const MapNodeGraphic = (() => {
 })();
 
 const WmControls = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   return zebar?.glazewm && (
     <Bar className="wm-controls" aria-label="Window Manager controls">
       <WmPause />
@@ -312,7 +232,7 @@ const WmControls = () => {
 }
 
 const WmPause = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const onClick = () => zebar.glazewm.runCommand('wm-toggle-pause');
   zebar?.glazewm?.isPaused && (
     <MenuItem className="paused" aria-label="paused" desc="Unpause" onClick={onClick}>
@@ -322,7 +242,7 @@ const WmPause = () => {
 };
 
 const WmDirection = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const direction = zebar?.glazewm?.tilingDirection;
   const path = {
     'horizontal': 'intents/escape',
@@ -342,7 +262,7 @@ const modeMap = {
   'focus': 'intents/status',
 }
 const WmModes = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
     displayName ||= name;
     const onClick = () => zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
@@ -361,7 +281,7 @@ const Media = () => {
 };
 
 const Battery = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const data = zebar?.battery || {
     state: 'unknown',
     chargePercent: 0,
@@ -382,7 +302,7 @@ const Battery = () => {
 };
 
 const Network = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const currentInterface = zebar?.network?.defaultInterface;
   const traffic = zebar?.network?.traffic;
   return (
@@ -404,7 +324,7 @@ const Network = () => {
 
 // todo: other resources and tooltip details for resources
 const Processor = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const cpu = zebar?.cpu;
   const usage = Math.round(cpu?.usage || 0);
   const tooltip = cpu && `CPU Usage: ${usage}%`;
@@ -416,7 +336,7 @@ const Processor = () => {
 };
 
 const Memory = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const memory = zebar?.memory;
   const usage = Math.round(memory?.usage || 0);
   const tooltip = memory && `Memory usage: ${(memory.usedMemory*1e-9).toFixed(2)}GB/${(memory.totalMemory*1e-9).toFixed(2)}GB (${(memory.freeMemory*1e-9).toFixed(2)}GB free)`;
@@ -434,7 +354,7 @@ const useDataSize = (size, places) => {
 };
 
 const FullestDisk = () => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   if (zebar?.disk?.disks.length > 0) {
     const fullest = zebar?.disk?.disks
       .map(disk => ({
@@ -465,7 +385,7 @@ const Disk = ({data, label, ...attrs}) => {
 }
 
 const Audio = ({...attrs}) => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const device = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
     isMuted: true,
@@ -497,7 +417,7 @@ const weatherMap = {
   thunder: 'storm',
 }
 const Weather = ({ ...attrs }) => {
-  const zebar = useContext(Zebar);
+  const zebar = useContext(ZebarContext);
   const data = zebar?.weather ?? {
     status: 'clear_day',
     celsiusTemp: '?',
@@ -635,8 +555,8 @@ const MenuItem = ({children, tooltip, ...attrs}) => {
     : button();
 }
 
-createRoot(document.getElementById('root')).render(<App />);
-
 const useClassFilter = (classes) => Object.entries(classes)
   .filter(([key, active]) => active)
   .map(([key]) => key);
+
+export { Bar, GlazeWorkspaces, WmControls, Audio, Weather, Battery, Memory, Processor, FullestDisk, DateTime, Network }

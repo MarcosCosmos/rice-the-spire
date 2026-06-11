@@ -18,12 +18,12 @@ body,
   height: 100%;
 }
 
-.app {
+.menubar {
   text-align: center;
   display: block;
 }
 
-.app {
+.menubar {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -36,7 +36,7 @@ body,
   background-color: rgba(0, 0, 0, 0.75);
   background-size: contain;
 
-  &:not(.app--no-binding-mode) {
+  &:not(.menubar--no-binding-mode) {
     background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
 
   }

@@ -1,0 +1,8 @@
+{
+  "name": "rice-the-spire",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "src/packages/bar"
+  ]
+}

@@ -2,24 +2,22 @@
   "$schema": "https://github.com/glzr-io/zebar/raw/v3.3.1/resources/zpack-schema.json",
   "name": "slay-the-spire",
   "version": "0.0.0",
-  "description": "WIP game themed pack",
+  "description": "A Zebar bar themed around Slay the Spire 2 using assets provided via Spire Codex",
   "tags": [],
   "previewImages": [
-    "./resources/preview-image-1.png"
   ],
   "repositoryUrl": "",
   "widgets": [
     {
-      "name": "test",
-      "htmlPath": "test/index.html",
+      "name": "dev",
+      "htmlPath": "dev/index.html",
       "zOrder": "top_most",
       "shownInTaskbar": false,
       "focused": false,
       "resizable": false,
       "transparent": true,
       "includeFiles": [
-        "test/**",
-        "resources/**"
+        "dev/**"
       ],
       "caching": {
         "defaultDuration": 604800,
