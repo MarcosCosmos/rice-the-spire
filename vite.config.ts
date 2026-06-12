@@ -7,6 +7,14 @@ export default defineConfig({
   base: "./",
   server: {},
   build: {
-    rolldownOptions: { input: { main: "index.html", dev: "dev.html" } },
-  },
+    lib: {
+      formats: ['es'],
+      entry: 'src/index.ts',
+      name: 'rice-the-spire-core',
+      fileName: 'index',
+    },
+    rolldownOptions: {
+      input: { main: "index.html" }
+    }
+  }
 });
