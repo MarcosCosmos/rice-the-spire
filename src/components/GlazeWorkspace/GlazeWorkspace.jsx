@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { Workspace } from "../";
+import Workspace from "../Workspace";
 
 const GlazeWorkspace = ({ data, ...attrs }) => {
   const zebar = useContext(ZebarContext);

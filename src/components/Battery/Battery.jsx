@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { MenuItem } from "../";
-import { Status } from "../";
+import MenuItem from "../MenuItem";
+import Status from "../Status";
 
 const Battery = () => {
   const zebar = useContext(ZebarContext);

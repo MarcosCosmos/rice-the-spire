@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpireContext from "../../data/SpireContext";
-import { MenuItem, OutlinedText } from "../";
 import useClassFilter from "../../util/useClassFilter";
+import MenuItem from "../MenuItem";
+import OutlinedText from "../OutlinedText";
 import { resolveSpireImage } from "../SpireImage/SpireImage";
 
 const mapNodeTypes = {

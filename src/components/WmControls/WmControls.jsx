@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { Bar } from "../";
-import { MenuItem } from "../";
-import { Status } from "../";
+import Bar from "../Bar";
+import MenuItem from "../MenuItem";
+import Status from "../Status";
 
 const WmControls = () => {
   const zebar = useContext(ZebarContext);

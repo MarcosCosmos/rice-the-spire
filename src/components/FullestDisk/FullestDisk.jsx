@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { Disk } from "../";
+import Disk from "../Disk";
 
 const FullestDisk = () => {
   const zebar = useContext(ZebarContext);

@@ -1,5 +1,5 @@
-import { SpireImage } from "../";
-import { ItemLabel } from "../";
+import SpireImage from "../SpireImage";
+import ItemLabel from "../ItemLabel";
 
 const Status = ({ className, path, children, ...attrs }) => {
   className ||= "";

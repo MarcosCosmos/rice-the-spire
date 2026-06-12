@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { MenuItem } from "../";
-import { Status } from "../";
-import { SpireImage } from "../";
+import MenuItem from "../MenuItem";
+import Status from "../Status";
+import SpireImage from "../SpireImage";
 
 const Audio = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);

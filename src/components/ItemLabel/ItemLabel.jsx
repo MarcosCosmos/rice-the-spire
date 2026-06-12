@@ -1,4 +1,4 @@
-import { OutlinedText } from "../";
+import OutlinedText from "../OutlinedText";
 
 const ItemLabel = ({ className, children }) => (
   <div className={`item-label ${className || ""}`}>

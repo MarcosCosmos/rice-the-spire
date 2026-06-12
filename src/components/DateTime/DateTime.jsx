@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import { MenuItem } from "../";
-import { Status } from "../";
-import { OutlinedText } from "../";
-import { Bar } from "../";
+import MenuItem from "../MenuItem";
+import Status from "../Status";
+import OutlinedText from "../OutlinedText";
+import Bar from "../Bar";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "short",

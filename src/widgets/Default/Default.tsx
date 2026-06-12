@@ -1,18 +1,4 @@
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import {
-  App,
-  GlazeWorkspaces,
-  DateTime,
-  WmControls,
-  Bar,
-  Battery,
-  Processor,
-  Memory,
-  Weather,
-  Network,
-  FullestDisk,
-  Audio,
-} from "../../components";
 import SpireContext, {
   acts,
   characters,
@@ -21,6 +7,18 @@ import SpireContext, {
 } from "../../data/SpireContext";
 import MenuBar from "../../components/MenuBar/MenuBar";
 import ZebarContext from "../../data/ZebarContext";
+import App from "../../components/App";
+import Bar from "../../components/Bar";
+import Battery from "../../components/Battery";
+import DateTime from "../../components/DateTime";
+import FullestDisk from "../../components/FullestDisk";
+import GlazeWorkspaces from "../../components/GlazeWorkspaces";
+import Memory from "../../components/Memory";
+import Network from "../../components/Network";
+import Processor from "../../components/Processor";
+import Weather from "../../components/Weather";
+import WmControls from "../../components/WmControls";
+import SpAudio from "../../components/SpAudio";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -76,7 +74,7 @@ const Default = () => {
               <FullestDisk />
             </Bar>
             <Bar className="statuses" aria-label="Statuses">
-              <Audio />
+              <SpAudio />
               <Weather />
             </Bar>
           </div>

@@ -1,5 +1,5 @@
-import { MenuItem } from "../";
-import { Status } from "../";
+import MenuItem from "../MenuItem";
+import Status from "../Status";
 import useDataSize from "../../util/useDataSize";
 
 const Disk = ({ data, label, ...attrs }) => {
