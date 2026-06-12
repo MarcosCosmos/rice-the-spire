@@ -5,7 +5,7 @@ const SpSpireImage = ({ className, path, ...attrs }) => {
   return (
     <img
       className={`spire-codex-image ${className}`}
-      src={resolveSpSpireImage(path)}
+      src={resolveSpireImage(path)}
       {...attrs}
     />
   );
