@@ -4,6 +4,7 @@ import SpireContext from "../../data/SpireContext";
 import useClassFilter from "../../util/useClassFilter";
 import SpMenuItem from "../SpMenuItem";
 import SpOutlinedText from "../SpOutlinedText";
+import MapNodeGraphic from "./MapNodeGraphic";
 import resolveSpireImage from "../../util/resolveSpireImage";
 import { mapNodeTypes, randomisableNodes } from "./common";
 
