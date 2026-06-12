@@ -1,3 +1,2 @@
-// @ts-ignore
-import GlazeWorkspace from "./GlazeWorkspace.jsx";
+import GlazeWorkspace from "./GlazeWorkspace.tsx";
 export default GlazeWorkspace;

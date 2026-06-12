@@ -1,8 +1,14 @@
 import MenuItem from "../MenuItem";
 import Status from "../Status";
 import useDataSize from "../../util/useDataSize";
+import type { Disk as ZDisk } from "zebar";
 
-const Disk = ({ data, label, ...attrs }) => {
+export interface DiskProps extends Record<string, any> {
+  data: ZDisk;
+  label?: string;
+}
+
+const Disk = ({ data, label, ...attrs }: DiskProps) => {
   label ||= "Disk";
   const usage = Math.round(
     ((data.totalSpace.bytes - data.availableSpace.bytes) /

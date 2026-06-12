@@ -1,3 +1,2 @@
-// @ts-ignore
-import Bar from "./Bar.jsx";
+import Bar from "./Bar.tsx";
 export default Bar;

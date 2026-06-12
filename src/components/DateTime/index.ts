@@ -1,3 +1,2 @@
-// @ts-ignore
-import DateTime from "./DateTime.jsx";
+import DateTime from "./DateTime.tsx";
 export default DateTime;

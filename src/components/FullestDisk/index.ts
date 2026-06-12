@@ -1,3 +1,2 @@
-// @ts-ignore
-import FullestDisk from "./FullestDisk.jsx";
+import FullestDisk from "./FullestDisk.tsx";
 export default FullestDisk;

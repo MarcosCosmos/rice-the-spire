@@ -1,3 +1,2 @@
-// @ts-ignore
-import Battery from "./Battery.jsx";
+import Battery from "./Battery.tsx";
 export default Battery;

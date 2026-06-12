@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import Disk from "../Disk";
+import SpDisk from "../SpDisk";
 
 const FullestDisk = () => {
   const zebar = useContext(ZebarContext);
 
-  if (zebar?.disk?.disks.length > 0) {
+  if (zebar?.disk?.disks && zebar.disk.disks.length > 0) {
     const fullest = zebar.disk.disks
       .map((disk) => ({
         ...disk,
@@ -17,7 +17,7 @@ const FullestDisk = () => {
       }))
       .sort((a, b) => a.usage - b.usage)[0];
 
-    return <Disk data={fullest} label="Fullest disk" />;
+    return <SpDisk data={fullest} label="Fullest disk" />;
   }
 
   return null;
