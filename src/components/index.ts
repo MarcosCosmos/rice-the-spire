@@ -20,3 +20,4 @@ export { default as SpWeather } from "./SpWeather";
 export { default as SpWmControls } from "./SpGlazeControls";
 export { default as SpWorkspace } from "./SpWorkspace";
 export { default as SpWorkspaces } from "./SpWorkspaces";
+export { default as SpMedia } from "./SpMedia";

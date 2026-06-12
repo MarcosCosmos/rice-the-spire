@@ -19,6 +19,7 @@ import SpNetwork from "../../components/SpNetwork";
 import SpProcessor from "../../components/SpProcessor";
 import SpWeather from "../../components/SpWeather";
 import SpGlazeControls from "../../components/SpGlazeControls";
+import SpMedia from "../../components/SpMedia";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -67,6 +68,9 @@ const Default = () => {
             </SpRegion>
           </div>
           <div className="column">
+            {/* <SpRegion className="media" aria-label="Media">
+              <SpMedia />
+            </SpRegion> */}
             <SpRegion
               className="wm-controls"
               aria-label="Window Manager controls"

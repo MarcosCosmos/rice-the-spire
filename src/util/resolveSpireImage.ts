@@ -6,6 +6,10 @@ export default (path: string) => {
   }
   let key;
   switch (category) {
+    case "cards-full":
+        category += "/stable";
+        key = entry;
+        break;
     case "powers":
     case "orbs":
       if (entry === "empty_slot") {
@@ -18,5 +22,5 @@ export default (path: string) => {
       key = entry;
   }
   const dir = (subcategory && [category, subcategory].join("/")) || category;
-  return `https://spire-codex.com/static/images/${dir}/${key}.webp`;
+  return `https://cdn.spire-codex.com/${dir}/${key}.webp`;
 };
