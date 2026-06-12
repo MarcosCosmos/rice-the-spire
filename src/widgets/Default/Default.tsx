@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import { App, GlazeWorkspaces, DateTime, WmControls, Bar, Battery, Processor, Memory, Weather, Network, FullestDisk, Audio } from "../components";
-import SpireContext, { acts, characters, type SpireConfig, defaultConfig as defaultSpireConfig } from "../data/SpireContext";
-import MenuBar from "../components/MenuBar/MenuBar";
-import ZebarContext from "../data/ZebarContext";
+import { App, GlazeWorkspaces, DateTime, WmControls, Bar, Battery, Processor, Memory, Weather, Network, FullestDisk, Audio } from "../../components";
+import SpireContext, { acts, characters, type SpireConfig, defaultConfig as defaultSpireConfig } from "../../data/SpireContext";
+import MenuBar from "../../components/MenuBar/MenuBar";
+import ZebarContext from "../../data/ZebarContext";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
     const zebar = useContext(ZebarContext); 
