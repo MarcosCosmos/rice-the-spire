@@ -1,25 +1,25 @@
-import { useContext } from 'react';
-import ZebarContext from '../../data/ZebarContext';
-import { MenuItem } from '../';
-import { Status } from '../';
-import { OutlinedText } from '../';
-import { Bar } from '../';
+import { useContext } from "react";
+import ZebarContext from "../../data/ZebarContext";
+import { MenuItem } from "../";
+import { Status } from "../";
+import { OutlinedText } from "../";
+import { Bar } from "../";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
-  dateStyle: 'short',
+  dateStyle: "short",
 });
 const shortTimeFormat = new Intl.DateTimeFormat(undefined, {
-  timeStyle: 'short',
+  timeStyle: "short",
 });
 const longFormat = new Intl.DateTimeFormat(undefined, {
-  dateStyle: 'long',
-  timeStyle: 'long',
+  dateStyle: "long",
+  timeStyle: "long",
 });
 
 const DateTime = () => {
   const zebar = useContext(ZebarContext);
   const date = zebar?.date || { now: Date.now() };
-  const label = 'Date and time';
+  const label = "Date and time";
 
   return (
     <Bar>

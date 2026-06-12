@@ -1,8 +1,8 @@
 const Bar = ({ className, ariaLabel, children, ...attrs }) => {
-  className ||= '';
-  if (attrs['aria-label']) {
+  className ||= "";
+  if (attrs["aria-label"]) {
     attrs = {
-      role: 'region',
+      role: "region",
       ...attrs,
     };
   }

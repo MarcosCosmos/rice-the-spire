@@ -1,8 +1,8 @@
-import { SpireImage } from '../';
-import { ItemLabel } from '../';
+import { SpireImage } from "../";
+import { ItemLabel } from "../";
 
 const Status = ({ className, path, children, ...attrs }) => {
-  className ||= '';
+  className ||= "";
   return (
     <div className={`status ${className}`} {...attrs}>
       {path && <SpireImage className="status__image" path={path} />}

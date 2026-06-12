@@ -1,7 +1,7 @@
-import { useContext } from 'react';
-import ZebarContext from '../../data/ZebarContext';
-import { MenuItem } from '../';
-import { Status } from '../';
+import { useContext } from "react";
+import ZebarContext from "../../data/ZebarContext";
+import { MenuItem } from "../";
+import { Status } from "../";
 
 const Processor = () => {
   const zebar = useContext(ZebarContext);

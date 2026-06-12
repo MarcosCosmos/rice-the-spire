@@ -4,8 +4,7 @@
   "version": "0.1.0",
   "description": "A Zebar bar themed around Slay the Spire 2 using assets provided via Spire Codex",
   "tags": [],
-  "previewImages": [
-  ],
+  "previewImages": [],
   "repositoryUrl": "https://github.com/MarcosCosmos/rice-the-spire",
   "widgets": [
     {
@@ -16,10 +15,7 @@
       "focused": false,
       "resizable": false,
       "transparent": true,
-      "includeFiles": [
-        "index.html",
-        "assets/**"
-      ],
+      "includeFiles": ["index.html", "assets/**"],
       "caching": {
         "defaultDuration": 604800,
         "rules": []
@@ -54,10 +50,7 @@
       "focused": false,
       "resizable": false,
       "transparent": true,
-      "includeFiles": [
-        "dev.html",
-        "assets/**"
-      ],
+      "includeFiles": ["dev.html", "assets/**"],
       "caching": {
         "defaultDuration": 604800,
         "rules": []

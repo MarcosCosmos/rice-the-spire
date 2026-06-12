@@ -21,5 +21,11 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "dev.html", "index.html", "tsconfig.json", "tsconfig.node.json"]
+  "include": [
+    "src",
+    "dev.html",
+    "index.html",
+    "tsconfig.json",
+    "tsconfig.node.json"
+  ]
 }

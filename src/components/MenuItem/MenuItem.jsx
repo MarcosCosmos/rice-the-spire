@@ -1,9 +1,15 @@
-import { useId } from 'react';
+import { useId } from "react";
 
 const MenuButton = ({ className, children, disabled, ...attrs }) => {
-  className ||= '';
+  className ||= "";
   return (
-    <button className={`menu-item ${className}`} role="menuitem" aria-disabled={disabled} tabIndex="0" {...attrs}>
+    <button
+      className={`menu-item ${className}`}
+      role="menuitem"
+      aria-disabled={disabled}
+      tabIndex="0"
+      {...attrs}
+    >
       {children}
     </button>
   );
@@ -22,10 +28,12 @@ const Tooltip = ({ anchor, children }) => {
 };
 
 const MenuItem = ({ children, tooltip, ...attrs }) => {
-  const button = tooltipId => <MenuButton aria-describedby={tooltipId} {...attrs}>{children}</MenuButton>;
-  return tooltip ? (
-    <Tooltip anchor={button}>{tooltip}</Tooltip>
-  ) : button();
+  const button = (tooltipId) => (
+    <MenuButton aria-describedby={tooltipId} {...attrs}>
+      {children}
+    </MenuButton>
+  );
+  return tooltip ? <Tooltip anchor={button}>{tooltip}</Tooltip> : button();
 };
 
 export default MenuItem;

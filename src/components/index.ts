@@ -1,8 +1,8 @@
 // @ts-nocheck
 import App from "./App/App.jsx";
 import Bar from "./Bar/Bar.jsx";
-import Workspaces from "./Workspaces/Workspaces.jsx"
-import Workspace from "./Workspace/Workspace.jsx"
+import Workspaces from "./Workspaces/Workspaces.jsx";
+import Workspace from "./Workspace/Workspace.jsx";
 import GlazeWorkspace from "./GlazeWorkspace/GlazeWorkspace.jsx";
 import GlazeWorkspaces from "./GlazeWorkspaces/GlazeWorkspaces.jsx";
 import DateTime from "./DateTime/DateTime.jsx";
@@ -21,4 +21,26 @@ import Status from "./Status/Status.jsx";
 import SpireImage from "./SpireImage/SpireImage.jsx";
 import ItemLabel from "./ItemLabel/ItemLabel.jsx";
 
-export { App, Bar, Battery, GlazeWorkspaces, GlazeWorkspace, Workspace, Workspaces, DateTime, WmControls, Processor, Memory, Weather, Network, Disk, FullestDisk, Audio, MenuItem, OutlinedText, Status, SpireImage, ItemLabel };
+export {
+  App,
+  Bar,
+  Battery,
+  GlazeWorkspaces,
+  GlazeWorkspace,
+  Workspace,
+  Workspaces,
+  DateTime,
+  WmControls,
+  Processor,
+  Memory,
+  Weather,
+  Network,
+  Disk,
+  FullestDisk,
+  Audio,
+  MenuItem,
+  OutlinedText,
+  Status,
+  SpireImage,
+  ItemLabel,
+};
