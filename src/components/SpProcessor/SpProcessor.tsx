@@ -7,7 +7,7 @@ const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
   const cpu = zebar?.cpu;
   const usage = Math.round(cpu?.usage || 0);
-  const tooltip = cpu && `CPU Usage: ${usage}%`;
+  const tooltip = `CPU Usage: ${!!usage ? usage + "%" : "unknown"}`;
 
   return (
     <SpMenuItem className="cpu" aria-label="CPU" tooltip={tooltip} disabled>

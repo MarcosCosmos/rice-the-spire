@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpPower from "../SpPower";
 import SpOutlinedText from "../SpOutlinedText";
 import "./SpDateTime.css";
+import SpSpireImage from "../SpSpireImage";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "short",
@@ -28,7 +28,7 @@ const SpDateTime = () => {
       disabled
       tooltip={`${label}: ${longFormat.format(date.now)}`}
     >
-      <SpPower className="date" path="ui/top_bar/timer_icon" />
+      <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
       <SpOutlinedText>
         {shortDateFormat.format(date.now)} {shortTimeFormat.format(date.now)}
       </SpOutlinedText>

@@ -8,8 +8,10 @@ const SpMemory = () => {
   const memory = zebar?.memory;
   const usage = Math.round(memory?.usage || 0);
   const tooltip =
-    memory &&
-    `SpMemory usage: ${(memory.usedMemory * 1e-9).toFixed(2)}GB/${(memory.totalMemory * 1e-9).toFixed(2)}GB (${(memory.freeMemory * 1e-9).toFixed(2)}GB free)`;
+    `SpMemory usage: ` +
+    (!!memory
+      ? `${(memory!.usedMemory * 1e-9).toFixed(2)}GB/${(memory!.totalMemory * 1e-9).toFixed(2)}GB (${(memory!.freeMemory * 1e-9).toFixed(2)}GB free)`
+      : "unknown");
 
   return (
     <SpMenuItem

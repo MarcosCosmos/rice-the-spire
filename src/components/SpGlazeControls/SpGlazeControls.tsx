@@ -2,6 +2,7 @@ import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
+import SpSpireImage from "../SpSpireImage";
 
 const SpGlazeControls = () => {
   const zebar = useContext(ZebarContext);
@@ -25,7 +26,7 @@ const WmPause = () => {
       tooltip="Unpause"
       onClick={onClick}
     >
-      <SpPower path="intents/sleep" />
+      <SpSpireImage path="intents/sleep" />
     </SpMenuItem>
   ) : null;
 };
@@ -48,7 +49,7 @@ const WmDirection = () => {
       tooltip={tooltip}
       onClick={onClick}
     >
-      <SpPower path={path} />
+      <SpSpireImage path={path} />
     </SpMenuItem>
   );
 };

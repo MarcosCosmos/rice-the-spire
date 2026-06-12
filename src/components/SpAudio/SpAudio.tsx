@@ -4,10 +4,11 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import "./SpAudio.css";
+import type { AudioDevice } from "zebar";
 
 const Audio = () => {
   const zebar = useContext(ZebarContext);
-  const device = zebar?.audio?.defaultPlaybackDevice || {
+  const device: Partial<AudioDevice> = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
     isMuted: true,
   };
@@ -15,10 +16,10 @@ const Audio = () => {
   const desc = `Volume: ${displayVolume}${device.isMuted ? " (muted)" : ""}; audio device: ${device.name}.`;
   const onClick = () =>
     zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
-  const onWheel = (event) => {
+  const onWheel = (event: MouseEvent & any) => {
     const newVolume = Math.max(
       0,
-      Math.min(100, device.volume + (event.deltaY < 0 ? 2 : -2)),
+      Math.min(100, device.volume! + (event.deltaY < 0 ? 2 : -2)),
     );
     if (newVolume !== device.volume) {
       zebar?.audio?.setVolume(newVolume, { deviceId: device.deviceId });

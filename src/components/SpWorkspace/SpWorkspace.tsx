@@ -1,34 +1,39 @@
-import { useState, useEffect, useContext } from "react";
-import ZebarContext from "../../data/ZebarContext";
+import { useState, useEffect } from "react";
 import useClassFilter from "../../util/useClassFilter";
 import SpMenuItem from "../SpMenuItem";
-import SpOutlinedText from "../SpOutlinedText";
 import MapNodeGraphic from "./MapNodeGraphic";
 import { randomisableNodes } from "./common";
+import SpItemLabel from "../SpItemLabel";
+import "./SpWorkspace.css";
 
-export interface SpWorkspaceProps {
-  className?: string;
-  data: any;
+export interface SimplifiedWorkspaceInfo {
+  displayName: string;
+  hasFocus: boolean;
+  isDisplayed: boolean;
+  hasChildren: boolean;
 }
 
-const SpWorkspace = ({ className, data, ...attrs }) => {
+export interface SpWorkspaceProps extends Record<string, any> {
+  className?: string;
+  data: SimplifiedWorkspaceInfo;
+}
+
+const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
   const [nodeType, setNodeType] = useState("unknown");
-  let { name, displayName, hasFocus, isDisplayed, children } = data;
+  let { displayName, hasFocus, isDisplayed, hasChildren } = data;
 
   useEffect(() => {
     const result =
       randomisableNodes[Math.floor(Math.random() * randomisableNodes.length)];
     setNodeType(result);
-  }, [name]);
+  }, [displayName]);
 
   className ||= "";
-  displayName ||= name;
-  const isEmpty = !children || children.length === 0;
-  const workspaceDesc = `Workspace: ${displayName}; empty: ${isEmpty}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
+  const workspaceDesc = `Workspace: ${displayName}; empty: ${!hasChildren}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
   const filteredClasses = useClassFilter({
     "workspace--focused": hasFocus,
     "workspace--displayed": isDisplayed,
-    "workspace--empty": isEmpty,
+    "workspace--empty": !hasChildren,
   });
 
   return (
@@ -39,13 +44,11 @@ const SpWorkspace = ({ className, data, ...attrs }) => {
     >
       <MapNodeGraphic
         nodeType={nodeType}
-        isEmpty={isEmpty}
+        isEmpty={!hasChildren}
         isDisplayed={isDisplayed}
         hasFocus={hasFocus}
       />
-      <SpOutlinedText className="item-label">
-        {displayName || name}
-      </SpOutlinedText>
+      <SpItemLabel>{displayName}</SpItemLabel>
     </SpMenuItem>
   );
 };

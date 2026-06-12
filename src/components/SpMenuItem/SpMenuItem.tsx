@@ -9,9 +9,14 @@ export interface SpMenuItemProps extends Record<string, any> {
   tooltip?: string;
 }
 
-const SpMenuItem = ({ children, tooltip, ...attrs }: SpMenuItemProps) => {
+const SpMenuItem = ({
+  className,
+  children,
+  tooltip,
+  ...attrs
+}: SpMenuItemProps) => {
   const button = (tooltipId?: string) => (
-    <MenuButton aria-describedby={tooltipId} {...attrs}>
+    <MenuButton className={className} aria-describedby={tooltipId} {...attrs}>
       {children}
     </MenuButton>
   );
