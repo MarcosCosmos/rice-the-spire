@@ -5,20 +5,20 @@ import SpireContext, {
   type SpireConfig,
   defaultConfig as defaultSpireConfig,
 } from "../../data/SpireContext";
-import MenuBar from "../../components/MenuBar/MenuBar";
-import ZebarContext from "../../data/ZebarContext";
-import App from "../../components/App";
-import Bar from "../../components/Bar";
-import Battery from "../../components/Battery";
-import DateTime from "../../components/DateTime";
-import FullestDisk from "../../components/FullestDisk";
-import GlazeWorkspaces from "../../components/GlazeWorkspaces";
-import Memory from "../../components/Memory";
-import Network from "../../components/Network";
-import Processor from "../../components/Processor";
-import Weather from "../../components/Weather";
-import WmControls from "../../components/WmControls";
 import SpAudio from "../../components/SpAudio";
+import SpFullestDisk from "../../components/SpFullestDisk";
+import ZebarContext from "../../data/ZebarContext";
+import SpApp from "../../components/SpApp";
+import SpBar from "../../components/SpBar";
+import SpBattery from "../../components/SpBattery";
+import SpDateTime from "../../components/SpDateTime/SpDateTime";
+import SpGlazeWorkspaces from "../../components/SpGlazeWorkspaces";
+import SpMemory from "../../components/SpMemory";
+import SpMenuBar from "../../components/SpMenuBar";
+import SpNetwork from "../../components/SpNetwork";
+import SpProcessor from "../../components/SpProcessor";
+import SpWeather from "../../components/SpWeather";
+import SpWmControls from "../../components/SpWmControls";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -28,7 +28,7 @@ const BoundMenuBar = ({ children }: { children: ReactNode }) => {
         .map((mode) => "menubar--binding-mode-" + mode)
         .join("")
     : "menubar--no-binding-mode";
-  return <MenuBar className={bindingModeClasses}>{children}</MenuBar>;
+  return <SpMenuBar className={bindingModeClasses}>{children}</SpMenuBar>;
 };
 const Default = () => {
   const [spireConfig, setSpireConfig] =
@@ -42,7 +42,7 @@ const Default = () => {
   }, []);
 
   return (
-    <App
+    <SpApp
       zebar={{
         glazewm: { type: "glazewm" },
         date: { type: "date" },
@@ -59,28 +59,28 @@ const Default = () => {
       <SpireContext value={spireConfig}>
         <BoundMenuBar>
           <div className="section">
-            <GlazeWorkspaces />
+            <SpGlazeWorkspaces />
           </div>
           <div className="section">
-            <DateTime />
+            <SpDateTime />
           </div>
           <div className="section">
-            <WmControls />
-            <Bar className="resources" aria-label="Resources">
-              <Battery />
-              <Network />
-              <Processor />
-              <Memory />
-              <FullestDisk />
-            </Bar>
-            <Bar className="statuses" aria-label="Statuses">
+            <SpWmControls />
+            <SpBar className="resources" aria-label="Resources">
+              <SpBattery />
+              <SpNetwork />
+              <SpProcessor />
+              <SpMemory />
+              <SpFullestDisk />
+            </SpBar>
+            <SpBar className="statuses" aria-label="Statuses">
               <SpAudio />
-              <Weather />
-            </Bar>
+              <SpWeather />
+            </SpBar>
           </div>
         </BoundMenuBar>
       </SpireContext>
-    </App>
+    </SpApp>
   );
 };
 export default Default;

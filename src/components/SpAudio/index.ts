@@ -1,3 +1,3 @@
 // @ts-ignore
-import Audio from "./SpAudio.jsx";
-export default Audio;
+import SpAudio from "./SpAudio.jsx";
+export default SpAudio ;

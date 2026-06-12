@@ -1,5 +1,5 @@
-import MenuItem from "../MenuItem";
-import Status from "../Status";
+import SpMenuItem from "../SpMenuItem";
+import SpStatus from "../SpStatus";
 import useDataSize from "../../util/useDataSize";
 import type { Disk as ZDisk } from "zebar";
 
@@ -19,15 +19,15 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
   const tooltip = `${label}: ${name} ${data.isRemovable ? "(removable)" : ""}; usage: ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)}; mounted at: ${data.mountPoint}.`;
 
   return (
-    <MenuItem
+    <SpMenuItem
       className="disk"
       disabled
       tooltip={tooltip}
       aria-label={label}
       {...attrs}
     >
-      <Status path="relics/data_disk">{usage}%</Status>
-    </MenuItem>
+      <SpStatus path="relics/data_disk">{usage}%</SpStatus>
+    </SpMenuItem>
   );
 };
 

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import MenuItem from "../MenuItem";
-import Status from "../Status";
-import SpireImage from "../SpireImage";
+import SpMenuItem from "../SpMenuItem";
+import SpStatus from "../SpStatus";
+import SpSpireImage from "../SpSpireImage";
 
 const Audio = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);
@@ -25,7 +25,7 @@ const Audio = ({ ...attrs }) => {
   };
 
   return (
-    <MenuItem
+    <SpMenuItem
       className="volume"
       tooltip={desc}
       onClick={onClick}
@@ -33,14 +33,14 @@ const Audio = ({ ...attrs }) => {
       onWheel={onWheel}
       {...attrs}
     >
-      <Status path="powers/ringing">{displayVolume}</Status>
+      <SpStatus path="powers/ringing">{displayVolume}</SpStatus>
       {device.isMuted && (
-        <SpireImage
+        <SpSpireImage
           className="audio__muted-mark"
           path="powers/well_laid_plans"
         />
       )}
-    </MenuItem>
+    </SpMenuItem>
   );
 };
 

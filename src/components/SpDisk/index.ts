@@ -1,2 +1,2 @@
-import Disk from "./SpDisk.tsx";
-export default Disk;
+import SpDisk from "./SpDisk.tsx";
+export default SpDisk ;
