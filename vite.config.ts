@@ -7,6 +7,6 @@ export default defineConfig({
   base: "./",
   server: {},
   build: {
-    rolldownOptions: { input: { main: "src/index.html", dev: "src/dev.html" } },
+    rolldownOptions: { input: { main: "index.html", dev: "dev.html" } },
   },
 });
