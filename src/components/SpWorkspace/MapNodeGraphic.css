@@ -6,10 +6,10 @@
     height: calc(var(--height-scale) * var(--icon-size));
 
     circle {
-    fill: none;
-    stroke-linecap: round;
-    stroke: #2A2521;
-    z-index: -1;
-    stroke-linejoin: miter;
+        fill: none;
+        stroke-linecap: round;
+        stroke: #2A2521;
+        z-index: -1;
+        stroke-linejoin: miter;
     }
 }

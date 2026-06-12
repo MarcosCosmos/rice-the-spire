@@ -27,7 +27,6 @@ const MapNodeGraphic = ({
   hasFocus,
 }: MapNodeGraphicProps) => {
   const config = useContext(SpireContext);
-  const details = mapNodeTypes[nodeType];
   const [isVisited, setVisited] = useState(false);
 
   useEffect(() => {
@@ -47,6 +46,7 @@ const MapNodeGraphic = ({
   } else {
     path = nodeType;
   }
+  const details = mapNodeTypes[nodeType];
 
   const nodeX = -details.width / 2;
   const nodeY = -details.height / 2;
