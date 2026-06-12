@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpWeather from "./SpWeather.jsx";
-export default SpWeather ;
+import SpWeather from "./SpWeather.tsx";
+export default SpWeather;

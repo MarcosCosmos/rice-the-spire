@@ -1,0 +1,15 @@
+.map-node-graphic {
+    position: absolute;
+    left: calc(-1 * var(--width-offset) * var(--icon-size) + (var(--icon-size) / 2));
+    bottom: calc((-1 * (var(--height-scale) - var(--height-offset)) * var(--icon-size)) / 2);
+    width: calc(var(--width-scale) * var(--icon-size));
+    height: calc(var(--height-scale) * var(--icon-size));
+
+    circle {
+    fill: none;
+    stroke-linecap: round;
+    stroke: #2A2521;
+    z-index: -1;
+    stroke-linejoin: miter;
+    }
+}

@@ -15,7 +15,6 @@ export const mapNodeTypes: Record<string, MapNodeType> = {
   unknown: { width: 73, height: 72, obvious: true },
 };
 
-
 export const randomisableNodes: MapNodeTypeName[] = Object.entries(mapNodeTypes)
   .filter(([, details]) => !details.obvious)
   .map(([key]) => key);

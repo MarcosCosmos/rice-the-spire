@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpMemory from "./SpMemory.jsx";
-export default SpMemory ;
+import SpMemory from "./SpMemory.tsx";
+export default SpMemory;

@@ -1,42 +1,43 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import SpBar from "../SpBar";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
 
-const SpWmControls = () => {
+const SpGlazeControls = () => {
   const zebar = useContext(ZebarContext);
   return zebar?.glazewm ? (
-    <SpBar className="wm-controls" aria-label="Window Manager controls">
-      <WmPause zebar={zebar} />
-      <WmDirection zebar={zebar} />
-      <WmModes zebar={zebar} />
-    </SpBar>
+    <>
+      <WmPause />
+      <WmDirection />
+      <WmModes />
+    </>
   ) : null;
 };
 
-const WmPause = ({ zebar }) => {
-  const onClick = () => zebar.glazewm.runCommand("wm-toggle-pause");
+const WmPause = () => {
+  const zebar = useContext(ZebarContext);
+  const onClick = () => zebar?.glazewm?.runCommand("wm-toggle-pause");
 
   return zebar?.glazewm?.isPaused ? (
     <SpMenuItem
       className="paused"
       aria-label="paused"
-      desc="Unpause"
+      tooltip="Unpause"
       onClick={onClick}
     >
-      <SpStatus path="intents/sleep" />
+      <SpPower path="intents/sleep" />
     </SpMenuItem>
   ) : null;
 };
 
-const WmDirection = ({ zebar }) => {
-  const direction = zebar?.glazewm?.tilingDirection;
+const WmDirection = () => {
+  const zebar = useContext(ZebarContext)!;
+  const direction = zebar.glazewm!.tilingDirection;
   const path = {
     horizontal: "intents/escape",
     vertical: "intents/debuff",
   }[direction];
-  const onClick = () => zebar.glazewm.runCommand("toggle-tiling-direction");
+  const onClick = () => zebar?.glazewm?.runCommand("toggle-tiling-direction");
   const label = `Tiling direction: ${direction}`;
   const tooltip = `${label} (click to swap)`;
 
@@ -47,13 +48,14 @@ const WmDirection = ({ zebar }) => {
       tooltip={tooltip}
       onClick={onClick}
     >
-      <SpStatus path={path} />
+      <SpPower path={path} />
     </SpMenuItem>
   );
 };
 
-const WmModes = ({ zebar }) => {
-  const modeMap = {
+const WmModes = () => {
+  const zebar = useContext(ZebarContext);
+  const modeMap: Record<string, string> = {
     focus: "intents/status",
   };
 
@@ -70,12 +72,12 @@ const WmModes = ({ zebar }) => {
         tooltip={tooltip}
         onClick={onClick}
       >
-        <SpStatus path={modeMap[name]} aria-hidden="true">
+        <SpPower path={modeMap[name]} aria-hidden="true">
           {displayName}
-        </SpStatus>
+        </SpPower>
       </SpMenuItem>
     );
   });
 };
 
-export default SpWmControls;
+export default SpGlazeControls;

@@ -1,2 +1,2 @@
 import SpFullestDisk from "./SpFullestDisk.tsx";
-export default SpFullestDisk ;
+export default SpFullestDisk;

@@ -1,2 +1,2 @@
 import SpBattery from "./SpBattery.tsx";
-export default SpBattery ;
+export default SpBattery;

@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpGlazeWorkspaces from "./SpGlazeWorkspaces.jsx";
-export default SpGlazeWorkspaces ;
+import SpGlazeWorkspaces from "./SpGlazeWorkspaces.tsx";
+export default SpGlazeWorkspaces;

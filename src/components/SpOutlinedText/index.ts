@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpOutlinedText from "./SpOutlinedText.jsx";
-export default SpOutlinedText ;
+import SpOutlinedText from "./SpOutlinedText.tsx";
+export default SpOutlinedText;

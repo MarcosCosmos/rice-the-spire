@@ -8,9 +8,9 @@ import {
 } from "zebar";
 import ZebarContext from "../../data/ZebarContext";
 import "./SpApp.css";
-import "./old.css";
+import "./common.css";
 
-export interface SpAppProps extends Record<string, any> {
+export interface SpAppProps {
   zebar: Partial<ProviderConfigMap>;
   children: ReactNode;
 }

@@ -1,0 +1,9 @@
+.region {
+  padding-top: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  height: 100%;
+  gap: 0.5rch;
+}

@@ -1,4 +1,4 @@
-const useClassFilter = (classes: string[]) =>
+const useClassFilter = (classes: Record<string, boolean>) =>
   Object.entries(classes)
     .filter(([_, active]) => active)
     .map(([key]) => key);

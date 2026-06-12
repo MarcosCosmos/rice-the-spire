@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpSpireImage from "./SpSpireImage.jsx";
-export default SpSpireImage ;
+import SpSpireImage from "./SpSpireImage.tsx";
+export default SpSpireImage;

@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
 import SpOutlinedText from "../SpOutlinedText";
-import SpBar from "../SpBar";
+import "./SpDateTime.css";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "short",
@@ -22,19 +22,17 @@ const SpDateTime = () => {
   const label = "Date and time";
 
   return (
-    <SpBar>
-      <SpMenuItem
-        className="datetime"
-        aria-label={`${label}`}
-        disabled
-        tooltip={`${label}: ${longFormat.format(date.now)}`}
-      >
-        <SpStatus className="date" path="ui/top_bar/timer_icon" />
-        <SpOutlinedText>
-          {shortDateFormat.format(date.now)} {shortTimeFormat.format(date.now)}
-        </SpOutlinedText>
-      </SpMenuItem>
-    </SpBar>
+    <SpMenuItem
+      className="datetime"
+      aria-label={`${label}`}
+      disabled
+      tooltip={`${label}: ${longFormat.format(date.now)}`}
+    >
+      <SpPower className="date" path="ui/top_bar/timer_icon" />
+      <SpOutlinedText>
+        {shortDateFormat.format(date.now)} {shortTimeFormat.format(date.now)}
+      </SpOutlinedText>
+    </SpMenuItem>
   );
 };
 

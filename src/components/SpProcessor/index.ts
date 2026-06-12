@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpProcessor from "./SpProcessor.jsx";
-export default SpProcessor ;
+import SpProcessor from "./SpProcessor.tsx";
+export default SpProcessor;

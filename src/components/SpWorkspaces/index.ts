@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpWorkspaces from "./SpWorkspaces.jsx";
-export default SpWorkspaces ;
+import SpWorkspaces from "./SpWorkspaces.tsx";
+export default SpWorkspaces;

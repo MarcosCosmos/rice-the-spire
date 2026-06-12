@@ -1,0 +1,20 @@
+.column {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  justify-content: space-around;
+  gap: 3rch;
+}
+
+.column:first-child {
+  justify-self: start;
+  justify-content: start;
+}
+
+.column:last-child {
+  justify-self: end;
+  justify-content: end;
+}
+.column:last-child {
+  border-inline-start: none;
+}

@@ -1,0 +1,10 @@
+
+.menu-item {
+  display: inline-block;
+  background: unset;
+  border: unset;
+  line-height: unset;
+  padding: unset;
+  margin: unset;
+  color: unset;
+}

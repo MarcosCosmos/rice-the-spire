@@ -1,0 +1,6 @@
+
+.spire-image {
+  width: var(--image-size);
+  height: var(--image-size);
+  object-fit: contain;
+}

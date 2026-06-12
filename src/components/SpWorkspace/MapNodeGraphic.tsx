@@ -1,7 +1,12 @@
 import { useContext, useState, useEffect, type CSSProperties } from "react";
 import SpireContext from "../../data/SpireContext";
 import resolveSpireImage from "../../util/resolveSpireImage";
-import { mapNodeTypes, randomisableNodes, type MapNodeTypeName } from "./common";
+import {
+  mapNodeTypes,
+  randomisableNodes,
+  type MapNodeTypeName,
+} from "./common";
+import "./MapNodeGraphic.css";
 
 const mapMarkerDetails = {
   width: 49,
@@ -9,13 +14,18 @@ const mapMarkerDetails = {
 };
 
 export interface MapNodeGraphicProps {
-    nodeType: MapNodeTypeName,
-    isEmpty: boolean,
-    isDisplayed: boolean,
-    hasFocus: boolean,
+  nodeType: MapNodeTypeName;
+  isEmpty: boolean;
+  isDisplayed: boolean;
+  hasFocus: boolean;
 }
 
-const MapNodeGraphic = ({ nodeType, isEmpty, isDisplayed, hasFocus }: MapNodeGraphicProps) => {
+const MapNodeGraphic = ({
+  nodeType,
+  isEmpty,
+  isDisplayed,
+  hasFocus,
+}: MapNodeGraphicProps) => {
   const config = useContext(SpireContext);
   const details = mapNodeTypes[nodeType];
   const [isVisited, setVisited] = useState(false);

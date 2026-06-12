@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
+import "./SpAudio.css";
 
-const Audio = ({ ...attrs }) => {
+const Audio = () => {
   const zebar = useContext(ZebarContext);
   const device = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
@@ -31,9 +32,8 @@ const Audio = ({ ...attrs }) => {
       onClick={onClick}
       aria-label="Volume"
       onWheel={onWheel}
-      {...attrs}
     >
-      <SpStatus path="powers/ringing">{displayVolume}</SpStatus>
+      <SpPower path="powers/ringing">{displayVolume}</SpPower>
       {device.isMuted && (
         <SpSpireImage
           className="audio__muted-mark"

@@ -9,7 +9,7 @@ import SpAudio from "../../components/SpAudio";
 import SpFullestDisk from "../../components/SpFullestDisk";
 import ZebarContext from "../../data/ZebarContext";
 import SpApp from "../../components/SpApp";
-import SpBar from "../../components/SpBar";
+import SpRegion from "../../components/SpRegion";
 import SpBattery from "../../components/SpBattery";
 import SpDateTime from "../../components/SpDateTime/SpDateTime";
 import SpGlazeWorkspaces from "../../components/SpGlazeWorkspaces";
@@ -18,7 +18,7 @@ import SpMenuBar from "../../components/SpMenuBar";
 import SpNetwork from "../../components/SpNetwork";
 import SpProcessor from "../../components/SpProcessor";
 import SpWeather from "../../components/SpWeather";
-import SpWmControls from "../../components/SpWmControls";
+import SpGlazeControls from "../../components/SpGlazeControls";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -58,25 +58,32 @@ const Default = () => {
     >
       <SpireContext value={spireConfig}>
         <BoundMenuBar>
-          <div className="section">
+          <div className="column">
             <SpGlazeWorkspaces />
           </div>
-          <div className="section">
-            <SpDateTime />
+          <div className="column">
+            <SpRegion aria-label="Resources">
+              <SpDateTime />
+            </SpRegion>
           </div>
-          <div className="section">
-            <SpWmControls />
-            <SpBar className="resources" aria-label="Resources">
+          <div className="column">
+            <SpRegion
+              className="wm-controls"
+              aria-label="Window Manager controls"
+            >
+              <SpGlazeControls />
+            </SpRegion>
+            <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
               <SpProcessor />
               <SpMemory />
               <SpFullestDisk />
-            </SpBar>
-            <SpBar className="statuses" aria-label="Statuses">
+            </SpRegion>
+            <SpRegion className="statuses" aria-label="Statuses">
               <SpAudio />
               <SpWeather />
-            </SpBar>
+            </SpRegion>
           </div>
         </BoundMenuBar>
       </SpireContext>

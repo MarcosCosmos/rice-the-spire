@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
 
 const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
@@ -11,7 +11,7 @@ const SpProcessor = () => {
 
   return (
     <SpMenuItem className="cpu" aria-label="CPU" tooltip={tooltip} disabled>
-      <SpStatus path="relics/cracked_core">{usage}%</SpStatus>
+      <SpPower path="relics/cracked_core">{usage}%</SpPower>
     </SpMenuItem>
   );
 };

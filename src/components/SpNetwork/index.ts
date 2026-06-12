@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpNetwork from "./SpNetwork.jsx";
-export default SpNetwork ;
+import SpNetwork from "./SpNetwork";
+export default SpNetwork;

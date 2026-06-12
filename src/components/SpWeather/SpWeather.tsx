@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
+import type { WeatherOutput } from "zebar";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -15,55 +16,55 @@ const weatherMap = {
 
 const SpWeather = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);
-  const data = zebar?.weather ?? {
+  const data: Partial<WeatherOutput> = zebar?.weather ?? {
     status: "clear_day",
-    celsiusTemp: "?",
+    celsiusTemp: -0,
   };
-  const cleanSpStatus = data.status.replace(/_/g, " ");
-  const displayTemp = `${Math.round(data.celsiusTemp)}°C`;
-  const description = `SpWeather: ${cleanSpStatus} ${displayTemp}`;
+  const cleanStatus = data.status!.replace(/_/g, " ");
+  const displayTemp = `${Math.round(data.celsiusTemp!)}°C`;
+  const description = `SpWeather: ${cleanStatus} ${displayTemp}`;
 
-  let simplifiedSpStatus;
+  let simplifiedStatus: keyof typeof weatherMap;
   switch (data.status) {
     case "clear_day":
     case "clear_night":
-      simplifiedSpStatus = data.status;
+      simplifiedStatus = data.status;
       break;
     case "cloudy_day":
     case "cloudy_night":
-      simplifiedSpStatus = "cloudy";
+      simplifiedStatus = "cloudy";
       break;
     case "light_rain_day":
     case "light_rain_night":
-      simplifiedSpStatus = "light_rain";
+      simplifiedStatus = "light_rain";
       break;
     case "heavy_rain_day":
     case "heavy_rain_night":
-      simplifiedSpStatus = "heavy_rain";
+      simplifiedStatus = "heavy_rain";
       break;
     case "snow_day":
     case "snow_night":
-      simplifiedSpStatus = "snow";
+      simplifiedStatus = "snow";
       break;
     case "thunder_day":
     case "thunder_night":
-      simplifiedSpStatus = "thunder";
+      simplifiedStatus = "thunder";
       break;
     default:
-      simplifiedSpStatus = "clear";
+      simplifiedStatus = "clear_day";
   }
 
   return (
     <SpMenuItem
       disabled
-      className={`weather weather--${simplifiedSpStatus}`}
+      className={`weather weather--${simplifiedStatus}`}
       aria-label="SpWeather"
       tooltip={description}
       {...attrs}
     >
-      <SpStatus path={`powers/${weatherMap[simplifiedSpStatus]}`}>
+      <SpPower path={`powers/${weatherMap[simplifiedStatus]}`}>
         {displayTemp}
-      </SpStatus>
+      </SpPower>
     </SpMenuItem>
   );
 };

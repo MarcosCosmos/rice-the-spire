@@ -8,13 +8,13 @@ export default defineConfig({
   server: {},
   build: {
     lib: {
-      formats: ['es'],
-      entry: 'src/index.ts',
-      name: 'rice-the-spire-core',
-      fileName: 'index',
+      formats: ["es"],
+      entry: "src/index.ts",
+      name: "rice-the-spire-core",
+      fileName: "index",
     },
     rolldownOptions: {
-      input: { main: "index.html" }
-    }
-  }
+      input: { main: "index.html" },
+    },
+  },
 });

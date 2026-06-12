@@ -1,0 +1,36 @@
+.workspaces {
+  background-size: 100% auto;
+
+  display: grid;
+  grid-template-columns: 7fr 86fr 7fr;
+  background-size: 120%;
+  background-position: top 0px left 40%;
+
+  &::before {
+    content: '';
+  }
+  &::after {
+    content: '';
+  }
+
+  &.workspaces--overgrowth {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_overgrowth.webp);
+  }
+  &.workspaces--underdocks {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_underdocks.webp);
+  }
+  &.workspaces--hive {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_hive.webp);
+  }
+  &.workspaces--glory {
+    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_glory.webp);
+  }
+
+  .workspaces__content {
+    min-width: 20vw;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: end;
+  }
+}

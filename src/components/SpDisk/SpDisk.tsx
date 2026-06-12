@@ -1,9 +1,9 @@
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
 import type { Disk as ZDisk } from "zebar";
 
-export interface DiskProps extends Record<string, any> {
+export interface DiskProps {
   data: ZDisk;
   label?: string;
 }
@@ -16,7 +16,7 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
       100,
   );
   const name = data.name || data.mountPoint;
-  const tooltip = `${label}: ${name} ${data.isRemovable ? "(removable)" : ""}; usage: ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)}; mounted at: ${data.mountPoint}.`;
+  const tooltip = `${label}: ${name} ${data.isRemovable ? "(removable)" : ""};  ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)} available; mounted at: ${data.mountPoint}.`;
 
   return (
     <SpMenuItem
@@ -26,7 +26,7 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
       aria-label={label}
       {...attrs}
     >
-      <SpStatus path="relics/data_disk">{usage}%</SpStatus>
+      <SpPower path="relics/data_disk">{usage}%</SpPower>
     </SpMenuItem>
   );
 };

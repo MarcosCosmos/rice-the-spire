@@ -1,4 +1,11 @@
-const SpOutlinedText = ({ className, children }) => {
+import type { ReactNode } from "react";
+import "./SpOutlinedText.css";
+
+export interface SpOutlinedTextProps {
+  className?: string;
+  children: ReactNode;
+}
+const SpOutlinedText = ({ className, children }: SpOutlinedTextProps) => {
   className ||= "";
   return (
     <span className={`outlined-text ${className}`}>

@@ -1,0 +1,41 @@
+.tooltip-shrinkwrap {
+  display: inline-block;
+  position: relative;
+}
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  transition: visibility 0s;
+  z-index: 100;
+  width: max-content;
+
+  background: #222E33;
+  border-width: 3px;
+  border-style: solid;
+  border-left-color: #475D66;
+  border-right-color: #475D66;
+  border-top-color: #516B76;
+  border-bottom-color: #31505C;
+  border-radius: 5px;
+  padding: 5px;
+  /* color: #FFF6E2; */
+  text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
+  box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
+
+  .column:not(:last-child) & {
+    left: 100%;
+  }
+
+  .column:last-child & {
+    right: 100% - 0.5em;
+  }
+}
+
+[aria-describedby]:hover + .tooltip,
+[aria-describedby]:focus-visible + .tooltip,
+.tooltip:hover
+.tooltip:focus {
+  visibility: visible;
+  transition: visibility 0.5s;
+}

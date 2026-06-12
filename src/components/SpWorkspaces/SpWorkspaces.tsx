@@ -1,6 +1,13 @@
-import { useContext } from "react";
+import { useContext, type ReactNode } from "react";
 import SpireContext from "../../data/SpireContext";
-const Workspaces = ({ className, children, ...attrs }) => {
+import "./SpWorkspaces.css";
+
+export interface SpWorkspacesProps {
+  className?: string;
+  children: ReactNode;
+}
+
+const SpWorkspaces = ({ className, children, ...attrs }: SpWorkspacesProps) => {
   className ||= "";
   const config = useContext(SpireContext);
   return (
@@ -15,4 +22,4 @@ const Workspaces = ({ className, children, ...attrs }) => {
   );
 };
 
-export default Workspaces;
+export default SpWorkspaces;

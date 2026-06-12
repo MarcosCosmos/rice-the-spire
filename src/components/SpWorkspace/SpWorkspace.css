@@ -1,0 +1,11 @@
+.workspace {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+    min-width: var(--icon-size);
+    min-height: var(--icon-size);
+    color: #BAA193;
+    -webkit-text-stroke-color: #2A2521;
+}

@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
-import SpStatus from "../SpStatus";
+import SpPower from "../SpPower";
+import "./SpBattery.css";
 
 const SpBattery = () => {
   const zebar = useContext(ZebarContext);
@@ -19,7 +20,7 @@ const SpBattery = () => {
         aria-label="SpBattery"
         tooltip={`SpBattery: ${value}% (${data.state})`}
       >
-        <SpStatus path="relics/power_cell">{value}%</SpStatus>
+        <SpPower path="relics/power_cell">{value}%</SpPower>
       </SpMenuItem>
     );
   }

@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpMenuItem from "./SpMenuItem.jsx";
-export default SpMenuItem ;
+import SpMenuItem from "./SpMenuItem.tsx";
+export default SpMenuItem;

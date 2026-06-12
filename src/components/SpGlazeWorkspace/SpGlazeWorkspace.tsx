@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { type Workspace } from "glazewm";
 import ZebarContext from "../../data/ZebarContext";
 import SpWorkspace from "../SpWorkspace";
-export interface SpGlazeWorkspaceProps extends Record<string, any> {
+export interface SpGlazeWorkspaceProps {
   data: Workspace;
 }
 
-const SpGlazeWorkspace = ({ data, ...attrs } : SpGlazeWorkspaceProps) => {
+const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
   const zebar = useContext(ZebarContext);
   const onClick = () =>
     zebar?.glazewm?.runCommand(`focus --workspace ${data.name}`);

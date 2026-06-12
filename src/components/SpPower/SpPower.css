@@ -1,0 +1,18 @@
+
+.power {
+  .power__image {
+    position: absolute;
+    bottom:0;
+    left:0;
+  }
+}
+
+.power {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: end;
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+}

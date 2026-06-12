@@ -1,3 +1,2 @@
-// @ts-ignore
-import SpItemLabel from "./SpItemLabel.jsx";
-export default SpItemLabel ;
+import SpItemLabel from "./SpItemLabel.tsx";
+export default SpItemLabel;

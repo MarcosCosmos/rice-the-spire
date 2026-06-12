@@ -1,16 +1,18 @@
 import { useState, useEffect, useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
-import SpireContext from "../../data/SpireContext";
 import useClassFilter from "../../util/useClassFilter";
 import SpMenuItem from "../SpMenuItem";
 import SpOutlinedText from "../SpOutlinedText";
 import MapNodeGraphic from "./MapNodeGraphic";
-import resolveSpireImage from "../../util/resolveSpireImage";
-import { mapNodeTypes, randomisableNodes } from "./common";
+import { randomisableNodes } from "./common";
 
-const Workspace = ({ className, data, ...attrs }) => {
+export interface SpWorkspaceProps {
+  className?: string;
+  data: any;
+}
+
+const SpWorkspace = ({ className, data, ...attrs }) => {
   const [nodeType, setNodeType] = useState("unknown");
-  const zebar = useContext(ZebarContext);
   let { name, displayName, hasFocus, isDisplayed, children } = data;
 
   useEffect(() => {
@@ -41,9 +43,11 @@ const Workspace = ({ className, data, ...attrs }) => {
         isDisplayed={isDisplayed}
         hasFocus={hasFocus}
       />
-      <SpOutlinedText className="item-label">{displayName || name}</SpOutlinedText>
+      <SpOutlinedText className="item-label">
+        {displayName || name}
+      </SpOutlinedText>
     </SpMenuItem>
   );
 };
 
-export default Workspace;
+export default SpWorkspace;

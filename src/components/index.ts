@@ -1,6 +1,6 @@
 export { default as SpApp } from "./SpApp";
 export { default as SpAudio } from "./SpAudio";
-export { default as SpBar } from "./SpBar";
+export { default as SpBar } from "./SpRegion";
 export { default as SpBattery } from "./SpBattery";
 export { default as SpDateTime } from "./SpDateTime";
 export { default as SpDisk } from "./SpDisk";
@@ -15,8 +15,8 @@ export { default as SpNetwork } from "./SpNetwork";
 export { default as SpOutlinedText } from "./SpOutlinedText";
 export { default as SpProcessor } from "./SpProcessor";
 export { default as SpSpireImage } from "./SpSpireImage";
-export { default as SpStatus } from "./SpStatus";
+export { default as SpPower } from "./SpPower";
 export { default as SpWeather } from "./SpWeather";
-export { default as SpWmControls } from "./SpWmControls";
+export { default as SpWmControls } from "./SpGlazeControls";
 export { default as SpWorkspace } from "./SpWorkspace";
 export { default as SpWorkspaces } from "./SpWorkspaces";
