@@ -12,7 +12,7 @@ const SpWorkspaces = ({ className, children, ...attrs }: SpWorkspacesProps) => {
   const config = useContext(SpireContext);
   return (
     <div
-      className={`workspaces workspaces--${config.act} ${className}`}
+      className={`workspaces workspaces--${config.act} anchor-tooltips-block-start ${className}`}
       role="region"
       aria-label={"Workspaces"}
       {...attrs}

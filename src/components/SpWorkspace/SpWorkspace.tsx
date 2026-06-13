@@ -5,6 +5,7 @@ import MapNodeGraphic from "./MapNodeGraphic";
 import { randomisableNodes } from "./common";
 import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
+import { SpNum } from "../SpTooltip";
 
 export interface SimplifiedWorkspaceInfo {
   displayName: string;
@@ -29,7 +30,15 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
   }, [displayName]);
 
   className ||= "";
-  const workspaceDesc = `Workspace: ${displayName}; empty: ${!hasChildren}; focused: ${hasFocus}; displayed: ${isDisplayed}.`;
+  const workspaceDesc = (
+    <>
+      <h1>Workspace: </h1>
+      <SpNum>{displayName}</SpNum>
+      <h1>Empty:</h1> {hasChildren ? "yes" : "no"} <h1>Focused: </h1>{" "}
+      {hasFocus ? "yes" : "no"} <h1>Displayed: </h1>
+      {isDisplayed ? "yes" : "no"}
+    </>
+  );
   const filteredClasses = useClassFilter({
     "workspace--focused": hasFocus,
     "workspace--displayed": isDisplayed,

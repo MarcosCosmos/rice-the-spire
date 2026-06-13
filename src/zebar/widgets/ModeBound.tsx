@@ -57,7 +57,7 @@ const Widget = () => {
               <SpDateTime />
             </SpRegion>
           </div>
-          <div className="column">
+          <div className="column anchor-tooltips-inline-start">
             {/* <SpRegion className="media" aria-label="Media">
               <SpMedia />
             </SpRegion> */}

@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 export interface SpMenuItemProps extends Record<string, any> {
   className?: string;
   children: ReactNode;
-  tooltip?: string;
+  tooltip?: string | ReactNode;
 }
 
 const SpMenuItem = ({

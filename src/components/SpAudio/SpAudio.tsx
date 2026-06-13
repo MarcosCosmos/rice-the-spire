@@ -5,6 +5,7 @@ import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import "./SpAudio.css";
 import type { AudioDevice } from "zebar";
+import { SpNum } from "../SpTooltip";
 
 const Audio = () => {
   const zebar = useContext(ZebarContext);
@@ -13,7 +14,16 @@ const Audio = () => {
     isMuted: true,
   };
   const displayVolume = `${device.volume}%`;
-  const desc = `Volume: ${displayVolume}${device.isMuted ? " (muted)" : ""}; audio device: ${device.name}.`;
+  const label = "Volume";
+  const tooltip = (
+    <>
+      <h1>{label}: </h1>
+      <SpNum>{displayVolume}</SpNum>
+      {device.isMuted && " (muted)"}
+      <h1>Audio device: </h1>
+      {device.name}
+    </>
+  );
   const onClick = () =>
     zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
   const onWheel = (event: MouseEvent & any) => {
@@ -29,9 +39,9 @@ const Audio = () => {
   return (
     <SpMenuItem
       className="volume"
-      tooltip={desc}
+      tooltip={tooltip}
       onClick={onClick}
-      aria-label="Volume"
+      aria-label={label}
       onWheel={onWheel}
     >
       <SpPower path="powers/ringing">{displayVolume}</SpPower>

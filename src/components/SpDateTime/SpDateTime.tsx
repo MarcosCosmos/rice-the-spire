@@ -20,13 +20,19 @@ const SpDateTime = () => {
   const zebar = useContext(ZebarContext);
   const date = zebar?.date || { now: Date.now() };
   const label = "Date and time";
+  const tooltip = (
+    <>
+      <h1>{label}: </h1>
+      {longFormat.format(date.now)}
+    </>
+  );
 
   return (
     <SpMenuItem
       className="datetime"
-      aria-label={`${label}`}
       disabled
-      tooltip={`${label}: ${longFormat.format(date.now)}`}
+      aria-label={label}
+      tooltip={tooltip}
     >
       <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
       <SpOutlinedText>

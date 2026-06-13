@@ -5,7 +5,6 @@
 .tooltip {
   visibility: hidden;
   position: absolute;
-  top: 0;
   transition: visibility 0s;
   z-index: 100;
   width: max-content;
@@ -18,24 +17,47 @@
   border-top-color: #516B76;
   border-bottom-color: #31505C;
   border-radius: 5px;
-  padding: 5px;
+  padding: 4px;
+  text-align: left;
   /* color: #FFF6E2; */
   text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
   box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
 
-  .column:not(:last-child) & {
-    left: calc(100% - 1px);
+  &, .anchor-tooltips-block-end & {
+    inset-block-start: calc(100% - 5px);
   }
 
-  .column:last-child & {
-    right: calc(100% - 1px);
+  .anchor-tooltips-block-start & {
+    inset-block-end: calc(100% - 5px);
+    inset-block-start: unset;
+  }
+
+  &, .anchor-tooltips-inline-end & {
+    inset-inline-start: calc(100% - 1em);
+  }
+
+  .anchor-tooltips-inline-start & {
+    inset-inline-end: calc(100% - 1em);
+    inset-inline-start: unset;
+  }
+
+  h1 {
+    font-size: 1em;
+    color: #EFC851;
+    display: inline;
+    &:not(:first-child) {
+      margin-left: 1ch;
+    }
+  }
+
+  .tooltip-number {
+    color: #87CEEB;
   }
 }
 
-[aria-describedby]:hover + .tooltip,
-[aria-describedby]:focus-visible + .tooltip,
-.tooltip:hover
-.tooltip:focus {
+.tooltip-shrinkwrap:has(> :hover) > .tooltip,
+.tooltip-shrinkwrap:has(> :focus) > .tooltip
+{
   visibility: visible;
   transition: visibility 0.5s;
 }

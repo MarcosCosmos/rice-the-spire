@@ -2,6 +2,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
 import type { Disk as ZDisk } from "zebar";
+import { SpNum } from "../SpTooltip";
 
 export interface DiskProps {
   data: ZDisk;
@@ -16,8 +17,18 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
       100,
   );
   const name = data.name || data.mountPoint;
-  const tooltip = `${label}: ${name} ${data.isRemovable ? "(removable)" : ""};  ${useDataSize(data.availableSpace)}/${useDataSize(data.totalSpace)} available; mounted at: ${data.mountPoint}.`;
-
+  const tooltip = (
+    <>
+      <h1>{label}: </h1>
+      {name}
+      {data.isRemovable ? " (removable)" : ""}
+      <h1>Used space: </h1>
+      <SpNum>{useDataSize(data.availableSpace)}</SpNum>/
+      <SpNum>{useDataSize(data.totalSpace)}</SpNum>
+      <h1>Mounted at: </h1>
+      {data.mountPoint}
+    </>
+  );
   return (
     <SpMenuItem
       className="disk"

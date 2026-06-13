@@ -40,7 +40,11 @@ const WmDirection = () => {
   }[direction];
   const onClick = () => zebar?.glazewm?.runCommand("toggle-tiling-direction");
   const label = `Tiling direction: ${direction}`;
-  const tooltip = `${label} (click to swap)`;
+  const tooltip = (
+    <>
+      <h1>Tiling direction:</h1> {direction} (click to swap)
+    </>
+  );
 
   return (
     <SpMenuItem
@@ -65,7 +69,11 @@ const WmModes = () => {
     const onClick = () =>
       zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
     const label = `${displayName} mode`;
-    const tooltip = `${label} (click to disable)`;
+    const tooltip = (
+      <>
+        <h1>{label}</h1> is on (click to disable)
+      </>
+    );
     return (
       <SpMenuItem
         key={name}

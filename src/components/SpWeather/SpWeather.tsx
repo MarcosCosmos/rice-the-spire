@@ -3,6 +3,7 @@ import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import type { WeatherOutput } from "zebar";
+import { SpNum } from "../SpTooltip";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -22,7 +23,13 @@ const SpWeather = ({ ...attrs }) => {
   };
   const cleanStatus = data.status!.replace(/_/g, " ");
   const displayTemp = `${Math.round(data.celsiusTemp!)}°C`;
-  const description = `Weather: ${cleanStatus} ${displayTemp}`;
+  const label = "Weather";
+  const tooltip = (
+    <>
+      <h1>{label}: </h1>
+      {cleanStatus} (<SpNum>{displayTemp}</SpNum>)
+    </>
+  );
 
   let simplifiedStatus: keyof typeof weatherMap;
   switch (data.status) {
@@ -58,8 +65,8 @@ const SpWeather = ({ ...attrs }) => {
     <SpMenuItem
       disabled
       className={`weather weather--${simplifiedStatus}`}
-      aria-label="Weather"
-      tooltip={description}
+      aria-label={label}
+      tooltip={tooltip}
       {...attrs}
     >
       <SpPower path={`powers/${weatherMap[simplifiedStatus]}`}>

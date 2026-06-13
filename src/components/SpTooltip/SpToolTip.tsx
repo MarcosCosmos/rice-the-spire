@@ -11,7 +11,7 @@ const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
   return (
     <div className="tooltip-shrinkwrap">
       {anchor(id)}
-      <div id={id} className="tooltip" role="tooltip">
+      <div id={id} className="tooltip" role="tooltip" key={id}>
         {children}
       </div>
     </div>
