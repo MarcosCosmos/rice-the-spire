@@ -4,6 +4,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import useDataSize from "../../util/useDataSize";
+import { SpNum } from "../SpTooltip";
 
 const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
@@ -18,8 +19,17 @@ const SpNetwork = () => {
       <h1>{label}: </h1>
       {gateway?.ssid || "unknown"}
       <h1>Traffic: </h1>
-      {transmitted && `${transmitted} transmitted`},{" "}
-      {received && `${received} received`}
+      {transmitted && (
+        <>
+          <SpNum>{transmitted}</SpNum> transmitted
+        </>
+      )}
+      ,{" "}
+      {received && (
+        <>
+          <SpNum>{received}</SpNum> received
+        </>
+      )}
     </>
   );
   return (
