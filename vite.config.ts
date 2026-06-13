@@ -1,15 +1,23 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import ExternalisePlugin, { externalsRegex } from "./src/plugins/Externalise";
+import { resolve } from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react({}), ExternalisePlugin()],
   base: "./",
   resolve: {
-    alias: {
-      "@rice-the-spire": "src/index",
-    },
+    alias: [
+      {
+        find: "@rice-the-spire",
+        replacement: resolve(__dirname, "./src/index.ts"),
+      },
+      {
+        find: "@rice-the-spire/widgets",
+        replacement: resolve(__dirname, "./src/widgets/index.ts"),
+      },
+    ],
   },
   build: {
     sourcemap: "inline",

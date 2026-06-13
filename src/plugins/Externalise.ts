@@ -20,8 +20,8 @@ const productionImports = {
 const devImports = {
   "@react-refresh": "http://127.0.0.1:5173/@react-refresh",
   "@vite/client": "http://127.0.0.1:5173/@vite/client",
-  "@rice-the-spire": "http://127.0.0.1:5173/assets/index.js",
-  "@rice-the-spire/widgets": "http://127.0.0.1:5173/assets/widgets.js",
+  "@rice-the-spire": "http://127.0.0.1:5173/src/index.ts",
+  "@rice-the-spire/widgets": "http://127.0.0.1:5173/src/widgets/index.ts",
 };
 
 export const externalsRegex = new RegExp(
