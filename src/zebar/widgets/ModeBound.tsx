@@ -16,6 +16,7 @@ import {
   ZebarContext,
   SpRegion,
   useRandomSpireConfig,
+  SpCredits,
 } from "@rice-the-spire";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
@@ -77,6 +78,9 @@ const Widget = () => {
             <SpRegion className="statuses" aria-label="Statuses">
               <SpAudio />
               <SpWeather />
+            </SpRegion>
+            <SpRegion aria-label="Credits">
+              <SpCredits />
             </SpRegion>
           </div>
         </BoundMenuBar>

@@ -50,7 +50,7 @@
     }
   }
 
-  .tooltip-number {
+  a, .tooltip-number {
     color: #87CEEB;
   }
 }

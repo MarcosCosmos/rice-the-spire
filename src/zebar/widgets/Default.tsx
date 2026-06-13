@@ -14,6 +14,7 @@ import {
   SpWeather,
   SpRegion,
   useRandomSpireConfig,
+  SpCredits,
 } from "@rice-the-spire";
 
 const Widget = () => {
@@ -36,6 +37,7 @@ const Widget = () => {
       <SpireContext value={randomSpireConfig}>
         <SpMenuBar>
           <div className="column">
+            <SpCredits />
             <SpGlazeWorkspaces />
           </div>
           <div className="column">
@@ -60,6 +62,9 @@ const Widget = () => {
             <SpRegion className="statuses" aria-label="Statuses">
               <SpAudio />
               <SpWeather />
+            </SpRegion>
+            <SpRegion aria-label="Credits">
+              <SpCredits />
             </SpRegion>
           </div>
         </SpMenuBar>
