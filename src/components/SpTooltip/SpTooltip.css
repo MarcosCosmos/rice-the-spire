@@ -24,11 +24,11 @@
   box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
 
   .column:not(:last-child) & {
-    left: 100%;
+    left: calc(100% - 1px);
   }
 
   .column:last-child & {
-    right: 100% - 0.5em;
+    right: calc(100% - 1px);
   }
 }
 

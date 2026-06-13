@@ -8,7 +8,7 @@ const SpMemory = () => {
   const memory = zebar?.memory;
   const usage = Math.round(memory?.usage || 0);
   const tooltip =
-    `SpMemory usage: ` +
+    `Memory usage: ` +
     (!!memory
       ? `${(memory!.usedMemory * 1e-9).toFixed(2)}GB/${(memory!.totalMemory * 1e-9).toFixed(2)}GB (${(memory!.freeMemory * 1e-9).toFixed(2)}GB free)`
       : "unknown");
@@ -16,7 +16,7 @@ const SpMemory = () => {
   return (
     <SpMenuItem
       className="memory"
-      aria-label="SpMemory"
+      aria-label="Memory"
       tooltip={tooltip}
       disabled
     >

@@ -14,8 +14,8 @@ const SpNetwork = () => {
     <SpMenuItem
       className="network"
       disabled
-      aria-label="SpNetwork"
-      tooltip="SpNetwork: {{TODO}}"
+      aria-label="Network"
+      tooltip="Network: {{TODO}}"
     >
       <SpPower path="relics/gold_plated_cables">
         {traffic?.transmitted ? useDataSize(traffic.transmitted) : "-"}

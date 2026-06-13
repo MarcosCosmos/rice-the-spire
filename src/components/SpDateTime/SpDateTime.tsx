@@ -12,7 +12,7 @@ const shortTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 const longFormat = new Intl.DateTimeFormat(undefined, {
-  dateStyle: "long",
+  dateStyle: "full",
   timeStyle: "long",
 });
 

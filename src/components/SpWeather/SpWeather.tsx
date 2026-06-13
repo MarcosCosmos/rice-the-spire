@@ -22,7 +22,7 @@ const SpWeather = ({ ...attrs }) => {
   };
   const cleanStatus = data.status!.replace(/_/g, " ");
   const displayTemp = `${Math.round(data.celsiusTemp!)}°C`;
-  const description = `SpWeather: ${cleanStatus} ${displayTemp}`;
+  const description = `Weather: ${cleanStatus} ${displayTemp}`;
 
   let simplifiedStatus: keyof typeof weatherMap;
   switch (data.status) {
@@ -58,7 +58,7 @@ const SpWeather = ({ ...attrs }) => {
     <SpMenuItem
       disabled
       className={`weather weather--${simplifiedStatus}`}
-      aria-label="SpWeather"
+      aria-label="Weather"
       tooltip={description}
       {...attrs}
     >
