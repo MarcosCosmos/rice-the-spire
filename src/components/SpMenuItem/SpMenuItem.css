@@ -3,8 +3,12 @@
   display: inline-block;
   background: unset;
   border: unset;
-  line-height: unset;
+  line-height: inherit;
   padding: unset;
   margin: unset;
   color: unset;
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+  height: fit-content;
+  width: fit-content;
 }

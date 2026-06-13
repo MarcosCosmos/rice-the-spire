@@ -6,7 +6,7 @@ import "./SpPower.css";
 export interface SpPowerProps {
   className?: string;
   path: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const SpPower = ({ className, path, children, ...attrs }: SpPowerProps) => {

@@ -21,7 +21,7 @@ const WmPause = () => {
 
   return zebar?.glazewm?.isPaused ? (
     <SpMenuItem
-      className="paused"
+      className="glazewm-paused"
       aria-label="paused"
       tooltip="Unpause"
       onClick={onClick}
@@ -48,7 +48,7 @@ const WmDirection = () => {
 
   return (
     <SpMenuItem
-      className={`wm-tiling-direction wm-tiling-direction--${direction}`}
+      className={`glazewm-tiling-direction glazewm-tiling-direction--${direction}`}
       aria-label={label}
       tooltip={tooltip}
       onClick={onClick}
