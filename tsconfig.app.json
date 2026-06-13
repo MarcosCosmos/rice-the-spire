@@ -30,6 +30,8 @@
     "dev.html",
     "index.html",
     "tsconfig.json",
-    "tsconfig.node.json"
-  ]
+    "tsconfig.node.json",
+    "src/zebar/widgets"
+  ],
+  "exclude": ["src/scripts"]
 }

@@ -22,5 +22,6 @@ export const defaultSpireConfig: SpireConfig = {
   act: "overgrowth",
   character: "ironclad",
 };
+
 const SpireContext = createContext<SpireConfig>(defaultSpireConfig);
 export default SpireContext;

@@ -18,6 +18,5 @@
 
   &:not(.menubar--no-binding-mode) {
     background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
-
   }
 }

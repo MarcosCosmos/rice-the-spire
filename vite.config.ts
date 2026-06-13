@@ -1,11 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import ExternalisePlugin, { externalsRegex } from "./src/plugins/Externalise";
+import { externalsRegex } from "./src/scripts/externals";
 import { resolve } from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react({}), ExternalisePlugin()],
+  plugins: [react({})],
   base: "./",
   resolve: {
     alias: [
@@ -14,27 +14,21 @@ export default defineConfig({
         replacement: resolve(__dirname, "./src/index.ts"),
       },
       {
-        find: "@rice-the-spire/widgets",
-        replacement: resolve(__dirname, "./src/widgets/index.ts"),
+        find: "@rice-the-spire/widgets/",
+        replacement: resolve(__dirname, "./src/zebar/widgets/"),
       },
     ],
   },
   build: {
     sourcemap: "inline",
     lib: {
-      entry: ["src/index.ts", "src/widgets/index.ts"],
+      entry: ["src/index.ts"],
       name: "rice-the-spire",
       fileName: (_, entryName) => `${entryName}.js`,
       formats: ["es"],
     },
     rolldownOptions: {
       external: externalsRegex,
-      input: {
-        main: "prod.html",
-        dev: "dev.html",
-        index: "src/index.ts",
-        widgets: "src/widgets/index.ts",
-      },
       output: {
         assetFileNames: "assets/[name][extname]",
         chunkFileNames: "assets/[name]-[hash].js",

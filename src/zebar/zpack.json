@@ -8,7 +8,7 @@
   "repositoryUrl": "https://github.com/MarcosCosmos/rice-the-spire",
   "widgets": [
     {
-      "name": "default",
+      "name": "prod",
       "htmlPath": "prod.html",
       "zOrder": "top_most",
       "shownInTaskbar": false,
@@ -18,41 +18,6 @@
       "includeFiles": ["prod.html", "assets/**"],
       "caching": {
         "defaultDuration": 604800,
-        "rules": []
-      },
-      "privileges": {
-        "shellCommands": []
-      },
-      "presets": [
-        {
-          "name": "default",
-          "anchor": "top_left",
-          "offsetX": "0px",
-          "offsetY": "0px",
-          "width": "100%",
-          "height": "40px",
-          "monitorSelection": {
-            "type": "all"
-          },
-          "dockToEdge": {
-            "enabled": false,
-            "edge": null,
-            "windowMargin": "0px"
-          }
-        }
-      ]
-    },
-    {
-      "name": "dev-default",
-      "htmlPath": "dev.html",
-      "zOrder": "top_most",
-      "shownInTaskbar": false,
-      "focused": false,
-      "resizable": false,
-      "transparent": true,
-      "includeFiles": ["dev.html", "assets/**"],
-      "caching": {
-        "defaultDuration": 0,
         "rules": []
       },
       "privileges": {
