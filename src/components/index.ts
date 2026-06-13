@@ -1,10 +1,11 @@
 export { default as SpApp } from "./SpApp";
 export { default as SpAudio } from "./SpAudio";
-export { default as SpBar } from "./SpRegion";
+export { default as SpRegion } from "./SpRegion";
 export { default as SpBattery } from "./SpBattery";
 export { default as SpDateTime } from "./SpDateTime";
 export { default as SpDisk } from "./SpDisk";
 export { default as SpFullestDisk } from "./SpFullestDisk";
+export { default as SpGlazeControls } from "./SpGlazeControls";
 export { default as SpGlazeWorkspace } from "./SpGlazeWorkspace";
 export { default as SpGlazeWorkspaces } from "./SpGlazeWorkspaces";
 export { default as SpItemLabel } from "./SpItemLabel";

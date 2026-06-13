@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import "./SpMenuBar.css";
-export default ({
+const SpMenuBar = ({
   className,
   children,
   ...attrs
@@ -12,3 +12,4 @@ export default ({
     </div>
   );
 };
+export default SpMenuBar;

@@ -1,26 +1,25 @@
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import SpireContext, {
+import {
+  SpApp,
+  SpAudio,
+  SpBattery,
+  SpDateTime,
+  SpFullestDisk,
+  SpGlazeWorkspaces,
+  SpGlazeControls,
+  SpireContext,
+  SpMemory,
+  SpMenuBar,
+  SpNetwork,
+  SpProcessor,
+  SpWeather,
+  ZebarContext,
+  type SpireConfig,
+  SpRegion,
+  defaultSpireConfig,
   acts,
   characters,
-  type SpireConfig,
-  defaultConfig as defaultSpireConfig,
-} from "../../data/SpireContext";
-import SpAudio from "../../components/SpAudio";
-import SpFullestDisk from "../../components/SpFullestDisk";
-import ZebarContext from "../../data/ZebarContext";
-import SpApp from "../../components/SpApp";
-import SpRegion from "../../components/SpRegion";
-import SpBattery from "../../components/SpBattery";
-import SpDateTime from "../../components/SpDateTime/SpDateTime";
-import SpGlazeWorkspaces from "../../components/SpGlazeWorkspaces";
-import SpMemory from "../../components/SpMemory";
-import SpMenuBar from "../../components/SpMenuBar";
-import SpNetwork from "../../components/SpNetwork";
-import SpProcessor from "../../components/SpProcessor";
-import SpWeather from "../../components/SpWeather";
-import SpGlazeControls from "../../components/SpGlazeControls";
-import SpMedia from "../../components/SpMedia";
-
+} from "@rice-the-spire";
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
   const hasMode = (zebar?.glazewm?.bindingModes?.length || 0) > 0;

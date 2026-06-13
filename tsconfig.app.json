@@ -19,10 +19,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@rice-the-spire": ["./src"],
+    }
   },
   "include": [
     "src",
+    "index.ts",
     "dev.html",
     "index.html",
     "tsconfig.json",

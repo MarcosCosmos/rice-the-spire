@@ -1,2 +1,2 @@
-import SpBar from "./SpRegion.tsx";
-export default SpBar;
+import SpRegion from "./SpRegion.tsx";
+export default SpRegion;

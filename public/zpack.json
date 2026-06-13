@@ -9,13 +9,13 @@
   "widgets": [
     {
       "name": "default",
-      "htmlPath": "index.html?widget=default",
+      "htmlPath": "prod.html",
       "zOrder": "top_most",
       "shownInTaskbar": false,
       "focused": false,
       "resizable": false,
       "transparent": true,
-      "includeFiles": ["index.html", "assets/**"],
+      "includeFiles": ["prod.html", "assets/**"],
       "caching": {
         "defaultDuration": 604800,
         "rules": []

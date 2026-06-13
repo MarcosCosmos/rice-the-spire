@@ -18,8 +18,9 @@ export const characters: Character[] = [
   "regent",
   "necrobinder",
 ];
-export const defaultConfig: SpireConfig = {
+export const defaultSpireConfig: SpireConfig = {
   act: "overgrowth",
   character: "ironclad",
 };
-export default createContext<SpireConfig>(defaultConfig);
+const SpireContext = createContext<SpireConfig>(defaultSpireConfig);
+export default SpireContext;
