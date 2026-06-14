@@ -24,7 +24,6 @@ export default defineConfig({
     lib: {
       entry: ["src/index.ts"],
       name: "rice-the-spire",
-      fileName: (_, entryName) => `${entryName}.js`,
       formats: ["es"],
     },
     rolldownOptions: {
@@ -32,7 +31,7 @@ export default defineConfig({
       output: {
         assetFileNames: "assets/[name][extname]",
         chunkFileNames: "assets/[name]-[hash].js",
-        entryFileNames: (chunkInfo) => `assets/${chunkInfo.name}.js`, // note: the .html files still go in the root using this method.
+        entryFileNames: "assets/rice-the-spire.js", // note: the .html files still go in the root using this method.
       },
     },
   },

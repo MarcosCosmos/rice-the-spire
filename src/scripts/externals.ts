@@ -15,7 +15,7 @@ const commonImports = Object.fromEntries(
 
 export const prodImports = {
   ...commonImports,
-  "@rice-the-spire": "./assets/index.js",
+  "@rice-the-spire": "./assets/rice-the-spire.js",
 };
 
 export const devImports = {
