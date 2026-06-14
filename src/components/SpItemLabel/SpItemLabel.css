@@ -1,6 +1,6 @@
 .item-label {
   line-height: 1em;
-  margin-left: calc(var(--icon-size) / 2);
+  margin-inline-start: calc(var(--icon-size) / 2);
   z-index: 10;
   display: block;
   text-align: end;

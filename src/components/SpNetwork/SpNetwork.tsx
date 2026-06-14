@@ -5,6 +5,7 @@ import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import useDataSize from "../../util/useDataSize";
 import { SpNum } from "../SpTooltip";
+import SpCrossout from "../SpCrossout";
 
 const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
@@ -44,12 +45,7 @@ const SpNetwork = () => {
         <br />
         {traffic?.received ? useDataSize(traffic.received) : "-"}
       </SpPower>
-      {!gateway && (
-        <SpSpireImage
-          className="network-none-icon"
-          path="powers/well_laid_plans"
-        />
-      )}
+      {!gateway && <SpCrossout />}
     </SpMenuItem>
   );
 };

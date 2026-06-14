@@ -10,8 +10,7 @@
   justify-content: space-between;
   background: transparent;
   align-items: stretch;
-  padding-left: 3rch;
-  padding-right: 3rch;
+  padding-inline: 3rch;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   background-size: contain;

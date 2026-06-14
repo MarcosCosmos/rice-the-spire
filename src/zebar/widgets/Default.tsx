@@ -45,7 +45,7 @@ const Widget = () => {
               <SpDateTime />
             </SpRegion>
           </div>
-          <div className="column anchor-tooltips-inline-start">
+          <div className="column anchor-tooltips-inline-end">
             <SpRegion
               className="wm-controls"
               aria-label="Window Manager controls"

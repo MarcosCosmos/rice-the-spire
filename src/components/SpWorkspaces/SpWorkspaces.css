@@ -6,8 +6,6 @@
   background-size: 120%;
   background-position: top 0px left 40%;
 
-  padding-bottom: 3px;
-
   &::before {
     content: '';
   }
@@ -33,6 +31,10 @@
     display: flex;
     gap: 2rem;
     justify-content: space-between;
+    align-items: end;
+  }
+
+  .tooltip-shrinkwrap {
     align-items: end;
   }
 }

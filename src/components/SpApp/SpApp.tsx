@@ -8,7 +8,6 @@ import {
 } from "zebar";
 import ZebarContext from "../../data/ZebarContext";
 import "./SpApp.css";
-import "./common.css";
 
 export interface SpAppProps {
   zebar: Partial<ProviderConfigMap>;

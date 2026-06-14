@@ -6,6 +6,7 @@ import SpSpireImage from "../SpSpireImage";
 import "./SpAudio.css";
 import type { AudioDevice } from "zebar";
 import { SpNum } from "../SpTooltip";
+import SpCrossout from "../SpCrossout";
 
 const Audio = () => {
   const zebar = useContext(ZebarContext);
@@ -45,12 +46,7 @@ const Audio = () => {
       onWheel={onWheel}
     >
       <SpPower path="powers/ringing">{displayVolume}</SpPower>
-      {device.isMuted && (
-        <SpSpireImage
-          className="audio__muted-mark"
-          path="powers/well_laid_plans"
-        />
-      )}
+      {device.isMuted && <SpCrossout />}
     </SpMenuItem>
   );
 };

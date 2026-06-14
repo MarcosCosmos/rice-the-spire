@@ -9,6 +9,6 @@
   color: unset;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
-  height: fit-content;
-  width: fit-content;
+  width: auto;
+  height: min-content;
 }

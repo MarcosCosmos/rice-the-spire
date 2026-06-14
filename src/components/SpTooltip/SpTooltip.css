@@ -1,6 +1,8 @@
 .tooltip-shrinkwrap {
-  display: inline-block;
+  display: flex;
   position: relative;
+  height: 100%;
+  padding-block: 3px;
 }
 .tooltip {
   visibility: hidden;
@@ -23,30 +25,33 @@
   text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
   box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
 
+
   &, .anchor-tooltips-block-end & {
-    inset-block-start: calc(100% - 5px);
+    inset-block-end: 0;
   }
-
+  
   .anchor-tooltips-block-start & {
-    inset-block-end: calc(100% - 5px);
-    inset-block-start: unset;
+    inset-block-start: 0;
+    inset-block-end: unset;
   }
 
-  &, .anchor-tooltips-inline-end & {
-    inset-inline-start: calc(100% - 1em);
+  &, .anchor-tooltips-inline-start & {
+    inset-inline-start: 0;
   }
 
-  .anchor-tooltips-inline-start & {
-    inset-inline-end: calc(100% - 1em);
+  .anchor-tooltips-inline-end & {
+    inset-inline-end: 0;
     inset-inline-start: unset;
   }
+  
+
 
   h1 {
     font-size: 1em;
     color: #EFC851;
     display: inline;
     &:not(:first-child) {
-      margin-left: 1ch;
+      margin-inline-start: 1ch;
     }
   }
 
@@ -55,8 +60,8 @@
   }
 }
 
-.tooltip-shrinkwrap:has(> :hover) > .tooltip,
-.tooltip-shrinkwrap:has(> :focus) > .tooltip
+.tooltip-shrinkwrap:has(:hover) > .tooltip,
+.tooltip-shrinkwrap:has(:focus) > .tooltip
 {
   visibility: visible;
   transition: visibility 0.5s;
