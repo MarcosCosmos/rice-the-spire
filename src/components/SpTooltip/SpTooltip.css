@@ -1,6 +1,7 @@
 .tooltip-shrinkwrap {
   display: flex;
   position: relative;
+  align-items: start;
   height: 100%;
   padding-block: 3px;
 }
