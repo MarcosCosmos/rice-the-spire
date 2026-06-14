@@ -8,4 +8,22 @@
     min-height: var(--icon-size);
     color: #D8C5A6;
     -webkit-text-stroke-color: #2A2521;
+    box-sizing: content-box;
+}
+
+.workspace-shrinkwrap {
+    position: relative;
+    display: flex;
+    align-items: end;
+    &:has(.menu-item:not(:disabled):hover) {
+        .map-node {
+            transform: scale(var(--hover-scale));
+        }
+    }
+
+    .map-node {
+        @media not (prefers-reduced-motion) {
+            transition: var(--hover-transition);
+        }
+    }
 }

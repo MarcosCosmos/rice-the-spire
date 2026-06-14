@@ -10,6 +10,9 @@ body {
   font-size: 12px;
   --icon-size: 2rem;
   --image-size: var(--icon-size);
+  --hover-scale: 1.2;
+  --hover-transition: transform .1s;
+  --item-padding: 1px;
 }
 
 html,

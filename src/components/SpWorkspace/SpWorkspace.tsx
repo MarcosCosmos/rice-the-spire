@@ -5,6 +5,7 @@ import MapNodeGraphic from "./MapNodeGraphic";
 import { randomisableNodes } from "./common";
 import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
+import SpTooltip from "../SpTooltip";
 
 export interface SimplifiedWorkspaceInfo {
   displayName: string;
@@ -29,7 +30,7 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
   }, [displayName]);
 
   className ||= "";
-  const workspaceDesc = (
+  const tooltip = (
     <>
       <h2>Workspace: </h2>
       <strong>{displayName}</strong>
@@ -45,21 +46,25 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
     "workspace--empty": !hasChildren,
   });
 
-  return (
-    <SpMenuItem
-      className={`workspace workspace--${nodeType} ${filteredClasses} ${className}`}
-      tooltip={workspaceDesc}
-      {...attrs}
-    >
+  const anchor = (tooltipId: string) => (
+    <div className="workspace-shrinkwrap">
       <MapNodeGraphic
         nodeType={nodeType}
-        isEmpty={!hasChildren}
+        hasChildren={hasChildren}
         isDisplayed={isDisplayed}
         hasFocus={hasFocus}
       />
-      <SpItemLabel>{displayName}</SpItemLabel>
-    </SpMenuItem>
+      <SpMenuItem
+        className={`workspace workspace--${nodeType} ${filteredClasses} ${className}`}
+        aria-describedby={tooltipId}
+        {...attrs}
+      >
+        <SpItemLabel>{displayName}</SpItemLabel>
+      </SpMenuItem>
+    </div>
   );
+
+  return <SpTooltip anchor={anchor}>{tooltip}</SpTooltip>;
 };
 
 export default SpWorkspace;

@@ -11,15 +11,15 @@
   min-width: var(--icon-size);
   min-height: var(--icon-size);
   border-radius: 3px;
-  padding: 1px;
+  padding: var(--item-padding);
 
   &:not([aria-disabled]) {
     &:hover {
-      transform: scale(1.2);
+      transform: scale(var(--hover-scale));
     }
   }
 
   @media not (prefers-reduced-motion) {
-    transition: transform .1s;
+    transition: var(--hover-transition);
   }
 }

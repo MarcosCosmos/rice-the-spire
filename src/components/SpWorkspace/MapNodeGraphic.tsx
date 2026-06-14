@@ -15,14 +15,14 @@ const mapMarkerDetails = {
 
 export interface MapNodeGraphicProps {
   nodeType: MapNodeTypeName;
-  isEmpty: boolean;
+  hasChildren: boolean;
   isDisplayed: boolean;
   hasFocus: boolean;
 }
 
 const MapNodeGraphic = ({
   nodeType,
-  isEmpty,
+  hasChildren,
   isDisplayed,
   hasFocus,
 }: MapNodeGraphicProps) => {
@@ -36,7 +36,7 @@ const MapNodeGraphic = ({
   }, [isVisited, isDisplayed]);
 
   let path;
-  if (isEmpty) {
+  if (!hasChildren) {
     if (isVisited) {
       path = `unknown_${nodeType}`;
     } else {
