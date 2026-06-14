@@ -4,7 +4,6 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpAudio.css";
 import type { AudioDevice } from "zebar";
-import SpCrossout from "../SpCrossout";
 
 const Audio = () => {
   const zebar = useContext(ZebarContext);
@@ -35,6 +34,10 @@ const Audio = () => {
     }
   };
 
+  const path = device.isMuted
+    ? ["powers/ringing", "powers/well_laid_plans"]
+    : "powers/ringing";
+
   return (
     <SpMenuItem
       className="volume"
@@ -43,8 +46,7 @@ const Audio = () => {
       aria-label={label}
       onWheel={onWheel}
     >
-      <SpPower path="powers/ringing">{displayVolume}</SpPower>
-      {device.isMuted && <SpCrossout />}
+      <SpPower path={path}>{displayVolume}</SpPower>
     </SpMenuItem>
   );
 };

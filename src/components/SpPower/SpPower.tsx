@@ -5,15 +5,18 @@ import "./SpPower.css";
 
 export interface SpPowerProps {
   className?: string;
-  path: string;
+  path: string | string[];
   children?: ReactNode;
 }
 
 const SpPower = ({ className, path, children, ...attrs }: SpPowerProps) => {
   className ||= "";
+  if (typeof path === "string") {
+    path = [path];
+  }
   return (
     <div className={`power ${className}`} {...attrs}>
-      {path && <SpSpireImage className="power__image" path={path} />}
+      {path.map(p => <SpSpireImage className="power__image" path={p} />)}
       {children && <SpItemLabel>{children}</SpItemLabel>}
     </div>
   );

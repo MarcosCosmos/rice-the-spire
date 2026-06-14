@@ -2,9 +2,7 @@ import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
-import SpSpireImage from "../SpSpireImage";
 import useDataSize from "../../util/useDataSize";
-import SpCrossout from "../SpCrossout";
 
 const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
@@ -32,6 +30,9 @@ const SpNetwork = () => {
       )}
     </>
   );
+  const path = gateway
+    ? "relics/gold_plated_cables"
+    : ["relics/gold_plated_cables", "powers/well_laid_plans"];
   return (
     <SpMenuItem
       className="network"
@@ -39,12 +40,11 @@ const SpNetwork = () => {
       aria-label={label}
       tooltip={tooltip}
     >
-      <SpPower path="relics/gold_plated_cables">
+      <SpPower path={path}>
         {traffic?.transmitted ? useDataSize(traffic.transmitted) : "-"}
         <br />
         {traffic?.received ? useDataSize(traffic.received) : "-"}
       </SpPower>
-      {!gateway && <SpCrossout />}
     </SpMenuItem>
   );
 };

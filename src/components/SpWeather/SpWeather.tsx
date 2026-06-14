@@ -2,7 +2,7 @@ import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
-import type { WeatherOutput } from "zebar";
+import type { WeatherOutput, WeatherStatus } from "zebar";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -12,16 +12,18 @@ const weatherMap = {
   heavy_rain: "slippery",
   snow: "hailstorm",
   thunder: "storm",
+  unknown: "child_of_the_stars",
 };
 
 const SpWeather = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);
   const data: Partial<WeatherOutput> = zebar?.weather ?? {
-    status: "clear_day",
-    celsiusTemp: -0,
+    status: "unknown" as WeatherStatus,
   };
   const cleanStatus = data.status!.replace(/_/g, " ");
-  const displayTemp = `${Math.round(data.celsiusTemp!)}°C`;
+  const displayTemp = zebar?.weather
+    ? `${Math.round(data.celsiusTemp!)}°C`
+    : "?";
   const label = "Weather";
   const tooltip = (
     <>
@@ -57,7 +59,7 @@ const SpWeather = ({ ...attrs }) => {
       simplifiedStatus = "thunder";
       break;
     default:
-      simplifiedStatus = "clear_day";
+      simplifiedStatus = "unknown";
   }
 
   return (
