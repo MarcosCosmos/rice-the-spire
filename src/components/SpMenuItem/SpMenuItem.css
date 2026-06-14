@@ -10,8 +10,6 @@
   color: unset;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
-  width: auto;
-  height: min-content;
   border-radius: 3px;
   padding: 1px;
 
