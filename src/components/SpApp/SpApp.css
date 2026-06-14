@@ -48,3 +48,8 @@ button, [type='button'], [type='reset'], [type='submit'] {
 .column:last-child {
   border-inline-start: none;
 }
+
+:focus-visible {
+  outline: #FFF solid 1px;
+  box-shadow: #FFF 0 0 5px, inset #FFF 0 0 5px;
+}
