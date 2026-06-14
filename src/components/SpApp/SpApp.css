@@ -53,3 +53,27 @@ button, [type='button'], [type='reset'], [type='submit'] {
   outline: #FFF solid 1px;
   box-shadow: #FFF 0 0 5px, inset #FFF 0 0 5px;
 }
+
+h1, h2 {
+  color: #EFC851;
+  display: inline;
+  &:not(:first-child) {
+    margin-inline-start: 1ch;
+  }
+}
+
+h1 {
+  font-size: 1.25em;
+}
+
+h2 {
+  font-size: 1.1em;
+}
+
+em {
+  color: #7EFD01;
+}
+
+strong {
+  color: #87CEEB;
+}

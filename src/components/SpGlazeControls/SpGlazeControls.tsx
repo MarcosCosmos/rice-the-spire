@@ -3,7 +3,6 @@ import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
-import { SpNum } from "../SpTooltip";
 
 const SpGlazeControls = () => {
   const zebar = useContext(ZebarContext);
@@ -43,7 +42,8 @@ const WmDirection = () => {
   const label = `Tiling direction: ${direction}`;
   const tooltip = (
     <>
-      <h1>Tiling direction: </h1><SpNum>{direction}</SpNum> (click to swap)
+      <h2>Tiling direction: </h2>
+      <strong>{direction}</strong> (click to swap)
     </>
   );
 
@@ -72,7 +72,7 @@ const WmModes = () => {
     const label = `${displayName} mode`;
     const tooltip = (
       <>
-        <h1>{label}</h1> is on (click to disable)
+        <h2>{label}</h2> is on (click to disable)
       </>
     );
     return (

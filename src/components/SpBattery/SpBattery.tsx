@@ -3,7 +3,6 @@ import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpBattery.css";
-import { SpNum } from "../SpTooltip";
 
 const SpBattery = () => {
   const zebar = useContext(ZebarContext);
@@ -18,17 +17,18 @@ const SpBattery = () => {
     const eta =
       data.state === "charging" ? (
         <>
-          charging - <SpNum>{data.timeTillFull}</SpNum> until full
+          charging - <strong>{data.timeTillFull}</strong> until full
         </>
       ) : (
         <>
-          discharging - <SpNum>${data.timeTillEmpty}</SpNum> of charge remaining
+          discharging - <strong>${data.timeTillEmpty}</strong> of charge
+          remaining
         </>
       );
     const tooltip = (
       <>
-        <h1>{label}: </h1>
-        <SpNum>{value}%</SpNum> ({eta})
+        <h2>{label}: </h2>
+        <strong>{value}%</strong> ({eta})
       </>
     );
 

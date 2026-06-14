@@ -2,7 +2,6 @@ import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
-import { SpNum } from "../SpTooltip";
 
 const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
@@ -11,8 +10,8 @@ const SpProcessor = () => {
   const label = "CPU";
   const tooltip = (
     <>
-      <h1>{label} usage: </h1>
-      {(usage && <SpNum>{usage}%</SpNum>) || "unknown"}
+      <h2>{label} usage: </h2>
+      {(usage && <strong>{usage}%</strong>) || "unknown"}
     </>
   );
   return (

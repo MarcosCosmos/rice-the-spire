@@ -43,21 +43,6 @@
     inset-inline-end: 0;
     inset-inline-start: unset;
   }
-  
-
-
-  h1 {
-    font-size: 1em;
-    color: #EFC851;
-    display: inline;
-    &:not(:first-child) {
-      margin-inline-start: 1ch;
-    }
-  }
-
-  a, .tooltip-number {
-    color: #87CEEB;
-  }
 }
 
 .tooltip-shrinkwrap:hover > .tooltip,

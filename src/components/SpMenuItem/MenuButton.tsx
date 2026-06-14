@@ -21,7 +21,7 @@ const MenuButton = ({
       tabIndex={0}
       {...attrs}
     >
-      <div className="menu-item__z-container">{children}</div>
+      {children}
     </button>
   );
 };

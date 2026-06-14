@@ -94,6 +94,7 @@ const MapNodeGraphic = ({
         />
       )}
       <image
+        className="map-node"
         href={resolveSpireImage(`ui/map_nodes/map_${path}`)}
         x={nodeX}
         y={nodeY}
@@ -102,6 +103,7 @@ const MapNodeGraphic = ({
       />
       {hasFocus && (
         <image
+          className="map-pin"
           href={resolveSpireImage(`ui/map/map_marker_${config.character}`)}
           x={markerX}
           y={markerY}

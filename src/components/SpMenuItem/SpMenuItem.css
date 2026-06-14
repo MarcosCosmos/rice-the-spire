@@ -12,20 +12,15 @@
   min-height: var(--icon-size);
   width: auto;
   height: min-content;
-  z-index: 1;
   border-radius: 3px;
   padding: 1px;
-
-  .menu-item__z-container {
-    z-index: -1; /* contain the z-index */
-  }
 
   &:not([aria-disabled]) {
     &:hover {
       transform: scale(1.2);
     }
   }
-  
+
   @media not (prefers-reduced-motion) {
     transition: transform .1s;
   }

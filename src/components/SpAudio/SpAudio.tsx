@@ -2,10 +2,8 @@ import { useContext } from "react";
 import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
-import SpSpireImage from "../SpSpireImage";
 import "./SpAudio.css";
 import type { AudioDevice } from "zebar";
-import { SpNum } from "../SpTooltip";
 import SpCrossout from "../SpCrossout";
 
 const Audio = () => {
@@ -18,10 +16,10 @@ const Audio = () => {
   const label = "Volume";
   const tooltip = (
     <>
-      <h1>{label}: </h1>
-      <SpNum>{displayVolume}</SpNum>
+      <h2>{label}: </h2>
+      <strong>{displayVolume}</strong>
       {device.isMuted && " (muted)"}
-      <h1>Audio device: </h1>
+      <h2>Audio device: </h2>
       {device.name}
     </>
   );

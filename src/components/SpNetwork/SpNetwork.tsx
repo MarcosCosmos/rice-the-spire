@@ -4,7 +4,6 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import useDataSize from "../../util/useDataSize";
-import { SpNum } from "../SpTooltip";
 import SpCrossout from "../SpCrossout";
 
 const SpNetwork = () => {
@@ -17,18 +16,18 @@ const SpNetwork = () => {
   const label = "Network";
   const tooltip = (
     <>
-      <h1>{label}: </h1>
+      <h2>{label}: </h2>
       {gateway?.ssid || "unknown"}
-      <h1>Traffic: </h1>
+      <h2>Traffic: </h2>
       {transmitted && (
         <>
-          <SpNum>{transmitted}</SpNum> transmitted
+          <strong>{transmitted}</strong> transmitted
         </>
       )}
       ,{" "}
       {received && (
         <>
-          <SpNum>{received}</SpNum> received
+          <strong>{received}</strong> received
         </>
       )}
     </>

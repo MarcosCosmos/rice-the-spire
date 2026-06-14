@@ -7,13 +7,13 @@ const SpCredits = () => {
   const label = "Credits";
   const tooltip = (
     <>
-      <h1>Author: </h1>
+      <h2>Author: </h2>
       <SpSpireImage path="ui/characters/character_icon_defect" />
       MarcosCosmos
-      <h1>Assets belong to: </h1>
+      <h2>Assets belong to: </h2>
       <SpSpireImage path="ui/misc/icon_1024" />
       Slay the Spire 2 (&copy; MegaCrit)
-      <h1>Assets & API provided via: </h1>
+      <h2>Assets & API provided via: </h2>
       <img src="https://spire-codex.com/spire-codex-white-final.png" />
       Spire Codex
     </>

@@ -3,7 +3,6 @@ import ZebarContext from "../../data/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import type { WeatherOutput } from "zebar";
-import { SpNum } from "../SpTooltip";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -26,8 +25,8 @@ const SpWeather = ({ ...attrs }) => {
   const label = "Weather";
   const tooltip = (
     <>
-      <h1>{label}: </h1>
-      {cleanStatus} (<SpNum>{displayTemp}</SpNum>)
+      <h2>{label}: </h2>
+      {cleanStatus} (<strong>{displayTemp}</strong>)
     </>
   );
 
