@@ -1,7 +1,14 @@
 {
   "name": "rice-the-spire",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A Zebar bar themed around Slay the Spire 2 using assets served via Spire Codex",
+  "homepage": "https://github.com/MarcosCosmos/rice-the-spire",
+  "keywords": ["slay the spire", "slay the spire 2", "sts", "sts2", "zebar"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarcosCosmos/rice-the-spire.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "npm run build:dev && vite",

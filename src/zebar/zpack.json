@@ -1,11 +1,6 @@
 {
   "$schema": "https://github.com/glzr-io/zebar/raw/v3.3.1/resources/zpack-schema.json",
-  "name": "rice-the-spire",
-  "version": "0.1.0",
-  "description": "A Zebar bar themed around Slay the Spire 2 using assets provided via Spire Codex",
-  "tags": [],
   "previewImages": [],
-  "repositoryUrl": "https://github.com/MarcosCosmos/rice-the-spire",
   "widgets": [
     {
       "name": "prod",

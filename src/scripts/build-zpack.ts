@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import baseZPack from "../zebar/zpack.json" with { type: "json" };
 import { devImports, prodImports, transformHtml } from "./externals.ts";
+import rtsPackage from "../../package.json" with { type: "json" };
 
 const baseWidget = baseZPack.widgets[0];
 
@@ -37,5 +38,13 @@ for (const { fileName, contents } of widgetFiles) {
   });
 }
 
-const resultZPack = { ...baseZPack, widgets: resultZPackWidgets };
+const resultZPack = {
+  name: rtsPackage.name,
+  version: rtsPackage.version,
+  description: rtsPackage.description,
+  repositoryUrl: rtsPackage.homepage,
+  tags: rtsPackage.keywords,
+  ...baseZPack,
+  widgets: resultZPackWidgets,
+};
 fs.writeFileSync("dist/zpack.json", JSON.stringify(resultZPack, null, 2));
