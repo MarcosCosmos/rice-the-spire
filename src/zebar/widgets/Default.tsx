@@ -37,7 +37,6 @@ const Widget = () => {
       <SpireContext value={randomSpireConfig}>
         <SpMenuBar>
           <div className="column">
-            <SpCredits />
             <SpGlazeWorkspaces />
           </div>
           <div className="column">
