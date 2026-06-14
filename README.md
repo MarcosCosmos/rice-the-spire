@@ -8,7 +8,7 @@ It is both a toy project for personal use and a portfolio piece/excuse to explor
 
 It's also still a work in progress with bugs/issues I want to address and several features that I still want to add. Currently I only have support for [GlazeWM](https://github.com/glzr-io/glazewm) but support for [Komorebi](https://github.com/LGUG2Z/komorebi) or other window managers may be considered on request (or PR).
 
-Please note that I am the only (officially) intended consumer at this time. Similarly, I would not recommend it as an accessible application as such. I have deliberately made design decisions that create challenges in order to explore them from a programmatic and UX perspective. As such, while related feedback would be appreciated, true accessibility is not a genuine goal. I believe it would be better achieved from the ground up in a distinct project, which I'm open to being involved in.
+Please note that I am the only (officially) intended consumer at this time. Similarly, I would not recommend it as an accessible application as such. I have deliberately made design decisions that create challenges in order to explore them from a programmatic and UX perspective. As such, while related feedback would be appreciated, some accessibility considerations may be out of scope. I believe it would be better achieved from the ground up in a distinct project, which I'm open to being involved in.
 
 ## How to use it
 
