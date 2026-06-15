@@ -10,6 +10,7 @@ const SpSpireImage = ({ className, path, ...attrs }: SpSpireImageProps) => {
   className ||= "";
   return (
     <img
+      role="presentation"
       className={`spire-image ${className}`}
       src={resolveSpireImage(path)}
       {...attrs}
