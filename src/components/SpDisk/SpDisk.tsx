@@ -33,7 +33,7 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
       className="disk"
       disabled
       tooltip={tooltip}
-      aria-label={label}
+      aria-label="Disk"
       {...attrs}
     >
       <SpPower path="relics/data_disk">{usage}%</SpPower>

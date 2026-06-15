@@ -39,7 +39,7 @@ const WmDirection = () => {
     vertical: "intents/debuff",
   }[direction];
   const onClick = () => zebar?.glazewm?.runCommand("toggle-tiling-direction");
-  const label = `Tiling direction: ${direction}`;
+  const label = `Tiling direction`;
   const tooltip = (
     <>
       <h2>Tiling direction: </h2>

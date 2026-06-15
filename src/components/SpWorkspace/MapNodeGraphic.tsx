@@ -82,6 +82,7 @@ const MapNodeGraphic = ({
     <svg
       className="map-node-graphic"
       viewBox={`-${halfWidth} -${halfWidth} ${graphicWidth} ${graphicHeight}`}
+      aria-hidden="true"
       style={style}
     >
       {isDisplayed && (

@@ -30,11 +30,10 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
   }, [displayName]);
 
   className ||= "";
+  const label = `Workspace ${displayName}`;
   const tooltip = (
     <>
-      <h2>Workspace: </h2>
-      <strong>{displayName}</strong>
-      <h2>State: </h2>
+      <h2>Workspace state: </h2>
       {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
       {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
       {hasChildren ? <em>filled</em> : <>empty</>}
@@ -56,6 +55,7 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
       />
       <SpMenuItem
         className={`workspace workspace--${nodeType} ${filteredClasses} ${className}`}
+        aria-label={label}
         aria-describedby={tooltipId}
         {...attrs}
       >

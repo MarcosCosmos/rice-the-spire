@@ -54,7 +54,7 @@ const Widget = () => {
             <SpGlazeWorkspaces />
           </div>
           <div className="column">
-            <SpRegion aria-label="Resources">
+            <SpRegion aria-label="Datetime">
               <SpDateTime />
             </SpRegion>
           </div>
