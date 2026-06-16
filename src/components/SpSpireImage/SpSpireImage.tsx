@@ -6,7 +6,11 @@ export interface SpSpireImageProps {
   path: string;
 }
 
-const SpSpireImage = ({ className, path, ...attrs }: SpSpireImageProps) => {
+export const SpSpireImage = ({
+  className,
+  path,
+  ...attrs
+}: SpSpireImageProps) => {
   className ||= "";
   return (
     <img
@@ -17,4 +21,3 @@ const SpSpireImage = ({ className, path, ...attrs }: SpSpireImageProps) => {
     />
   );
 };
-export default SpSpireImage;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useClassFilter from "../../util/useClassFilter";
 import SpMenuItem from "../SpMenuItem";
-import MapNodeGraphic from "./MapNodeGraphic";
+import { MapNodeGraphic } from "./MapNodeGraphic";
 import { randomisableNodes } from "./common";
 import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
@@ -19,7 +19,11 @@ export interface SpWorkspaceProps extends Record<string, any> {
   data: SimplifiedWorkspaceInfo;
 }
 
-const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
+export const SpWorkspace = ({
+  className,
+  data,
+  ...attrs
+}: SpWorkspaceProps) => {
   const [nodeType, setNodeType] = useState("unknown");
   let { displayName, hasFocus, isDisplayed, hasChildren } = data;
 
@@ -66,5 +70,3 @@ const SpWorkspace = ({ className, data, ...attrs }: SpWorkspaceProps) => {
 
   return <SpTooltip anchor={anchor}>{tooltip}</SpTooltip>;
 };
-
-export default SpWorkspace;

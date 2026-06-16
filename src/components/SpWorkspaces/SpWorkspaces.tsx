@@ -7,7 +7,11 @@ export interface SpWorkspacesProps {
   children: ReactNode;
 }
 
-const SpWorkspaces = ({ className, children, ...attrs }: SpWorkspacesProps) => {
+export const SpWorkspaces = ({
+  className,
+  children,
+  ...attrs
+}: SpWorkspacesProps) => {
   className ||= "";
   const config = useContext(SpireContext);
   return (
@@ -21,5 +25,3 @@ const SpWorkspaces = ({ className, children, ...attrs }: SpWorkspacesProps) => {
     </div>
   );
 };
-
-export default SpWorkspaces;

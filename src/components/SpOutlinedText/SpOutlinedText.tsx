@@ -5,7 +5,7 @@ export interface SpOutlinedTextProps {
   className?: string;
   children: ReactNode;
 }
-const SpOutlinedText = ({
+export const SpOutlinedText = ({
   className,
   children,
   ...attrs
@@ -20,5 +20,3 @@ const SpOutlinedText = ({
     </span>
   );
 };
-
-export default SpOutlinedText;

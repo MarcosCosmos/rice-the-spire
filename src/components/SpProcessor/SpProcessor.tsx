@@ -3,7 +3,7 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 
-const SpProcessor = () => {
+export const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
   const cpu = zebar?.cpu;
   const usage = Math.round(cpu?.usage || 0);
@@ -20,5 +20,3 @@ const SpProcessor = () => {
     </SpMenuItem>
   );
 };
-
-export default SpProcessor;

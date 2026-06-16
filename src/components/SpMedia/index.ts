@@ -1,2 +1,3 @@
-import SpMedia from "./SpMedia";
+import { SpMedia } from "./SpMedia";
 export default SpMedia;
+export * from "./SpMedia";

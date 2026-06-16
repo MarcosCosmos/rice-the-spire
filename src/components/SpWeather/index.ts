@@ -1,2 +1,3 @@
-import SpWeather from "./SpWeather.tsx";
+import { SpWeather } from "./SpWeather";
 export default SpWeather;
+export * from "./SpWeather";

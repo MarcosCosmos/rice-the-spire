@@ -20,7 +20,7 @@ export interface MapNodeGraphicProps {
   hasFocus: boolean;
 }
 
-const MapNodeGraphic = ({
+export const MapNodeGraphic = ({
   nodeType,
   hasChildren,
   isDisplayed,
@@ -115,5 +115,3 @@ const MapNodeGraphic = ({
     </svg>
   );
 };
-
-export default MapNodeGraphic;

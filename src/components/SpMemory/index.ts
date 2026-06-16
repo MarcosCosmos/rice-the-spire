@@ -1,2 +1,3 @@
-import SpMemory from "./SpMemory.tsx";
+import { SpMemory } from "./SpMemory";
 export default SpMemory;
+export * from "./SpMemory";

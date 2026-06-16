@@ -5,7 +5,7 @@ import SpPower from "../SpPower";
 import "./SpAudio.css";
 import type { AudioDevice } from "zebar";
 
-const Audio = () => {
+export const SpAudio = () => {
   const zebar = useContext(ZebarContext);
   const device: Partial<AudioDevice> = zebar?.audio?.defaultPlaybackDevice || {
     volume: 0,
@@ -50,5 +50,3 @@ const Audio = () => {
     </SpMenuItem>
   );
 };
-
-export default Audio;

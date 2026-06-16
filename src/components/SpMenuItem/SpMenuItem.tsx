@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import MenuButton from "./MenuButton";
+import { MenuButton } from "./MenuButton";
 import SpTooltip from "../SpTooltip";
 import "./SpMenuItem.css";
 
@@ -9,7 +9,7 @@ export interface SpMenuItemProps extends Record<string, any> {
   tooltip?: string | ReactNode;
 }
 
-const SpMenuItem = ({
+export const SpMenuItem = ({
   className,
   children,
   tooltip,
@@ -22,5 +22,3 @@ const SpMenuItem = ({
   );
   return tooltip ? <SpTooltip anchor={button}>{tooltip}</SpTooltip> : button();
 };
-
-export default SpMenuItem;

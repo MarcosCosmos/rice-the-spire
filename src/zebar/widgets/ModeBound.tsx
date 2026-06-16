@@ -17,8 +17,8 @@ import {
   SpRegion,
   useRandomSpireConfig,
   SpCredits,
+  SpSystemTray,
 } from "@rice-the-spire";
-import SpSystemTray from "../../components/SpSystemTray";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);

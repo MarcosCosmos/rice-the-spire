@@ -7,7 +7,7 @@ export interface SpRegionProps {
   children: ReactNode;
 }
 
-const SpRegion = ({
+export const SpRegion = ({
   className,
   "aria-label": ariaLabel,
   children,
@@ -19,5 +19,3 @@ const SpRegion = ({
     </div>
   );
 };
-
-export default SpRegion;

@@ -1,4 +1,4 @@
-import React, { useContext, type MouseEvent } from "react";
+import { useContext, type MouseEvent } from "react";
 import SpMenuItem from "../SpMenuItem";
 import "./SpTrayIcon.css";
 import { ZebarContext } from "../../contexts";
@@ -7,7 +7,7 @@ export interface IconProps {
   iconUrl: string;
   tooltip?: string;
 }
-const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
+export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
   const zebar = useContext(ZebarContext);
   const onContextMenu = (event: MouseEvent) => {
     zebar?.systray?.onRightClick(id);
@@ -30,4 +30,3 @@ const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
     </SpMenuItem>
   );
 };
-export default SpTrayIcon;

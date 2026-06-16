@@ -1,2 +1,3 @@
-import SpPower from "./SpPower.tsx";
+import { SpPower } from "./SpPower";
 export default SpPower;
+export * from "./SpPower";

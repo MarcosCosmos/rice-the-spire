@@ -4,7 +4,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 
-const SpGlazeControls = () => {
+export const SpGlazeControls = () => {
   const zebar = useContext(ZebarContext);
   return zebar?.glazewm ? (
     <>
@@ -15,7 +15,7 @@ const SpGlazeControls = () => {
   ) : null;
 };
 
-const WmPause = () => {
+export const WmPause = () => {
   const zebar = useContext(ZebarContext);
   const onClick = () => zebar?.glazewm?.runCommand("wm-toggle-pause");
 
@@ -31,7 +31,7 @@ const WmPause = () => {
   ) : null;
 };
 
-const WmDirection = () => {
+export const WmDirection = () => {
   const zebar = useContext(ZebarContext)!;
   const direction = zebar.glazewm!.tilingDirection;
   const path = {
@@ -62,7 +62,7 @@ const WmDirection = () => {
   );
 };
 
-const WmModes = () => {
+export const WmModes = () => {
   const zebar = useContext(ZebarContext);
   const modeMap: Record<string, string> = {
     focus: "intents/status",
@@ -92,5 +92,3 @@ const WmModes = () => {
     );
   });
 };
-
-export default SpGlazeControls;

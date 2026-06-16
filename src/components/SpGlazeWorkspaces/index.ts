@@ -1,2 +1,3 @@
-import SpGlazeWorkspaces from "./SpGlazeWorkspaces.tsx";
+import { SpGlazeWorkspaces } from "./SpGlazeWorkspaces.tsx";
 export default SpGlazeWorkspaces;
+export * from "./SpGlazeWorkspaces.tsx";

@@ -6,7 +6,7 @@ export interface SpGlazeWorkspaceProps {
   data: Workspace;
 }
 
-const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
+export const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
   const zebar = useContext(ZebarContext);
   const onClick = () =>
     zebar?.glazewm?.runCommand(`focus --workspace ${data.name}`);
@@ -24,5 +24,3 @@ const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
     />
   );
 };
-
-export default SpGlazeWorkspace;

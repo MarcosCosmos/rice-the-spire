@@ -1,2 +1,3 @@
-import SpOutlinedText from "./SpOutlinedText.tsx";
+import { SpOutlinedText } from "./SpOutlinedText";
 export default SpOutlinedText;
+export * from "./SpOutlinedText";

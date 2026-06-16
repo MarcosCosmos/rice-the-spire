@@ -1,2 +1,3 @@
-import SpNetwork from "./SpNetwork";
+import { SpNetwork } from "./SpNetwork";
 export default SpNetwork;
+export * from "./SpNetwork";

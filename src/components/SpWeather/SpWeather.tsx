@@ -15,7 +15,7 @@ const weatherMap = {
   unknown: "child_of_the_stars",
 };
 
-const SpWeather = ({ ...attrs }) => {
+export const SpWeather = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);
   const data: Partial<WeatherOutput> = zebar?.weather ?? {
     status: "unknown" as WeatherStatus,
@@ -76,5 +76,3 @@ const SpWeather = ({ ...attrs }) => {
     </SpMenuItem>
   );
 };
-
-export default SpWeather;

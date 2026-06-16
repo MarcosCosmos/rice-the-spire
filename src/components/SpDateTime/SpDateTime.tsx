@@ -16,7 +16,7 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "long",
 });
 
-const SpDateTime = () => {
+export const SpDateTime = () => {
   const zebar = useContext(ZebarContext);
   const date = zebar?.date || { now: Date.now() };
   const label = "Datetime";
@@ -41,5 +41,3 @@ const SpDateTime = () => {
     </SpMenuItem>
   );
 };
-
-export default SpDateTime;

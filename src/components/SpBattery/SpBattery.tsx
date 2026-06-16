@@ -4,7 +4,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpBattery.css";
 
-const SpBattery = () => {
+export const SpBattery = () => {
   const zebar = useContext(ZebarContext);
   const data = zebar?.battery || {
     state: "unknown",
@@ -46,5 +46,3 @@ const SpBattery = () => {
 
   return null;
 };
-
-export default SpBattery;

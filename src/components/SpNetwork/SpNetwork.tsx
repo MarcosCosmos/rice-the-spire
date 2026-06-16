@@ -4,7 +4,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
 
-const SpNetwork = () => {
+export const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
   const gateway = zebar?.network?.defaultGateway;
   const traffic = zebar?.network?.traffic;
@@ -47,5 +47,3 @@ const SpNetwork = () => {
     </SpMenuItem>
   );
 };
-
-export default SpNetwork;

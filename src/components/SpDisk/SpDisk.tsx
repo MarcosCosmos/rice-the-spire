@@ -8,7 +8,7 @@ export interface DiskProps {
   label?: string;
 }
 
-const Disk = ({ data, label, ...attrs }: DiskProps) => {
+export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
   label ||= "Disk";
   const usage = Math.round(
     ((data.totalSpace.bytes - data.availableSpace.bytes) /
@@ -40,5 +40,3 @@ const Disk = ({ data, label, ...attrs }: DiskProps) => {
     </SpMenuItem>
   );
 };
-
-export default Disk;

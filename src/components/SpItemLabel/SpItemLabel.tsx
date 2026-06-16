@@ -7,7 +7,7 @@ export interface SpItemLabelProps {
   children: ReactNode;
 }
 
-const SpItemLabel = ({ className, children }: SpItemLabelProps) => {
+export const SpItemLabel = ({ className, children }: SpItemLabelProps) => {
   className ||= "";
   return (
     <div className={`item-label ${className}`} aria-hidden="true">
@@ -15,5 +15,3 @@ const SpItemLabel = ({ className, children }: SpItemLabelProps) => {
     </div>
   );
 };
-
-export default SpItemLabel;

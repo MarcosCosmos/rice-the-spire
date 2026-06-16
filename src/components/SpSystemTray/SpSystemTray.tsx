@@ -3,9 +3,9 @@ import { resolveSpireImage } from "../../util";
 import SpRegion from "../SpRegion";
 import "./SpSystemTray.css";
 import { ZebarContext } from "../../contexts";
-import SpTrayIcon from "./SpTrayIcon";
+import { SpTrayIcon } from "./SpTrayIcon";
 
-const SpSystemTray = () => {
+export const SpSystemTray = () => {
   const backdropUrl = resolveSpireImage("ui/top_bar/top_bar_char_backdrop");
   const zebar = useContext(ZebarContext);
   return (
@@ -57,4 +57,3 @@ const SpSystemTray = () => {
     </SpRegion>
   );
 };
-export default SpSystemTray;

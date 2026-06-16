@@ -1,7 +1,6 @@
-import Card from "./Card";
+import { SpCard } from "./SpCard";
 import "./SpMedia.css";
 
-const SpMedia = () => {
-  return <Card name="hidden_gem" />;
+export const SpMedia = () => {
+  return <SpCard name="hidden_gem" />;
 };
-export default SpMedia;

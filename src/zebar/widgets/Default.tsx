@@ -15,8 +15,8 @@ import {
   SpRegion,
   useRandomSpireConfig,
   SpCredits,
+  SpSystemTray,
 } from "@rice-the-spire";
-import SpSystemTray from "../../components/SpSystemTray";
 
 const Widget = () => {
   const randomSpireConfig = useRandomSpireConfig();

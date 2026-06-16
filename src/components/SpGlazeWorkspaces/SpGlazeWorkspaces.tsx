@@ -2,7 +2,7 @@ import { useContext } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
 import SpWorkspaces from "../SpWorkspaces";
 import SpGlazeWorkspace from "../SpGlazeWorkspace";
-const SpSpGlazeWorkspaces = () => {
+export const SpGlazeWorkspaces = () => {
   const zebar = useContext(ZebarContext);
   return (
     zebar?.glazewm && (
@@ -14,5 +14,3 @@ const SpSpGlazeWorkspaces = () => {
     )
   );
 };
-
-export default SpSpGlazeWorkspaces;

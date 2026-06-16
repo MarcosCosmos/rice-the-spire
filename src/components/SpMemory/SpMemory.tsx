@@ -3,7 +3,7 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 
-const SpMemory = () => {
+export const SpMemory = () => {
   const zebar = useContext(ZebarContext);
   const memory = zebar?.memory;
   const usage = Math.round(memory?.usage || 0);
@@ -33,5 +33,3 @@ const SpMemory = () => {
     </SpMenuItem>
   );
 };
-
-export default SpMemory;

@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import "./SpMenuBar.css";
 import { NavigationContext } from "../../contexts";
-const SpMenuBar = ({
+export const SpMenuBar = ({
   className,
   children,
   ...attrs
@@ -17,4 +17,3 @@ const SpMenuBar = ({
     </div>
   );
 };
-export default SpMenuBar;

@@ -14,7 +14,7 @@ export interface SpAppProps {
   zebar: Partial<ProviderConfigMap>;
   children: ReactNode;
 }
-const SpApp = ({ zebar, children }: SpAppProps) => {
+export const SpApp = ({ zebar, children }: SpAppProps) => {
   const [output, setOutput] = useState<
     | Partial<{
         [TName in keyof ProviderConfigMap]: ProviderMap[ProviderConfigMap[TName]["type"]]["output"];
@@ -62,5 +62,3 @@ const SpApp = ({ zebar, children }: SpAppProps) => {
     </ZebarContext>
   );
 };
-
-export default SpApp;

@@ -7,7 +7,7 @@ export interface SpTooltipProps {
   children: ReactNode;
 }
 
-const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
+export const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
   const id = useId();
   const tooltipTargetingContext = useContext(TooltipTargetingContext);
   const isFocal = tooltipTargetingContext?.targetId === id;
@@ -28,4 +28,3 @@ const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
     </div>
   );
 };
-export default SpTooltip;

@@ -9,7 +9,12 @@ export interface SpPowerProps {
   children?: ReactNode;
 }
 
-const SpPower = ({ className, path, children, ...attrs }: SpPowerProps) => {
+export const SpPower = ({
+  className,
+  path,
+  children,
+  ...attrs
+}: SpPowerProps) => {
   className ||= "";
   if (typeof path === "string") {
     path = [path];
@@ -23,5 +28,3 @@ const SpPower = ({ className, path, children, ...attrs }: SpPowerProps) => {
     </div>
   );
 };
-
-export default SpPower;

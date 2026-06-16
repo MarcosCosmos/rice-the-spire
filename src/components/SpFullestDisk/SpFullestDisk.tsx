@@ -2,7 +2,7 @@ import { useContext } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
 import SpDisk from "../SpDisk";
 
-const SpFullestDisk = () => {
+export const SpFullestDisk = () => {
   const zebar = useContext(ZebarContext);
 
   if (zebar?.disk?.disks && zebar.disk.disks.length > 0) {
@@ -22,5 +22,3 @@ const SpFullestDisk = () => {
 
   return null;
 };
-
-export default SpFullestDisk;

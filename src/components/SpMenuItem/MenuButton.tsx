@@ -13,7 +13,7 @@ const register = (element: HTMLElement | null) => {
   }
 };
 
-const MenuButton = ({
+export const MenuButton = ({
   className,
   children,
   disabled,
@@ -33,4 +33,3 @@ const MenuButton = ({
     </button>
   );
 };
-export default MenuButton;

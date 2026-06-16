@@ -3,7 +3,7 @@ import SpPower from "../SpPower";
 import SpSpireImage from "../SpSpireImage";
 import "./SpCredits.css";
 
-const SpCredits = () => {
+export const SpCredits = () => {
   const label = "Credits";
   const tooltip = (
     <>
@@ -29,4 +29,3 @@ const SpCredits = () => {
     </SpMenuItem>
   );
 };
-export default SpCredits;
