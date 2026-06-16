@@ -1,5 +1,3 @@
-import { createContext } from "react";
-
 interface ItemData {
   element: HTMLElement;
   focusListener: (event: Event) => void;
@@ -22,7 +20,7 @@ export class Navigation {
   register(element: HTMLElement) {
     const item = {
       element,
-      focusListener: (event: Event) => this.focusListener(item, event),
+      focusListener: () => this.focusListener(item),
     };
     let i = 0;
     while (
@@ -98,7 +96,7 @@ export class Navigation {
       event.preventDefault();
     }
   }
-  focusListener(item: ItemData, event: Event) {
+  focusListener(item: ItemData) {
     this.position = this.items.indexOf(item);
   }
   start() {
