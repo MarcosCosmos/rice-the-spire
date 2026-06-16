@@ -1,5 +1,5 @@
 .credits {
-    & + .tooltip {
+    + .tooltip__box {
         img {
             height: 1em;
             width: 1em;

@@ -14,6 +14,7 @@
 .workspace-shrinkwrap {
     position: relative;
     display: flex;
+    align-self: flex-end;
     align-items: end;
     &:has(.menu-item:not(:disabled):hover) {
         .map-node {

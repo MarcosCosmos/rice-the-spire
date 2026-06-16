@@ -33,8 +33,4 @@
     justify-content: space-between;
     align-items: end;
   }
-
-  .tooltip-shrinkwrap {
-    align-items: end;
-  }
 }

@@ -8,6 +8,7 @@ import {
 } from "zebar";
 import ZebarContext from "../../contexts/ZebarContext";
 import "./SpApp.css";
+import { TooltipTargetingContext, type TooltipTargeting } from "../../contexts";
 
 export interface SpAppProps {
   zebar: Partial<ProviderConfigMap>;
@@ -26,9 +27,39 @@ const SpApp = ({ zebar, children }: SpAppProps) => {
       zebar as unknown as ProviderGroupConfig,
     );
     providers.onOutput(() => setOutput(providers.outputMap));
+  }, [zebar]);
+  const [tooltipTargeting, setTooltipTargeting] = useState<
+    TooltipTargeting | undefined
+  >();
+  useEffect(() => {
+    const updateTarget = (newTarget?: string) => {
+      if (newTarget !== tooltipTargeting?.targetId) {
+        setTooltipTargeting({
+          targetId: newTarget,
+          updateTarget,
+        });
+      }
+    };
+    setTooltipTargeting({ targetId: tooltipTargeting?.targetId, updateTarget });
+    const escapeListener = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        console.log("escaping tooltip");
+        updateTarget(undefined);
+      }
+    };
+    document.addEventListener("keydown", escapeListener);
+    return () => {
+      document.removeEventListener("keydown", escapeListener);
+    };
   }, []);
 
-  return <ZebarContext value={output}>{children}</ZebarContext>;
+  return (
+    <ZebarContext value={output}>
+      <TooltipTargetingContext value={tooltipTargeting}>
+        {children}
+      </TooltipTargetingContext>
+    </ZebarContext>
+  );
 };
 
 export default SpApp;

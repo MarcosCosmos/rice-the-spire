@@ -88,9 +88,6 @@ export class Navigation {
           }),
         );
         break;
-      case "Escape":
-        // todo: close tooltip by setting a class that gets reset on any other related event (including re-hover of relevant items);
-        break;
       default:
         preventDefault = false;
     }
