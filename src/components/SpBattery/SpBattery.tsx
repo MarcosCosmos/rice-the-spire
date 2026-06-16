@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ZebarContext from "../../data/ZebarContext";
+import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpBattery.css";

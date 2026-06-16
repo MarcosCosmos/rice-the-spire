@@ -6,7 +6,7 @@ import {
   type ProviderGroupConfig,
   type ProviderMap,
 } from "zebar";
-import ZebarContext from "../../data/ZebarContext";
+import ZebarContext from "../../contexts/ZebarContext";
 import "./SpApp.css";
 
 export interface SpAppProps {

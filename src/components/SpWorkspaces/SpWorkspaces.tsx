@@ -1,5 +1,5 @@
 import { useContext, type ReactNode } from "react";
-import SpireContext from "../../data/SpireContext/SpireContext";
+import SpireContext from "../../contexts/SpireContext/SpireContext";
 import "./SpWorkspaces.css";
 
 export interface SpWorkspacesProps {

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { type Workspace } from "glazewm";
-import ZebarContext from "../../data/ZebarContext";
+import ZebarContext from "../../contexts/ZebarContext";
 import SpWorkspace from "../SpWorkspace";
 export interface SpGlazeWorkspaceProps {
   data: Workspace;
@@ -18,7 +18,7 @@ const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
   return (
     <SpWorkspace
       className="glazewm-workspace"
-      data={{displayName, hasChildren, isDisplayed, hasFocus}}
+      data={{ displayName, hasChildren, isDisplayed, hasFocus }}
       onClick={onClick}
       {...attrs}
     />

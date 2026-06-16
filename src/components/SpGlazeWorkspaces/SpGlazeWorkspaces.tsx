@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ZebarContext from "../../data/ZebarContext";
+import ZebarContext from "../../contexts/ZebarContext";
 import SpWorkspaces from "../SpWorkspaces";
 import SpGlazeWorkspace from "../SpGlazeWorkspace";
 const SpSpGlazeWorkspaces = () => {
