@@ -32,7 +32,8 @@ const SpApp = ({ zebar, children }: SpAppProps) => {
     TooltipTargeting | undefined
   >();
   useEffect(() => {
-    const updateTarget = (newTarget?: string) => {
+    console.log("setup effect");
+    const updateTarget = (newTarget: string | null) => {
       if (newTarget !== tooltipTargeting?.targetId) {
         setTooltipTargeting({
           targetId: newTarget,
@@ -40,11 +41,15 @@ const SpApp = ({ zebar, children }: SpAppProps) => {
         });
       }
     };
-    setTooltipTargeting({ targetId: tooltipTargeting?.targetId, updateTarget });
+    setTooltipTargeting({
+      targetId: tooltipTargeting?.targetId || null,
+      updateTarget,
+    });
     const escapeListener = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        console.log("escaping tooltip");
-        updateTarget(undefined);
+        updateTarget("none");
+
+        console.log("escaping tooltip", tooltipTargeting?.targetId);
       }
     };
     document.addEventListener("keydown", escapeListener);
@@ -52,7 +57,7 @@ const SpApp = ({ zebar, children }: SpAppProps) => {
       document.removeEventListener("keydown", escapeListener);
     };
   }, []);
-
+  console.log("tooltip t", tooltipTargeting?.targetId);
   return (
     <ZebarContext value={output}>
       <TooltipTargetingContext value={tooltipTargeting}>

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useId, type ReactNode } from "react";
+import { useContext, useId, type ReactNode } from "react";
 import "./SpTooltip.css";
 import { TooltipTargetingContext } from "../../contexts";
 
@@ -12,6 +12,7 @@ const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
   const tooltipTargetingContext = useContext(TooltipTargetingContext);
   const isFocal = tooltipTargetingContext?.targetId === id;
   const takeFocal = () => {
+    console.log("hi", id);
     tooltipTargetingContext?.updateTarget(id);
   };
   return (
