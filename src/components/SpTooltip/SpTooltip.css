@@ -8,7 +8,6 @@
 .tooltip {
   visibility: hidden;
   position: absolute;
-  transition: visibility 0s;
   z-index: 100;
   width: max-content;
 

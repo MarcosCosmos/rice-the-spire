@@ -20,7 +20,6 @@ export class Navigation {
     this.keyListener = (event: KeyboardEvent) => this.onKeydown(event);
   }
   register(element: HTMLElement) {
-    console.log("got", element);
     const item = {
       element,
       focusListener: (event: Event) => this.focusListener(item, event),
@@ -49,12 +48,10 @@ export class Navigation {
       this.position = position;
       if (position < this.items.length) {
         this.items[position].element.focus();
-        console.log("focusing", this.items[position].element);
       }
     }
   }
   onKeydown(event: KeyboardEvent) {
-    console.log(event.key);
     // no-op
     if (this.items.length === 0) {
       return;
@@ -90,8 +87,6 @@ export class Navigation {
             button: 0,
           }),
         );
-
-        console.log(event.key);
         break;
       case "Escape":
         // todo: close tooltip by setting a class that gets reset on any other related event (including re-hover of relevant items);
