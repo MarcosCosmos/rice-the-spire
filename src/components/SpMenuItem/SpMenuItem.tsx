@@ -1,7 +1,7 @@
+import { type ReactNode } from "react";
 import MenuButton from "./MenuButton";
 import SpTooltip from "../SpTooltip";
 import "./SpMenuItem.css";
-import type { ReactNode } from "react";
 
 export interface SpMenuItemProps extends Record<string, any> {
   className?: string;

@@ -16,7 +16,9 @@ const SpPower = ({ className, path, children, ...attrs }: SpPowerProps) => {
   }
   return (
     <div className={`power ${className}`} {...attrs}>
-      {path.map(p => <SpSpireImage className="power__image" path={p} />)}
+      {path.map((p) => (
+        <SpSpireImage className="power__image" path={p} key={p} />
+      ))}
       {children && <SpItemLabel>{children}</SpItemLabel>}
     </div>
   );

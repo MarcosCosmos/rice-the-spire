@@ -7,7 +7,6 @@ import useDataSize from "../../util/useDataSize";
 const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
   const gateway = zebar?.network?.defaultGateway;
-  console.log(zebar?.network);
   const traffic = zebar?.network?.traffic;
   const transmitted = traffic?.transmitted && useDataSize(traffic.transmitted);
   const received = traffic?.received && useDataSize(traffic.received);
