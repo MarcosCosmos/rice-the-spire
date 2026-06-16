@@ -16,6 +16,7 @@ import {
   useRandomSpireConfig,
   SpCredits,
 } from "@rice-the-spire";
+import SpSystemTray from "../../components/SpSystemTray";
 
 const Widget = () => {
   const randomSpireConfig = useRandomSpireConfig();
@@ -32,6 +33,7 @@ const Widget = () => {
         audio: { type: "audio" },
         disk: { type: "disk" },
         network: { type: "network" },
+        systray: { type: "systray" },
       }}
     >
       <SpireContext value={randomSpireConfig}>
@@ -39,6 +41,7 @@ const Widget = () => {
           <div className="column">
             <SpGlazeWorkspaces />
           </div>
+          <SpSystemTray />
           <div className="column">
             <SpRegion aria-label="Datetime">
               <SpDateTime />

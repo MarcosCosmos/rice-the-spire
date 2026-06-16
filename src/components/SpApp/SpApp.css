@@ -22,8 +22,6 @@ body,
 }
 
 button, [type='button'], [type='reset'], [type='submit'] {
-  -webkit-appearance: unset;
-  appearance: unset;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;

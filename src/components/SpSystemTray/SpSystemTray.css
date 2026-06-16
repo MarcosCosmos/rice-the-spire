@@ -1,0 +1,25 @@
+.system-tray {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin-top: .15rem;
+    .system-tray__left-bookend, .system-tray__center-background, .system-tray__right-bookend {
+        height: 2.5rem;
+    }
+    .system-tray__center-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+        overflow: hidden;
+    }
+    .system-tray__tray {
+        position: relative;
+        display: flex;
+    }
+    .system-tray__content {
+        display: flex;
+        z-index: 1;
+    }
+}

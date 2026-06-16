@@ -18,6 +18,7 @@ import {
   useRandomSpireConfig,
   SpCredits,
 } from "@rice-the-spire";
+import SpSystemTray from "../../components/SpSystemTray";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -46,6 +47,7 @@ const Widget = () => {
         audio: { type: "audio" },
         disk: { type: "disk" },
         network: { type: "network" },
+        systray: { type: "systray" },
       }}
     >
       <SpireContext value={randomConfig}>
@@ -59,15 +61,13 @@ const Widget = () => {
             </SpRegion>
           </div>
           <div className="column anchor-tooltips-inline-end">
-            {/* <SpRegion className="media" aria-label="Media">
-              <SpMedia />
-            </SpRegion> */}
             <SpRegion
               className="wm-controls"
               aria-label="Window Manager controls"
             >
               <SpGlazeControls />
             </SpRegion>
+            <SpSystemTray />
             <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
