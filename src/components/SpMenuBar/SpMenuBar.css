@@ -15,7 +15,10 @@
   background-color: rgba(0, 0, 0, 0.75);
   background-size: contain;
 
-  &.menubar--no-binding-mode {
+  
     background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
+
+  &:not(.menubar--no-binding-mode) {
+    filter: grayscale(75%);
   }
 }
