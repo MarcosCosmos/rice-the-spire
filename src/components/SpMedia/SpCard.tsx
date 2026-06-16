@@ -1,5 +1,5 @@
 import { resolveSpireImage } from "../../util";
-import "./Card.css";
+import "./SpCard.css";
 export interface CardProps {
   name: string;
 }
