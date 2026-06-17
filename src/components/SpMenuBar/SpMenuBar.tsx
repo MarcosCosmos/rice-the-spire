@@ -15,7 +15,8 @@ export const SpMenuBar = ({
   className ??= "";
   return (
     <div className={`menubar ${className}`} role="menubar" {...attrs}>
-      {children}
+      <div className="menubar__background" />
+      <div className="menubar__content">{children}</div>
     </div>
   );
 };
