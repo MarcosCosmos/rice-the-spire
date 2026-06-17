@@ -1,11 +1,12 @@
 .card {
-    position: relative;
-    width: 325px;
-    height: 40px;
+    width: calc(var(--card-scale) * var(--base-width));
+    height: calc(var(--card-scale) * var(--base-height));
     > svg {
         position: absolute;
-        top: 0;
         left: 0;
-        width: 40%;
+        top: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
     }
 }

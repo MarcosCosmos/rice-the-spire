@@ -1,9 +1,9 @@
 export default (path: string) => {
-  let [category, subcategory, entry] = path.split("/");
-  if (!entry) {
-    entry = subcategory;
-    subcategory = "";
-  }
+  const splitPoint = path.lastIndexOf("/");
+  let [category, entry] = [
+    path.substring(0, splitPoint),
+    path.substring(splitPoint + 1),
+  ];
   let key = entry;
   switch (category) {
     case "cards-full":
@@ -19,6 +19,5 @@ export default (path: string) => {
         break;
       }
   }
-  const dir = (subcategory && [category, subcategory].join("/")) || category;
-  return `https://cdn.spire-codex.com/${dir}/${key}.webp`;
+  return `https://cdn.spire-codex.com/${category}/${key}.webp`;
 };

@@ -1,0 +1,9 @@
+.media {
+    position: relative;
+    
+    text-align: center;
+    
+    .media__text {
+        margin-top: .9rem;
+    }
+}

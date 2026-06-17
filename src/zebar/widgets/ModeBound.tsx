@@ -18,6 +18,7 @@ import {
   useRandomSpireConfig,
   SpCredits,
   SpSystemTray,
+  SpMedia,
 } from "@rice-the-spire";
 import type { SystrayIcon } from "zebar";
 
@@ -78,6 +79,7 @@ const Widget = () => {
           <div className="column">
             <SpRegion aria-label="Datetime">
               <SpDateTime />
+              <SpMedia />
             </SpRegion>
           </div>
           <div className="column anchor-tooltips-inline-end">
