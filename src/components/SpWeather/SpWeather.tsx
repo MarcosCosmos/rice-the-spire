@@ -22,7 +22,7 @@ export const SpWeather = ({ ...attrs }) => {
   };
   const cleanStatus = data.status?.replace(/_/g, " ") ?? "unknown";
   const displayTemp = data.celsiusTemp
-    ? `${Math.round(data.celsiusTemp).toFixed(2)}°C`
+    ? `${Math.round(data.celsiusTemp).toPrecision(3)}°C`
     : "?";
   const label = "Weather";
   const tooltip = (
