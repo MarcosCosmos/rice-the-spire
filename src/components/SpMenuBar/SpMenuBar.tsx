@@ -9,7 +9,7 @@ export const SpMenuBar = ({
   useEffect(() => {
     NavigationContext.start();
     return NavigationContext.stop;
-  }, [])
+  }, []);
   className ||= "";
   return (
     <div className={`menubar ${className}`} role="menubar" {...attrs}>

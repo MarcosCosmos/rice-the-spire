@@ -7,9 +7,9 @@ export default (path: string) => {
   let key;
   switch (category) {
     case "cards-full":
-        category += "/stable";
-        key = entry;
-        break;
+      category += "/stable";
+      key = entry;
+      break;
     case "powers":
     case "orbs":
       if (entry === "empty_slot") {

@@ -21,7 +21,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@rice-the-spire": ["./src"],
+      "@rice-the-spire": ["./src"]
     }
   },
   "include": [

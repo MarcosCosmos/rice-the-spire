@@ -5,7 +5,7 @@ import "./SpMenuItem.css";
 
 export interface SpMenuItemProps extends Record<string, any> {
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
   tooltip?: string | ReactNode;
 }
 

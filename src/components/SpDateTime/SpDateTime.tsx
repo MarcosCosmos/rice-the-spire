@@ -17,13 +17,12 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
 });
 
 export const SpDateTime = () => {
-  const zebar = useContext(ZebarContext);
-  const date = zebar?.date || { now: Date.now() };
+  const now = Date.now();
   const label = "Datetime";
   const tooltip = (
     <>
       <h2>Date and time: </h2>
-      {longFormat.format(date.now)}
+      {longFormat.format(now)}
     </>
   );
 
@@ -36,7 +35,7 @@ export const SpDateTime = () => {
     >
       <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
       <SpOutlinedText aria-hidden="true">
-        {shortDateFormat.format(date.now)} {shortTimeFormat.format(date.now)}
+        {shortDateFormat.format(now)} {shortTimeFormat.format(now)}
       </SpOutlinedText>
     </SpMenuItem>
   );
