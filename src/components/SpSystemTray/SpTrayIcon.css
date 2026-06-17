@@ -1,6 +1,5 @@
 .tray-icon {
     position: relative;
-    margin: .5rem;
     .tray-icon__background {
         filter: grayscale(75%);
         position: absolute;
