@@ -13,7 +13,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
     event.preventDefault();
     void zebar?.systray?.onRightClick(id);
   };
-  let label = tooltip;
+
   if ((tooltip?.length ?? 0) === 0) {
     tooltip = "Tray icon (Nameless)";
   }
