@@ -15,12 +15,16 @@ export class Navigation {
   constructor() {
     this.items = [];
     this.position = 0;
-    this.keyListener = (event: KeyboardEvent) => { this.onKeydown(event); };
+    this.keyListener = (event: KeyboardEvent) => {
+      this.onKeydown(event);
+    };
   }
   register(element: HTMLElement) {
     const item = {
       element,
-      focusListener: () => { this.focusListener(item); },
+      focusListener: () => {
+        this.focusListener(item);
+      },
     };
     let i = 0;
     while (
@@ -32,7 +36,9 @@ export class Navigation {
     }
     this.items.splice(i, 0, item);
     element.addEventListener("focus", item.focusListener);
-    return () => { this.deregister(item); };
+    return () => {
+      this.deregister(item);
+    };
   }
   deregister(item: ItemData) {
     item.element.removeEventListener("focus", item.focusListener);

@@ -33,7 +33,7 @@ export const WmPause = () => {
 
 export const WmDirection = () => {
   const zebar = useContext(ZebarContext);
-  const direction = zebar?.glazewm?.tilingDirection ?? 'horizontal';
+  const direction = zebar?.glazewm?.tilingDirection ?? "horizontal";
   const path = {
     horizontal: "intents/escape",
     vertical: "intents/debuff",

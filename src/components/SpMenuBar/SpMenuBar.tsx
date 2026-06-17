@@ -8,7 +8,9 @@ export const SpMenuBar = ({
 }: { className?: string; children: ReactNode } & Record<string, unknown>) => {
   useEffect(() => {
     NavigationContext.start();
-    return () => { NavigationContext.stop(); };
+    return () => {
+      NavigationContext.stop();
+    };
   }, []);
   className ??= "";
   return (
