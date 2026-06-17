@@ -5,12 +5,12 @@ export const SpMenuBar = ({
   className,
   children,
   ...attrs
-}: { className?: string; children: ReactNode } & Record<string, any>) => {
+}: { className?: string; children: ReactNode } & Record<string, unknown>) => {
   useEffect(() => {
     NavigationContext.start();
-    return NavigationContext.stop;
+    return () => { NavigationContext.stop(); };
   }, []);
-  className ||= "";
+  className ??= "";
   return (
     <div className={`menubar ${className}`} role="menubar" {...attrs}>
       {children}

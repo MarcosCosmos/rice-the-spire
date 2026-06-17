@@ -23,12 +23,12 @@ import type { SystrayIcon } from "zebar";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
-  const hasMode = (zebar?.glazewm?.bindingModes?.length || 0) > 0;
-  const bindingModeClasses = hasMode
-    ? zebar?.glazewm?.bindingModes
-        .map((mode) => "menubar--binding-mode-" + mode)
-        .join("")
-    : "menubar--no-binding-mode";
+  const bindingModeClasses =
+    (zebar?.glazewm?.bindingModes
+      .map((mode) => "menubar--binding-mode-" + mode.name)
+      .join("") ??
+      "") ||
+    "menubar--no-binding-mode";
   return (
     <SpMenuBar className={`menubar--modebound ${bindingModeClasses}`}>
       {children}

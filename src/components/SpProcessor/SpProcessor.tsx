@@ -6,12 +6,12 @@ import SpPower from "../SpPower";
 export const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
   const cpu = zebar?.cpu;
-  const usage = Math.round(cpu?.usage || 0);
+  const usage = Math.round(cpu?.usage ?? 0);
   const label = "CPU";
   const tooltip = (
     <>
       <h2>{label} usage: </h2>
-      {(usage && <strong>{usage}%</strong>) || "unknown"}
+      {cpu ? <strong>{usage.toFixed(0)}%</strong> : "unknown"}
     </>
   );
   return (

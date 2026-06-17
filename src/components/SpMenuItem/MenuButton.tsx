@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { NavigationContext } from "../../contexts";
 
-export interface MenuButtonProps extends Record<string, any> {
+export interface MenuButtonProps extends Record<string, unknown> {
   className?: string;
   children: ReactNode;
   disabled?: boolean;
@@ -19,7 +19,7 @@ export const MenuButton = ({
   disabled,
   ...attrs
 }: MenuButtonProps) => {
-  className ||= "";
+  className ??= "";
   return (
     <button
       className={`menu-item ${className}`}

@@ -9,13 +9,13 @@ export interface DiskProps {
 }
 
 export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
-  label ||= "Disk";
+  label ??= "Disk";
   const usage = Math.round(
     ((data.totalSpace.bytes - data.availableSpace.bytes) /
       data.totalSpace.bytes) *
       100,
   );
-  const name = data.name || data.mountPoint;
+  const name = data.name ?? data.mountPoint;
   const tooltip = (
     <>
       <h2>{label}: </h2>

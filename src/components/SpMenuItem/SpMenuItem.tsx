@@ -3,7 +3,7 @@ import { MenuButton } from "./MenuButton";
 import SpTooltip from "../SpTooltip";
 import "./SpMenuItem.css";
 
-export interface SpMenuItemProps extends Record<string, any> {
+export interface SpMenuItemProps extends Record<string, unknown> {
   className?: string;
   children?: ReactNode;
   tooltip?: string | ReactNode;

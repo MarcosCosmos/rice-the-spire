@@ -10,15 +10,15 @@ export interface IconProps {
 export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
   const zebar = useContext(ZebarContext);
   const onContextMenu = (event: MouseEvent) => {
-    zebar?.systray?.onRightClick(id);
     event.preventDefault();
+    void zebar?.systray?.onRightClick(id);
   };
   return (
     <SpMenuItem
       id={`systray-icon-${id}`}
       className="tray-icon"
-      tooltip={tooltip || "?"}
-      aria-label={tooltip || "Unidentified system tray icon"}
+      tooltip={tooltip ?? "?"}
+      aria-label={tooltip ?? "Unidentified system tray icon"}
       onMouseEnter={() => zebar?.systray?.onHoverEnter(id)}
       onMouseLeave={() => zebar?.systray?.onHoverLeave(id)}
       onMouseMove={() => zebar?.systray?.onHoverMove(id)}

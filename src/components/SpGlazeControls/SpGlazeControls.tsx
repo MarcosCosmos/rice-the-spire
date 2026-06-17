@@ -32,15 +32,15 @@ export const WmPause = () => {
 };
 
 export const WmDirection = () => {
-  const zebar = useContext(ZebarContext)!;
-  const direction = zebar.glazewm!.tilingDirection;
+  const zebar = useContext(ZebarContext);
+  const direction = zebar?.glazewm?.tilingDirection ?? 'horizontal';
   const path = {
     horizontal: "intents/escape",
     vertical: "intents/debuff",
   }[direction];
   const onClick = () => {
     console.log("activated");
-    zebar?.glazewm?.runCommand("toggle-tiling-direction");
+    void zebar?.glazewm?.runCommand("toggle-tiling-direction");
   };
   const label = `Tiling direction`;
   const tooltip = (
@@ -71,7 +71,7 @@ export const WmModes = () => {
   return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
     displayName ||= name;
     const onClick = () =>
-      zebar?.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
+      zebar.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
     const label = `${displayName} mode`;
     const tooltip = (
       <>

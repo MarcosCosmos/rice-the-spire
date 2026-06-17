@@ -12,7 +12,7 @@ export const SpRegion = ({
   "aria-label": ariaLabel,
   children,
 }: SpRegionProps) => {
-  className ||= "";
+  className ??= "";
   return (
     <div className={`region ${className}`} role="region" aria-label={ariaLabel}>
       {children}

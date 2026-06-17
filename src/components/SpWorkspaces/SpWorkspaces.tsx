@@ -12,7 +12,7 @@ export const SpWorkspaces = ({
   children,
   ...attrs
 }: SpWorkspacesProps) => {
-  className ||= "";
+  className ??= "";
   const config = useContext(SpireContext);
   return (
     <div

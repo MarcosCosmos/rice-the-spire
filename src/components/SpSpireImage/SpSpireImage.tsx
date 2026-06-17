@@ -11,7 +11,7 @@ export const SpSpireImage = ({
   path,
   ...attrs
 }: SpSpireImageProps) => {
-  className ||= "";
+  className ??= "";
   return (
     <img
       aria-hidden="true"

@@ -17,12 +17,12 @@ export const SpSystemTray = ({
   sortComparator,
   expandAnchor,
 }: SpSystemTrayProps) => {
-  expandAnchor ||= "start";
+  expandAnchor ??= "start";
   const zebar = useContext(ZebarContext);
   const [expanded, setExpanded] = useState(false);
   const [shownIcons, setShownIcons] = useState<SystrayIcon[]>([]);
   const availableIcons = zebar?.systray?.icons;
-  if (iconLimit && iconLimit >= (availableIcons?.length || 0)) {
+  if (iconLimit && iconLimit >= (availableIcons?.length ?? 0)) {
     iconLimit = undefined;
   }
 
@@ -30,13 +30,13 @@ export const SpSystemTray = ({
   console.log("showing", iconsToShow);
 
   useEffect(() => {
-    if ((availableIcons?.length || 0) === 0 && shownIcons.length === 0) {
+    if ((availableIcons?.length ?? 0) === 0 && shownIcons.length === 0) {
       return;
     }
     const sortedIcons = sortComparator
       ? availableIcons?.sort(sortComparator)
       : availableIcons;
-    setShownIcons(sortedIcons?.slice(0, iconsToShow) || []);
+    setShownIcons(sortedIcons?.slice(0, iconsToShow) ?? []);
   }, [expanded, availableIcons, iconsToShow]);
 
   const expanderLabel = expanded ? "Collapse tray" : "Expand tray";
@@ -49,7 +49,7 @@ export const SpSystemTray = ({
     <SpRegion aria-label="System Tray">
       <PotionBelt>
         <div
-          className={`system-tray system-tray--expand-${expandAnchor} ${expanded && "system-tray--expanded"}`}
+          className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
         >
           {iconLimit && (
             <SpMenuItem

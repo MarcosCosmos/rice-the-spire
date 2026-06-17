@@ -6,19 +6,20 @@ import SpPower from "../SpPower";
 export const SpMemory = () => {
   const zebar = useContext(ZebarContext);
   const memory = zebar?.memory;
-  const usage = Math.round(memory?.usage || 0);
+  const usage = Math.round(memory?.usage ?? 0);
   const label = "Memory";
   const tooltip = (
     <>
       <h2>{label} usage: </h2>
-      {(memory && (
+      {memory ? (
         <>
           <strong>{usage}%</strong> (
-          <strong>{(memory!.freeMemory * 1e-9).toFixed(2)}GB</strong>/
-          <strong>{(memory!.totalMemory * 1e-9).toFixed(2)}GB</strong> free)
+          <strong>{(memory.freeMemory * 1e-9).toFixed(2)}GB</strong>/
+          <strong>{(memory.totalMemory * 1e-9).toFixed(2)}GB</strong> free)
         </>
-      )) ||
-        "unknown"}
+      ) : (
+        "unknown"
+      )}
     </>
   );
 

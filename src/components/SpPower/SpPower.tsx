@@ -15,7 +15,7 @@ export const SpPower = ({
   children,
   ...attrs
 }: SpPowerProps) => {
-  className ||= "";
+  className ??= "";
   if (typeof path === "string") {
     path = [path];
   }

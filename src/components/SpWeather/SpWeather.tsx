@@ -20,9 +20,9 @@ export const SpWeather = ({ ...attrs }) => {
   const data: Partial<WeatherOutput> = zebar?.weather ?? {
     status: "unknown" as WeatherStatus,
   };
-  const cleanStatus = data.status?.replace(/_/g, " ") || "unknown";
+  const cleanStatus = data.status?.replace(/_/g, " ") ?? "unknown";
   const displayTemp = data.celsiusTemp
-    ? `${Math.round(data.celsiusTemp)}°C`
+    ? `${Math.round(data.celsiusTemp).toFixed(2)}°C`
     : "?";
   const label = "Weather";
   const tooltip = (

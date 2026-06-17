@@ -7,8 +7,8 @@ export interface DataSizeMeasure {
 }
 
 const useDataSize = (size: DataSizeMeasure, places?: number) => {
-  places ||= 2;
-  let result = size.siValue.toFixed(places).replace(/\.0+$/, "");
+  places ??= 2;
+  const result = size.siValue.toFixed(places).replace(/\.0+$/, "");
   return `${result}${size.siUnit}`;
 };
 export default useDataSize;

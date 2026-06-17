@@ -3,15 +3,16 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpAudio.css";
-import type { AudioDevice } from "zebar";
 
 export const SpAudio = () => {
   const zebar = useContext(ZebarContext);
-  const device: Partial<AudioDevice> = zebar?.audio?.defaultPlaybackDevice || {
+  const device = zebar?.audio?.defaultPlaybackDevice ?? {
     volume: 0,
     isMuted: true,
+    name: "",
+    deviceId: undefined,
   };
-  const displayVolume = `${device.volume}%`;
+  const displayVolume = `${device.volume.toFixed(0)}%`;
   const label = "Volume";
   const tooltip = (
     <>
@@ -24,13 +25,13 @@ export const SpAudio = () => {
   );
   const onClick = () =>
     zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
-  const onWheel = (event: MouseEvent & any) => {
+  const onWheel = (event: WheelEvent) => {
     const newVolume = Math.max(
       0,
-      Math.min(100, device.volume! + (event.deltaY < 0 ? 2 : -2)),
+      Math.min(100, device.volume + (event.deltaY < 0 ? 2 : -2)),
     );
     if (newVolume !== device.volume) {
-      zebar?.audio?.setVolume(newVolume, { deviceId: device.deviceId });
+      void zebar?.audio?.setVolume(newVolume, { deviceId: device.deviceId });
     }
   };
 

@@ -4,7 +4,7 @@ export default (path: string) => {
     entry = subcategory;
     subcategory = "";
   }
-  let key;
+  let key = entry;
   switch (category) {
     case "cards-full":
       category += "/stable";
@@ -18,8 +18,6 @@ export default (path: string) => {
         key = `${entry}_${category.slice(0, -1)}`;
         break;
       }
-    default:
-      key = entry;
   }
   const dir = (subcategory && [category, subcategory].join("/")) || category;
   return `https://cdn.spire-codex.com/${dir}/${key}.webp`;

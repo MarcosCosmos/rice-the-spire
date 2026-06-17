@@ -1,5 +1,6 @@
 const useClassFilter = (classes: Record<string, boolean>) =>
   Object.entries(classes)
-    .filter(([_, active]) => active)
-    .map(([key]) => key);
+    .filter(([, active]) => active)
+    .map(([key]) => key)
+    .join("");
 export default useClassFilter;

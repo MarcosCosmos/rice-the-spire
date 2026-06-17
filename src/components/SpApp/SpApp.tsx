@@ -26,7 +26,9 @@ export const SpApp = ({ zebar, children }: SpAppProps) => {
     const providers: ProviderGroup<ProviderGroupConfig> = createProviderGroup(
       zebar as unknown as ProviderGroupConfig,
     );
-    providers.onOutput(() => setOutput(providers.outputMap));
+    providers.onOutput(() => {
+      setOutput(providers.outputMap);
+    });
   }, [zebar]);
   const [tooltipTargeting, setTooltipTargeting] = useState<
     TooltipTargeting | undefined
@@ -41,7 +43,7 @@ export const SpApp = ({ zebar, children }: SpAppProps) => {
       }
     };
     setTooltipTargeting({
-      targetId: tooltipTargeting?.targetId || null,
+      targetId: tooltipTargeting?.targetId ?? null,
       updateTarget,
     });
     const escapeListener = (event: KeyboardEvent) => {

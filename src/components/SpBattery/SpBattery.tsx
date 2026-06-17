@@ -6,7 +6,7 @@ import "./SpBattery.css";
 
 export const SpBattery = () => {
   const zebar = useContext(ZebarContext);
-  const data = zebar?.battery || {
+  const data = zebar?.battery ?? {
     state: "unknown",
     chargePercent: 0,
   };

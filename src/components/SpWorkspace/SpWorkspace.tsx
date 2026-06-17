@@ -14,7 +14,7 @@ export interface SimplifiedWorkspaceInfo {
   hasChildren: boolean;
 }
 
-export interface SpWorkspaceProps extends Record<string, any> {
+export interface SpWorkspaceProps extends Record<string, unknown> {
   className?: string;
   data: SimplifiedWorkspaceInfo;
 }
@@ -25,7 +25,7 @@ export const SpWorkspace = ({
   ...attrs
 }: SpWorkspaceProps) => {
   const [nodeType, setNodeType] = useState("unknown");
-  let { displayName, hasFocus, isDisplayed, hasChildren } = data;
+  const { displayName, hasFocus, isDisplayed, hasChildren } = data;
 
   useEffect(() => {
     const result =
@@ -33,7 +33,7 @@ export const SpWorkspace = ({
     setNodeType(result);
   }, [displayName]);
 
-  className ||= "";
+  className ??= "";
   const label = `Workspace ${displayName}`;
   const tooltip = (
     <>

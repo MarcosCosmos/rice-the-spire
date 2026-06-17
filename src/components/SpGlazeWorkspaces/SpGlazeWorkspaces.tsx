@@ -7,7 +7,7 @@ export const SpGlazeWorkspaces = () => {
   return (
     zebar?.glazewm && (
       <SpWorkspaces>
-        {zebar.glazewm.currentWorkspaces?.map((data) => (
+        {zebar.glazewm.currentWorkspaces.map((data) => (
           <SpGlazeWorkspace key={data.name} data={data} />
         ))}
       </SpWorkspaces>
