@@ -11,31 +11,16 @@ export const PotionBelt = ({ children }: { children: ReactNode }) => {
         viewBox="0 0 30 85"
         aria-hidden="true"
       >
-        <image href={backdropUrl} />
+        <image href={backdropUrl} x="0" y="0" width="90" height="85" />
       </svg>
       <div className="potion-belt__tray">
-        <svg className="potion-belt__center-background" aria-hidden="true">
-          <defs>
-            <pattern
-              id="center"
-              patternContentUnits="userSpaceOnUse"
-              height="100%"
-              width="30px"
-              x="0"
-              y="0"
-              patternUnits="userSpaceOnUse"
-            >
-              <svg
-                className="potion-belt__right-bookend"
-                viewBox="60 0 30 85"
-                aria-hidden="true"
-                preserveAspectRatio="none"
-              >
-                <image href={backdropUrl} />
-              </svg>
-            </pattern>
-          </defs>
-          <rect width="110%" height="100%" fill="url(#center)" />
+        <svg
+          className="potion-belt__center-background"
+          viewBox="30 0 30 85"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <image href={backdropUrl} x="0" y="0" width="90" height="85" />
         </svg>
         <div className="potion-belt__content">{children}</div>
       </div>
@@ -44,7 +29,7 @@ export const PotionBelt = ({ children }: { children: ReactNode }) => {
         viewBox="60 0 30 85"
         aria-hidden="true"
       >
-        <image href={backdropUrl} />
+        <image href={backdropUrl} x="0" y="0" width="90" height="85" />
       </svg>
     </div>
   );

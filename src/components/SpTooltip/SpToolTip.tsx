@@ -12,7 +12,6 @@ export const SpTooltip = ({ anchor, children }: SpTooltipProps) => {
   const tooltipTargetingContext = useContext(TooltipTargetingContext);
   const isFocal = tooltipTargetingContext?.targetId === id;
   const takeFocal = () => {
-    console.log("hi", id);
     tooltipTargetingContext?.updateTarget(id);
   };
   return (
