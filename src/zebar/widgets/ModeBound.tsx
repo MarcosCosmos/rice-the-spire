@@ -81,7 +81,11 @@ const Widget = () => {
             </SpRegion>
           </div>
           <div className="column anchor-tooltips-inline-end">
-            <SpSystemTray iconLimit={3} sortComparator={customSort} />
+            <SpSystemTray
+              iconLimit={3}
+              sortComparator={customSort}
+              expandAnchor="end"
+            />
             <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
