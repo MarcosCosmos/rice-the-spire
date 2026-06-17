@@ -1,59 +1,71 @@
-import { useContext } from "react";
-import { resolveSpireImage } from "../../util";
+import { useContext, useEffect, useState } from "react";
 import SpRegion from "../SpRegion";
 import "./SpSystemTray.css";
 import { ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
+import SpMenuItem from "../SpMenuItem";
+import { PotionBelt } from "./PotionBelt";
+import type { SystrayIcon } from "zebar";
 
-export const SpSystemTray = () => {
-  const backdropUrl = resolveSpireImage("ui/top_bar/top_bar_char_backdrop");
+export interface SpSystemTrayProps {
+  iconLimit?: number;
+  sortComparator?: (a: SystrayIcon, b: SystrayIcon) => number;
+  expandAnchor?: "start" | "end";
+}
+export const SpSystemTray = ({
+  iconLimit,
+  sortComparator,
+  expandAnchor,
+}: SpSystemTrayProps) => {
+  expandAnchor ||= "start";
   const zebar = useContext(ZebarContext);
+  const [expanded, setExpanded] = useState(false);
+  const [shownIcons, setShownIcons] = useState<SystrayIcon[]>([]);
+  const availableIcons = zebar?.systray?.icons;
+  if (iconLimit && iconLimit >= (availableIcons?.length || 0)) {
+    iconLimit = undefined;
+  }
+
+  const iconsToShow = !iconLimit || expanded ? undefined : iconLimit;
+  console.log("showing", iconsToShow);
+
+  useEffect(() => {
+    if ((availableIcons?.length || 0) === 0 && shownIcons.length === 0) {
+      return;
+    }
+    const sortedIcons = sortComparator
+      ? availableIcons?.sort(sortComparator)
+      : availableIcons;
+    setShownIcons(sortedIcons?.slice(0, iconsToShow) || []);
+  }, [expanded, availableIcons, iconsToShow]);
+
+  const expanderLabel = expanded ? "Collapse tray" : "Expand tray";
+
+  const onClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <SpRegion className="system-tray" aria-label="System Tray">
-      <svg
-        className="system-tray__left-bookend"
-        viewBox="0 0 30 85"
-        aria-hidden="true"
-      >
-        <image href={backdropUrl} />
-      </svg>
-      <div className="system-tray__tray">
-        <svg className="system-tray__center-background" aria-hidden="true">
-          <defs>
-            <pattern
-              id="center"
-              patternContentUnits="userSpaceOnUse"
-              height="100%"
-              width="30px"
-              x="0"
-              y="0"
-              patternUnits="userSpaceOnUse"
-            >
-              <svg
-                className="system-tray__right-bookend"
-                viewBox="60 0 30 85"
-                aria-hidden="true"
-                preserveAspectRatio="none"
-              >
-                <image href={backdropUrl} />
-              </svg>
-            </pattern>
-          </defs>
-          <rect width="110%" height="100%" fill="url(#center)" />
-        </svg>
-        <div className="system-tray__content">
-          {zebar?.systray?.icons.map((data) => (
-            <SpTrayIcon key={data.id} {...data} />
-          ))}
+    <SpRegion aria-label="System Tray">
+      <PotionBelt>
+        <div
+          className={`system-tray system-tray--expand-${expandAnchor} ${expanded && "system-tray--expanded"}`}
+        >
+          {iconLimit && (
+            <SpMenuItem
+              className="system-tray__expander"
+              aria-label={expanderLabel}
+              tooltip={expanderLabel}
+              onClick={onClick}
+            />
+          )}
+          <div className="system-tray__icons">
+            {shownIcons.map((data) => (
+              <SpTrayIcon key={data.id} {...data} />
+            ))}
+          </div>
         </div>
-      </div>
-      <svg
-        className="system-tray__right-bookend"
-        viewBox="60 0 30 85"
-        aria-hidden="true"
-      >
-        <image href={backdropUrl} />
-      </svg>
+      </PotionBelt>
     </SpRegion>
   );
 };

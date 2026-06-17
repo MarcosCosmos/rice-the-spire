@@ -1,25 +1,40 @@
-.system-tray {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 0;
-    margin-top: .15rem;
-    .system-tray__left-bookend, .system-tray__center-background, .system-tray__right-bookend {
-        height: 2.5rem;
+.system-tray {    
+    display: flex;
+    z-index: 1;
+    --item-padding: 0;
+
+    
+    --icon-size: 1rem;
+    --image-size: var(--icon-size);
+
+    .menu-item {
+        height: var(--icon-size);
+        width: var(--icon-size);
     }
-    .system-tray__center-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 0;
-        overflow: hidden;
+
+    &.system-tray--expand-start {
+        flex-direction: row;
     }
-    .system-tray__tray {
-        position: relative;
-        display: flex;
+
+    &.system-tray--expand-end {
+        flex-direction: row-reverse;
     }
-    .system-tray__content {
+
+    .system-tray__icons {
         display: flex;
         z-index: 1;
+    }
+
+    .system-tray__expander {
+        margin: .5rem;
+        background-size: var(--image-size) var(--image-size);
+        background-position: center center;
+        background-repeat: no-repeat;
+        .system-tray--expand-start:not(.system-tray--expanded) &, .system-tray--expand-end.system-tray--expanded & {
+            background-image: url(https://cdn.spire-codex.com/ui/compendium/settings_tiny_left_arrow.webp);
+        }
+        .system-tray--expand-end:not(.system-tray--expanded) &, .system-tray--expand-start.system-tray--expanded & {
+            background-image: url(https://cdn.spire-codex.com/ui/compendium/settings_tiny_right_arrow.webp);
+        }
     }
 }

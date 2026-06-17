@@ -19,6 +19,7 @@ import {
   SpCredits,
   SpSystemTray,
 } from "@rice-the-spire";
+import type { SystrayIcon } from "zebar";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -28,17 +29,30 @@ const BoundMenuBar = ({ children }: { children: ReactNode }) => {
         .map((mode) => "menubar--binding-mode-" + mode)
         .join("")
     : "menubar--no-binding-mode";
-  return <SpMenuBar className={bindingModeClasses}>{children}</SpMenuBar>;
+  return (
+    <SpMenuBar className={`menubar--modebound ${bindingModeClasses}`}>
+      {children}
+    </SpMenuBar>
+  );
 };
 
 const Widget = () => {
   const randomConfig = useRandomSpireConfig();
 
+  const priorities = ["Zebar", "GlazeWM", "Bluetooth"];
+  const customSort = (a: SystrayIcon, b: SystrayIcon) => {
+    const key = (icon: SystrayIcon) => {
+      const hint = priorities.findIndex((x) => icon.tooltip.startsWith(x));
+      console.log(icon.tooltip, hint, Math.max());
+      return hint === -1 ? Infinity : hint;
+    };
+    return key(a) - key(b);
+  };
+
   return (
     <SpApp
       zebar={{
         glazewm: { type: "glazewm" },
-        date: { type: "date" },
         cpu: { type: "cpu" },
         battery: { type: "battery" },
         memory: { type: "memory" },
@@ -54,6 +68,12 @@ const Widget = () => {
         <BoundMenuBar>
           <div className="column">
             <SpGlazeWorkspaces />
+            <SpRegion
+              className="wm-controls"
+              aria-label="Window Manager controls"
+            >
+              <SpGlazeControls />
+            </SpRegion>
           </div>
           <div className="column">
             <SpRegion aria-label="Datetime">
@@ -61,13 +81,7 @@ const Widget = () => {
             </SpRegion>
           </div>
           <div className="column anchor-tooltips-inline-end">
-            <SpRegion
-              className="wm-controls"
-              aria-label="Window Manager controls"
-            >
-              <SpGlazeControls />
-            </SpRegion>
-            <SpSystemTray />
+            <SpSystemTray iconLimit={3} sortComparator={customSort} />
             <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />

@@ -26,7 +26,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
       onDoubleClick={() => zebar?.systray?.onLeftClick(id)}
       onContextMenu={onContextMenu}
     >
-      <img src={iconUrl} aria-hidden="true" />
+      <img className="tray-icon__src-icon" src={iconUrl} aria-hidden="true" />
     </SpMenuItem>
   );
 };

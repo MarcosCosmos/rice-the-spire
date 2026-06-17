@@ -1,9 +1,16 @@
 .tray-icon {
-    img {
-        --image-size: 1rem;
+    position: relative;
+    margin: .5rem;
+    .tray-icon__background {
+        filter: grayscale(75%);
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .tray-icon__src-icon {
         height: var(--image-size);
         width: var(--image-size);
-        z-index: -1;
         pointer-events: none;
+        background-color: rgba(0,0,0, .5);
     }
 }

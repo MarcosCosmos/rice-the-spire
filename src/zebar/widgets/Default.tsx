@@ -24,7 +24,6 @@ const Widget = () => {
     <SpApp
       zebar={{
         glazewm: { type: "glazewm" },
-        date: { type: "date" },
         cpu: { type: "cpu" },
         battery: { type: "battery" },
         memory: { type: "memory" },
@@ -40,20 +39,20 @@ const Widget = () => {
         <SpMenuBar>
           <div className="column">
             <SpGlazeWorkspaces />
-          </div>
-          <SpSystemTray />
-          <div className="column">
-            <SpRegion aria-label="Datetime">
-              <SpDateTime />
-            </SpRegion>
-          </div>
-          <div className="column anchor-tooltips-inline-end">
             <SpRegion
               className="wm-controls"
               aria-label="Window Manager controls"
             >
               <SpGlazeControls />
             </SpRegion>
+          </div>
+          <div className="column">
+            <SpRegion aria-label="Datetime">
+              <SpDateTime />
+            </SpRegion>
+          </div>
+          <div className="column anchor-tooltips-inline-end">
+            <SpSystemTray />
             <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
