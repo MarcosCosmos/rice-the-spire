@@ -43,7 +43,6 @@ const Widget = () => {
   const customSort = (a: SystrayIcon, b: SystrayIcon) => {
     const key = (icon: SystrayIcon) => {
       const hint = priorities.findIndex((x) => icon.tooltip.startsWith(x));
-      console.log(icon.tooltip, hint, Math.max());
       return hint === -1 ? Infinity : hint;
     };
     return key(a) - key(b);
