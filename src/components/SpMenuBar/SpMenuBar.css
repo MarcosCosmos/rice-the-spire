@@ -16,7 +16,7 @@
     background-size: contain;
     background-image: url(https://spire-codex.com/static/images/ui/top_bar/top_bar.webp);
     .menubar--modebound:not(.menubar--no-binding-mode) & {
-      filter: grayscale(50%);
+      filter: hue-rotate(300deg);
     }
   }
   .menubar__content {
