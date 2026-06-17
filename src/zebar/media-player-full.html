@@ -19,10 +19,27 @@
   </head>
   <body>
     <div id="root"></div>
+    <style>
+        .media-player-wrapper {
+            height: 100vh;
+            width: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            .media-player {
+                outline: 1px solid red;
+            }
+        }
+    </style>
     <script type="text/babel">
       import { mount } from "@rice-the-spire";
-      import Widget from "@rice-the-spire/widgets/ModeBound.tsx";
-      mount(<Widget/>)
+      import SpMedia from "@rice-the-spire";
+      mount(
+        <div className="media-player-wrapper">
+            <SpMedia />
+        </div>
+      )
     </script>
   </body>
 </html>

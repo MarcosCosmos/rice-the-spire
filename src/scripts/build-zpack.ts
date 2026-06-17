@@ -10,6 +10,11 @@ const resultZPackWidgets = [];
 if (process.argv[2] === "--dev") {
   const devSource = fs.readFileSync("./src/zebar/dev.html", "utf8");
 
+  const mediaSource = fs.readFileSync(
+    "./src/zebar/media-player-full.html",
+    "utf8",
+  );
+
   resultZPackWidgets.push({
     ...baseWidget,
     name: "dev",
@@ -18,6 +23,10 @@ if (process.argv[2] === "--dev") {
   });
 
   fs.writeFileSync(`dist/dev.html`, transformHtml(devSource, devImports));
+  fs.writeFileSync(
+    `dist/media-player-full.html`,
+    transformHtml(mediaSource, devImports),
+  );
 }
 
 const prodSource = fs.readFileSync("./src/zebar/prod.html", "utf8");
