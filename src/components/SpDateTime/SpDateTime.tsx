@@ -2,6 +2,7 @@ import SpMenuItem from "../SpMenuItem";
 import SpOutlinedText from "../SpOutlinedText";
 import "./SpDateTime.css";
 import SpSpireImage from "../SpSpireImage";
+import { useEffect, useState } from "react";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "short",
@@ -15,7 +16,15 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
 });
 
 export const SpDateTime = () => {
-  const now = Date.now();
+  const [now, setNow] = useState<number>(Date.now());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 100);
+    return () => {
+      clearInterval(interval);
+    };
+  });
   const label = "Datetime";
   const tooltip = (
     <>
