@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "npm run build:dev && vite",
     "build:vite": "tsc -b && vite build",
-    "build": "npm run build:vite && node ./src/scripts/build-zpack.ts",
+    "build": "npm run pretty && npm run lint -- --fix && npm run build:vite && node ./src/scripts/build-zpack.ts",
     "build:dev": "npm run build:vite && node ./src/scripts/build-zpack.ts --dev",
     "lint": "eslint .",
     "preview": "vite preview",
