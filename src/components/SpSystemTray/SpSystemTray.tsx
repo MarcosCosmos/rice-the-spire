@@ -68,10 +68,7 @@ export const SpSystemTray = ({
               tooltip={expanderLabel}
               onClick={onClick}
             >
-              <img
-                src={expandIcon}
-                aria-hidden="true"
-              />
+              <img src={expandIcon} aria-hidden="true" />
             </SpMenuItem>
           )}
           <div className="system-tray__icons">

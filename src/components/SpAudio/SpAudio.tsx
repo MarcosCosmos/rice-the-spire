@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, type WheelEvent } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
@@ -22,8 +22,9 @@ export const SpAudio = () => {
       {device.name}
     </>
   );
-  const onClick = () =>
-    zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
+  const onClick = () => {
+    void zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
+  };
   const onWheel = (event: WheelEvent) => {
     const newVolume = Math.max(
       0,

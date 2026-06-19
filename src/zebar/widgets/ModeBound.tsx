@@ -16,7 +16,6 @@ import {
   ZebarContext,
   SpRegion,
   useRandomSpireConfig,
-  SpCredits,
   SpSystemTray,
   SpMedia,
 } from "@rice-the-spire";

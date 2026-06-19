@@ -17,7 +17,9 @@ export const SpGlazeControls = () => {
 
 export const WmPause = () => {
   const zebar = useContext(ZebarContext);
-  const onClick = () => zebar?.glazewm?.runCommand("wm-toggle-pause");
+  const onClick = () => {
+    void zebar?.glazewm?.runCommand("wm-toggle-pause");
+  };
 
   return zebar?.glazewm?.isPaused ? (
     <SpMenuItem
@@ -69,8 +71,9 @@ export const WmModes = () => {
 
   return zebar?.glazewm?.bindingModes.map(({ name, displayName }) => {
     displayName ||= name;
-    const onClick = () =>
-      zebar.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
+    const onClick = () => {
+      void zebar.glazewm?.runCommand(`wm-disable-binding-mode --name ${name}`);
+    };
     const label = `${displayName} mode`;
     const tooltip = (
       <>

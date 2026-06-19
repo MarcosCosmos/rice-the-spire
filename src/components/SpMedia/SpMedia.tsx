@@ -1,14 +1,10 @@
 import { useContext, useEffect, useState, type CSSProperties } from "react";
 import { SpireContext, ZebarContext } from "../../contexts";
-import SpStretchBox from "../SpStretchBox";
-import SpOutlinedText from "../SpOutlinedText";
 import SpSpireImage from "../SpSpireImage";
 import SpButton from "../SpMenuItem";
-import { CardPlaque } from "./CardPlaque";
 import "./SpMedia.css";
 import SpTooltip from "../SpTooltip";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
   hoursDisplay: "auto",
@@ -21,7 +17,7 @@ const formatDuration = (timeInSeconds: number): string => {
   const hours = Math.floor(timeInSeconds / 60 / 60);
   const minutes = Math.floor((timeInSeconds - hours * 60 * 60) / 60);
   const seconds = Math.floor(timeInSeconds % 60);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
   const result = durationFormat.format({ hours, minutes, seconds });
   return `${isNegative ? "-" : ""}${result}`;
 };
