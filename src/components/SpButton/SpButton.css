@@ -1,13 +1,5 @@
-
-.menu-item {
+.sp-button {
   position: relative;
-  display: inline-block;
-  background: unset;
-  border: unset;
-  line-height: inherit;
-  padding: unset;
-  margin: unset;
-  color: unset;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
   border-radius: 3px;

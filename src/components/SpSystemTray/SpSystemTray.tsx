@@ -4,8 +4,9 @@ import "./SpSystemTray.css";
 import { ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
 import SpMenuItem from "../SpMenuItem";
-import { PotionBelt } from "./PotionBelt";
 import type { SystrayIcon } from "zebar";
+import { SpStretchBox } from "../SpStretchBox";
+import { resolveSpireImage } from "../../util";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
@@ -44,19 +45,34 @@ export const SpSystemTray = ({
     setExpanded(!expanded);
   };
 
+  const expandIcon =
+    (expanded && expandAnchor === "start") ||
+    (!expanded && expandAnchor === "start")
+      ? resolveSpireImage("ui/compendium/settings_tiny_left_arrow")
+      : resolveSpireImage("ui/compendium/settings_tiny_right_arrow");
+
   return (
     <SpRegion aria-label="System Tray">
-      <PotionBelt>
-        <div
-          className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
-        >
+      <SpStretchBox
+        className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
+        path="ui/top_bar/top_bar_char_backdrop"
+        width={90}
+        height={85}
+        inset={30}
+      >
+        <div className="system-tray__interior">
           {iconLimit && (
             <SpMenuItem
               className="system-tray__expander"
               aria-label={expanderLabel}
               tooltip={expanderLabel}
               onClick={onClick}
-            />
+            >
+              <img
+                src={expandIcon}
+                aria-hidden="true"
+              />
+            </SpMenuItem>
           )}
           <div className="system-tray__icons">
             {shownIcons.map((data) => (
@@ -64,7 +80,7 @@ export const SpSystemTray = ({
             ))}
           </div>
         </div>
-      </PotionBelt>
+      </SpStretchBox>
     </SpRegion>
   );
 };

@@ -17,24 +17,25 @@ import {
   SpCredits,
   SpSystemTray,
 } from "@rice-the-spire";
+import { createProviderGroup } from "zebar";
 
+const providers = createProviderGroup({
+  glazewm: { type: "glazewm" },
+  cpu: { type: "cpu" },
+  battery: { type: "battery" },
+  memory: { type: "memory" },
+  weather: { type: "weather" },
+  media: { type: "media" },
+  audio: { type: "audio" },
+  disk: { type: "disk" },
+  network: { type: "network" },
+  systray: { type: "systray" },
+});
 const Widget = () => {
   const randomSpireConfig = useRandomSpireConfig();
+
   return (
-    <SpApp
-      zebar={{
-        glazewm: { type: "glazewm" },
-        cpu: { type: "cpu" },
-        battery: { type: "battery" },
-        memory: { type: "memory" },
-        weather: { type: "weather" },
-        media: { type: "media" },
-        audio: { type: "audio" },
-        disk: { type: "disk" },
-        network: { type: "network" },
-        systray: { type: "systray" },
-      }}
-    >
+    <SpApp zebarProviders={providers}>
       <SpireContext value={randomSpireConfig}>
         <SpMenuBar>
           <div className="column">

@@ -1,9 +1,86 @@
 .media {
-    position: relative;
+    background-image: url(https://cdn.spire-codex.com/ui/compendium/map/map_legend.png);
+    background-size: 100% auto;
+    background-position: 0 25%;
+    padding-inline: 10%;
+    margin-inline: -5%;
+
+    width: 368px;
+    display: grid;
+    grid-template: 
+        "info controls" auto 
+        "progress controls" auto / auto min-content;
+    gap: .25em;
+
     
-    text-align: center;
-    
-    .media__text {
-        margin-top: .9rem;
+    line-height: normal;
+
+    .media__track-info {
+        color: var(--legend-heading-text-color);
+        grid-area: info;
+        width: 100%;
+        display: flex;
+        font-size: 1.25rem;
+        justify-content: left;
+        > span {
+            display: block;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            max-width: min-content;
+            width: 0px;
+            flex: 1 1 auto;
+        }
+        > div {
+            flex: 0 0 auto;
+        }
+    }
+
+    .media__progress {
+        grid-area: progress;
+        display: flex;
+        width: 100%;
+        color: var(--legend-text-color);
+        .media__timeline {
+            min-width: 10ch;
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .media__timeline-line {
+            position: absolute;
+            max-height: 0px;
+            border-color: var(--legend-text-color);
+            box-shadow: 1px 1px 0px hsla(0, 0%, 50%, .5);
+            border-style: solid;
+            border-width: 0;
+            border-top-width: 1px;
+            width: 100%;
+        }
+
+        .media__time-marker {
+            --image-size: 1.5rem;
+            position: relative;
+            left: calc((100% - var(--image-size)) * var(--song-progress));
+        }
+
+        .media__duration {
+            text-align: left;
+            font-weight: bold;
+            padding-top: .25em;
+            padding-inline: .5em;
+            padding-inline-end: .25em;
+        }
+    }
+
+    .media__controls {
+        color: var(--legend-heading-text-color);
+        grid-area: controls;
+        font-size: 2em;
+        display: flex;
+        align-items: center;
     }
 }

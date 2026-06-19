@@ -18,8 +18,7 @@ export const SpAudio = () => {
     <>
       <h2>{label}: </h2>
       <strong>{displayVolume}</strong>
-      {device.isMuted && " (muted)"}
-      <h2>Audio device: </h2>
+      {device.isMuted && " (muted)"} <h2>Audio device: </h2>
       {device.name}
     </>
   );

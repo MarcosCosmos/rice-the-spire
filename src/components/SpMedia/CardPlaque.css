@@ -1,0 +1,16 @@
+.card-plaque {
+    text-shadow: none;
+    text-align: left;
+    font-weight: bold;
+    color: #1D3537;
+    padding-top: .25em;
+    padding-bottom: .5em;
+    padding-inline: .5em;
+    
+    filter: grayscale(100%);
+    /* padding-top: 1%;
+    margin-top: -.5%;
+    padding-bottom: 2%;
+    padding-inline: 2%;
+    margin-bottom: -1%; */
+}

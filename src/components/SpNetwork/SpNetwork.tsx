@@ -14,8 +14,7 @@ export const SpNetwork = () => {
   const tooltip = (
     <>
       <h2>{label}: </h2>
-      {gateway?.ssid ?? "unknown"}
-      <h2>Traffic: </h2>
+      {gateway?.ssid ?? "unknown"} <h2>Traffic: </h2>
       {transmitted && (
         <>
           <strong>{transmitted}</strong> transmitted

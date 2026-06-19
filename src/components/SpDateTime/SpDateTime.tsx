@@ -28,8 +28,7 @@ export const SpDateTime = () => {
   const label = "Datetime";
   const tooltip = (
     <>
-      <h2>Date and time: </h2>
-      {longFormat.format(now)}
+      <h2>Date and time: </h2> {longFormat.format(now)}
     </>
   );
 

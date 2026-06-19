@@ -20,7 +20,7 @@ import {
   SpSystemTray,
   SpMedia,
 } from "@rice-the-spire";
-import type { SystrayIcon } from "zebar";
+import { createProviderGroup, type SystrayIcon } from "zebar";
 
 const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   const zebar = useContext(ZebarContext);
@@ -37,10 +37,30 @@ const BoundMenuBar = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const providers = createProviderGroup({
+  glazewm: { type: "glazewm" },
+  cpu: { type: "cpu" },
+  battery: { type: "battery" },
+  memory: { type: "memory" },
+  weather: { type: "weather" },
+  media: { type: "media" },
+  audio: { type: "audio" },
+  disk: { type: "disk" },
+  network: { type: "network" },
+  systray: { type: "systray" },
+});
+
 const Widget = () => {
   const randomConfig = useRandomSpireConfig();
 
-  const priorities = ["Zebar", "GlazeWM", "Bluetooth"];
+  const priorities = [
+    "Zebar",
+    "Safely Remove Hardware and Eject Media",
+    "Bluetooth",
+    "Discord",
+    "Steam",
+    "GlazeWM",
+  ];
   const customSort = (a: SystrayIcon, b: SystrayIcon) => {
     const key = (icon: SystrayIcon) => {
       const hint = priorities.findIndex((x) => icon.tooltip.startsWith(x));
@@ -50,20 +70,7 @@ const Widget = () => {
   };
 
   return (
-    <SpApp
-      zebar={{
-        glazewm: { type: "glazewm" },
-        cpu: { type: "cpu" },
-        battery: { type: "battery" },
-        memory: { type: "memory" },
-        weather: { type: "weather" },
-        media: { type: "media" },
-        audio: { type: "audio" },
-        disk: { type: "disk" },
-        network: { type: "network" },
-        systray: { type: "systray" },
-      }}
-    >
+    <SpApp zebarProviders={providers}>
       <SpireContext value={randomConfig}>
         <BoundMenuBar>
           <div className="column">
@@ -76,10 +83,7 @@ const Widget = () => {
             </SpRegion>
           </div>
           <div className="column">
-            <SpRegion aria-label="Datetime">
-              <SpDateTime />
-              <SpMedia />
-            </SpRegion>
+            <SpMedia />
           </div>
           <div className="column anchor-tooltips-inline-end">
             <SpSystemTray
@@ -87,6 +91,7 @@ const Widget = () => {
               sortComparator={customSort}
               expandAnchor="end"
             />
+            <SpDateTime />
             <SpRegion className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
@@ -97,9 +102,6 @@ const Widget = () => {
             <SpRegion className="statuses" aria-label="Statuses">
               <SpAudio />
               <SpWeather />
-            </SpRegion>
-            <SpRegion aria-label="Credits">
-              <SpCredits />
             </SpRegion>
           </div>
         </BoundMenuBar>

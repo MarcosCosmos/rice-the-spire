@@ -19,12 +19,9 @@ export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
   const tooltip = (
     <>
       <h2>{label}: </h2>
-      {name}
-      {data.isRemovable ? " (removable)" : ""}
-      <h2>Used space: </h2>
+      {name} {data.isRemovable ? " (removable)" : ""} <h2>Used space: </h2>
       <strong>{useDataSize(data.availableSpace)}</strong>/
-      <strong>{useDataSize(data.totalSpace)}</strong>
-      <h2>Mounted at: </h2>
+      <strong>{useDataSize(data.totalSpace)}</strong> <h2>Mounted at: </h2>
       {data.mountPoint}
     </>
   );

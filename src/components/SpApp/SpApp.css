@@ -3,9 +3,7 @@ body {
 }
 
 :root {
-  color: #FFF6E2;
-  text-shadow: #000000b8 2px 1px 0px;
-  -webkit-text-stroke-color: #373737;
+  text-shadow: .1em .1em 0px hsla(0, 0%, 50%, .5);
   font-family: Kreon, Georgia, sans-serif;
   font-size: 12px;
   --icon-size: 2rem;
@@ -13,6 +11,20 @@ body {
   --hover-scale: 1.2;
   --hover-transition: transform .1s;
   --item-padding: 1px;
+  line-height: 1em;
+  cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
+
+  --normal-text-color: #FFF6E2;
+  --heading-text-color:#EFC851;
+  --upgrade-text-color: #7EFD01;
+  --variable-text-color: #87CEEB;
+  --normal-stroke-color: #373737;
+  --bar-stroke-color: #1C2B31;
+  --button-stroke-color: #a16d15;
+  --legend-heading-text-color: #15293E;
+  --legend-text-color: #294667;
+  -webkit-text-stroke-color: var(--normal-stroke-color);
+  color: var(--normal-text-color);
 }
 
 html,
@@ -22,10 +34,17 @@ body,
 }
 
 button, [type='button'], [type='reset'], [type='submit'] {
+  background: unset;
+  border: unset;
+  padding: unset;
+  margin: unset;
+  color: unset;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-  margin: 0;
+  &:not([aria-disabled="true"]) {
+    cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_titled.png), pointer;
+  }
 }
 
 .column {
@@ -34,7 +53,6 @@ button, [type='button'], [type='reset'], [type='submit'] {
   justify-self: center;
   justify-content: space-around;
   gap: 3rch;
-  line-height: 1em;
 }
 
 .column:first-child {
@@ -55,12 +73,9 @@ button, [type='button'], [type='reset'], [type='submit'] {
   box-shadow: #FFF 0 0 5px, inset #FFF 0 0 5px;
 }
 
-h1, h2 {
-  color: #EFC851;
+h1, h2, .gold-text {
+  color: var(--heading-text-color);
   display: inline;
-  &:not(:first-child) {
-    margin-inline-start: 1ch;
-  }
 }
 
 h1 {
@@ -72,9 +87,9 @@ h2 {
 }
 
 em {
-  color: #7EFD01;
+  color: var(--upgrade-text-color);
 }
 
 strong {
-  color: #87CEEB;
+  color: var(--variable-text-color);
 }

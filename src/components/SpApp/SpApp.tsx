@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import {
-  createProviderGroup,
   type ProviderConfigMap,
   type ProviderGroup,
   type ProviderGroupConfig,
@@ -11,10 +10,11 @@ import "./SpApp.css";
 import { TooltipTargetingContext, type TooltipTargeting } from "../../contexts";
 
 export interface SpAppProps {
-  zebar: Partial<ProviderConfigMap>;
+  zebarProviders: ProviderGroup<ProviderGroupConfig>;
   children: ReactNode;
 }
-export const SpApp = ({ zebar, children }: SpAppProps) => {
+
+export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
   const [output, setOutput] = useState<
     | Partial<{
         [TName in keyof ProviderConfigMap]: ProviderMap[ProviderConfigMap[TName]["type"]]["output"];
@@ -23,13 +23,10 @@ export const SpApp = ({ zebar, children }: SpAppProps) => {
   >();
 
   useEffect(() => {
-    const providers: ProviderGroup<ProviderGroupConfig> = createProviderGroup(
-      zebar as unknown as ProviderGroupConfig,
-    );
-    providers.onOutput(() => {
-      setOutput(providers.outputMap);
+    zebarProviders.onOutput(() => {
+      setOutput(zebarProviders.outputMap);
     });
-  }, [zebar]);
+  }, [zebarProviders]);
   const [tooltipTargeting, setTooltipTargeting] = useState<
     TooltipTargeting | undefined
   >();

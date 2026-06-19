@@ -23,11 +23,11 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
       className="tray-icon"
       tooltip={tooltip}
       aria-label={tooltip}
-      onMouseEnter={() => zebar?.systray?.onHoverEnter(id)}
-      onMouseLeave={() => zebar?.systray?.onHoverLeave(id)}
-      onMouseMove={() => zebar?.systray?.onHoverMove(id)}
-      onClick={() => zebar?.systray?.onLeftClick(id)}
-      onDoubleClick={() => zebar?.systray?.onLeftClick(id)}
+      onMouseEnter={() => void zebar?.systray?.onHoverEnter(id)}
+      onMouseLeave={() => void zebar?.systray?.onHoverLeave(id)}
+      onMouseMove={() => void zebar?.systray?.onHoverMove(id)}
+      onClick={() => void zebar?.systray?.onLeftClick(id)}
+      onDoubleClick={() => void zebar?.systray?.onLeftClick(id)}
       onContextMenu={onContextMenu}
     >
       <img className="tray-icon__src-icon" src={iconUrl} aria-hidden="true" />

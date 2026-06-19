@@ -1,31 +1,28 @@
-.system-tray {    
-    display: flex;
-    z-index: 1;
-
+.system-tray {
+    height: 2.5rem;
     --image-size: 1rem;
+    margin-top: .15rem;
 
-    &.system-tray--expand-start {
-        flex-direction: row;
+    .system-tray__interior {
+        .system-tray--expand-start & {
+            flex-direction: row;
+        }
+
+        .system-tray--expand-end & {
+            flex-direction: row-reverse;
+        }
+
+        display: flex;
+        height: 100vh;
     }
 
-    &.system-tray--expand-end {
-        flex-direction: row-reverse;
+    .system-tray__expander img {
+        height: var(--image-size);
+        width: var(--image-size);
     }
 
     .system-tray__icons {
         display: flex;
         z-index: 1;
-    }
-
-    .system-tray__expander {
-        background-size: var(--image-size) var(--image-size);
-        background-position: center center;
-        background-repeat: no-repeat;
-        .system-tray--expand-start:not(.system-tray--expanded) &, .system-tray--expand-end.system-tray--expanded & {
-            background-image: url(https://cdn.spire-codex.com/ui/compendium/settings_tiny_left_arrow.webp);
-        }
-        .system-tray--expand-end:not(.system-tray--expanded) &, .system-tray--expand-start.system-tray--expanded & {
-            background-image: url(https://cdn.spire-codex.com/ui/compendium/settings_tiny_right_arrow.webp);
-        }
     }
 }

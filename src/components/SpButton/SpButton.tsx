@@ -1,9 +1,14 @@
 import type { ReactNode } from "react";
 import { NavigationContext } from "../../contexts";
+import type React from "react";
+import "./SpButton.css";
 
-export interface MenuButtonProps extends Record<string, unknown> {
+export interface MenuButtonProps extends React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> {
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
   disabled?: boolean;
 }
 
@@ -13,7 +18,7 @@ const register = (element: HTMLElement | null) => {
   }
 };
 
-export const MenuButton = ({
+export const SpButton = ({
   className,
   children,
   disabled,
@@ -22,8 +27,7 @@ export const MenuButton = ({
   className ??= "";
   return (
     <button
-      className={`menu-item ${className}`}
-      role="menuitem"
+      className={`sp-button ${className}`}
       aria-disabled={disabled}
       tabIndex={0}
       ref={register}

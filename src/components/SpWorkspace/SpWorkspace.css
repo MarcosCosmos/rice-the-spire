@@ -16,7 +16,7 @@
     display: flex;
     align-self: flex-end;
     align-items: end;
-    &:has(.menu-item:not(:disabled):hover) {
+    &:has(button:not(:disabled):hover) {
         .map-node {
             transform: scale(var(--hover-scale));
         }

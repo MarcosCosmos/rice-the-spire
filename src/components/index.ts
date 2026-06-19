@@ -24,3 +24,4 @@ export * from "./SpWorkspaces";
 export * from "./SpMedia";
 export * from "./SpCredits";
 export * from "./SpSystemTray";
+export * from "./SpStretchBox";

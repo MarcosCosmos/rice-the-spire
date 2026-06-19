@@ -1,7 +1,10 @@
 import resolveSpireImage from "../../util/resolveSpireImage";
 import "./SpSpireImage.css";
 
-export interface SpSpireImageProps {
+export interface SpSpireImageProps extends React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+> {
   className?: string;
   path: string;
 }
