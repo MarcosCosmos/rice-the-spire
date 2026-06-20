@@ -14,6 +14,7 @@ import {
 import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
 import SpTooltip from "../SpTooltip";
+import SpSpireImage from "../SpSpireImage";
 
 export interface SimplifiedWorkspaceInfo {
   displayName: string;
@@ -95,6 +96,17 @@ export const SpWorkspace = ({
   } as CSSProperties;
 
   const anchor = (tooltipId: string) => (
+    <SpMenuItem
+      className={`workspace workspace--${baseNodeType} ${filteredClasses} ${className}`}
+      aria-label={label}
+      aria-describedby={tooltipId}
+      {...attrs}
+    >
+      <SpItemLabel>{displayName}</SpItemLabel>
+    </SpMenuItem>
+  );
+
+  return (
     <div className="workspace-shrinkwrap" style={style}>
       <MapNodeGraphic
         details={renderedNodeDetails}
@@ -102,16 +114,7 @@ export const SpWorkspace = ({
         isDisplayed={isDisplayed}
         hasFocus={hasFocus}
       />
-      <SpMenuItem
-        className={`workspace workspace--${baseNodeType} ${filteredClasses} ${className}`}
-        aria-label={label}
-        aria-describedby={tooltipId}
-        {...attrs}
-      >
-        <SpItemLabel>{displayName}</SpItemLabel>
-      </SpMenuItem>
+      <SpTooltip anchor={anchor}>{tooltip}</SpTooltip>
     </div>
   );
-
-  return <SpTooltip anchor={anchor}>{tooltip}</SpTooltip>;
 };
