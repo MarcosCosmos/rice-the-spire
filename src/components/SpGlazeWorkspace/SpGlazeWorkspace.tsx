@@ -8,8 +8,9 @@ export interface SpGlazeWorkspaceProps {
 
 export const SpGlazeWorkspace = ({ data, ...attrs }: SpGlazeWorkspaceProps) => {
   const zebar = useContext(ZebarContext);
-  const onClick = () =>
-    zebar?.glazewm?.runCommand(`focus --workspace ${data.name}`);
+  const onClick = () => {
+    void zebar?.glazewm?.runCommand(`focus --workspace ${data.name}`);
+  };
 
   const displayName = data.displayName || data.name;
   const hasChildren = data.children.length > 0;
