@@ -1,17 +1,12 @@
-.workspace {
-    position: relative;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: end;
-    align-items: end;
-    min-width: var(--icon-size);
-    min-height: var(--icon-size);
-    color: #D8C5A6;
-    -webkit-text-stroke-color: #2A2521;
-    box-sizing: content-box;
-}
-
 .workspace-shrinkwrap {
+    --icon-height: var(--icon-size);
+    /* --max-node-size: max(var(--max-node-width), var(--max-node-height)); */
+    --max-node-size: var(--max-node-height);
+    --graphic-scale: calc(var(--icon-height) / var(--max-node-size));
+    --scaled-width: calc(var(--graphic-scale) * var(--graphic-width));
+    --scaled-height: calc(var(--graphic-scale) * var(--graphic-height));
+    --icon-width: calc(var(--graphic-scale) * var(--node-width));
+
     position: relative;
     display: flex;
     align-self: flex-end;
@@ -21,6 +16,19 @@
             transform: scale(var(--hover-scale));
         }
     }
+
+    .workspace {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: end;
+        align-items: end;
+        min-width: var(--icon-width);
+        min-height: var(--icon-size);
+        padding-inline-start: calc(var(--icon-width) / 2);
+        color: #D8C5A6;
+        -webkit-text-stroke-color: #2A2521;
+    }
+
 
     .map-node {
         @media not (prefers-reduced-motion) {

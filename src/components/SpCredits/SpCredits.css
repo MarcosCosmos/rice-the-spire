@@ -1,9 +1,8 @@
 .credits {
     + .tooltip__box {
         img {
-            height: 1em;
-            width: 1em;
-            line-height: 1em;
+            height: 1lh;
+            width: 1lh;
             position: relative;
         }
     }

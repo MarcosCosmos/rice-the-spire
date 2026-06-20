@@ -8,6 +8,7 @@
 }
 
 .power {
+  margin-block: var(--block-margin);
   position: relative;
   display: inline-flex;
   flex-direction: row;
@@ -15,4 +16,5 @@
   align-items: end;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
+  padding-inline-start: calc(var(--icon-size) / 2);
 }

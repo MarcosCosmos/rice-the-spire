@@ -63,7 +63,7 @@ export const SpSystemTray = ({
         <div className="system-tray__interior">
           {iconLimit && (
             <SpMenuItem
-              className="system-tray__expander"
+              className="system-tray__icon system-tray__expander"
               aria-label={expanderLabel}
               tooltip={expanderLabel}
               onClick={onClick}

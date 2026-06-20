@@ -3,6 +3,7 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
+import "./SpNetwork.css";
 
 export const SpNetwork = () => {
   const zebar = useContext(ZebarContext);

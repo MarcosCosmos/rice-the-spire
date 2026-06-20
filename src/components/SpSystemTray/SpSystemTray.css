@@ -1,8 +1,8 @@
 .system-tray {
+    margin-block-start: var(--icon-scale-margin);
     height: 2.5rem;
+    --icon-size: 2rem;
     --image-size: 1rem;
-    margin-top: .15rem;
-
     .system-tray__interior {
         .system-tray--expand-start & {
             flex-direction: row;
@@ -13,7 +13,7 @@
         }
 
         display: flex;
-        height: 100vh;
+        height: calc(100vh - var(--icon-scale-margin));
     }
 
     .system-tray__expander img {

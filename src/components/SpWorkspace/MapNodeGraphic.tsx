@@ -4,87 +4,46 @@ import SpireContext from "../../contexts/SpireContext/SpireContext";
 import resolveSpireImage from "../../util/resolveSpireImage";
 import {
   mapNodeTypes,
-  randomisableNodes,
   type MapNodeTypeName,
+  mapMarkerDetails,
+  maxNodeHeight,
+  maxNodeWidth,
+  circleRadius,
+  circleStrokeWidth,
+  graphicHeight,
+  graphicWidth,
+  halfWidth,
+  markerX,
+  midPoint,
+  pathLength,
+  type MapNodeDetails,
 } from "./common";
 import "./MapNodeGraphic.css";
 
-const mapMarkerDetails = {
-  width: 49,
-  height: 64,
-};
-
 export interface MapNodeGraphicProps {
-  nodeType: MapNodeTypeName;
-  hasChildren: boolean;
+  details: MapNodeDetails;
+  path: string;
   isDisplayed: boolean;
   hasFocus: boolean;
 }
 
 export const MapNodeGraphic = ({
-  nodeType,
-  hasChildren,
+  details,
+  path,
   isDisplayed,
   hasFocus,
 }: MapNodeGraphicProps) => {
   const config = useContext(SpireContext);
-  const [isVisited, setVisited] = useState(false);
-
-  useEffect(() => {
-    if (!isVisited && isDisplayed) {
-      setVisited(true);
-    }
-  }, [isVisited, isDisplayed]);
-
-  let path;
-  if (!hasChildren) {
-    if (isVisited) {
-      path = `unknown_${nodeType}`;
-    } else {
-      nodeType = "unknown";
-      path = nodeType;
-    }
-  } else {
-    path = nodeType;
-  }
-  const details = mapNodeTypes[nodeType];
 
   const nodeX = -details.width / 2;
   const nodeY = -details.height / 2;
   const markerY = -(details.height / 2 + mapMarkerDetails.height + 2);
-  const maxNodeWidth = Math.max(
-    ...randomisableNodes.map((key) => mapNodeTypes[key].width),
-  );
-  const maxNodeHeight = Math.max(
-    ...randomisableNodes.map((key) => mapNodeTypes[key].height),
-  );
-  const maxDimension = Math.max(maxNodeWidth, maxNodeHeight);
-  const circleRatio = 0.9;
-  const circleRadius = maxDimension * circleRatio;
-  const circleStrokeWidth = (2 / 7) * circleRadius;
-  const radiusWithStroke = circleRadius + circleStrokeWidth;
-  const graphicWidth = 2 * radiusWithStroke;
-  const graphicHeight =
-    radiusWithStroke +
-    Math.max(radiusWithStroke, maxNodeHeight / 2 + mapMarkerDetails.height + 2);
-  const halfWidth = graphicWidth / 2;
-  const midPoint = 0;
-  const pathLength = 2 * Math.PI * circleRadius * 0.9;
-  const markerX = -mapMarkerDetails.width / 2;
-
-  const style: CSSProperties = {
-    "--width-scale": `${graphicWidth / maxDimension}`,
-    "--height-scale": `${graphicHeight / maxDimension}`,
-    "--width-offset": `${radiusWithStroke / maxDimension}`,
-    "--height-offset": `${details.height / maxDimension}`,
-  } as CSSProperties;
 
   return (
     <svg
       className="map-node-graphic"
       viewBox={`-${halfWidth} -${halfWidth} ${graphicWidth} ${graphicHeight}`}
       aria-hidden="true"
-      style={style}
     >
       {isDisplayed && (
         <circle

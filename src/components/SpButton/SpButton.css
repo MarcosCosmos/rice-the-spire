@@ -4,6 +4,7 @@
   min-height: var(--icon-size);
   border-radius: 3px;
   padding: var(--item-padding);
+  margin: var(--icon-scale-margin);
 
   &:not([aria-disabled]) {
     &:hover {

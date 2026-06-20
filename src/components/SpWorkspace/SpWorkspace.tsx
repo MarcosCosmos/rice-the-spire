@@ -1,8 +1,16 @@
-import { useState, useEffect } from "react";
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import { useState, useEffect, type CSSProperties } from "react";
 import useClassFilter from "../../util/useClassFilter";
-import SpMenuItem from "../SpMenuItem";
+import SpMenuItem, { type SpMenuItemProps } from "../SpMenuItem";
 import { MapNodeGraphic } from "./MapNodeGraphic";
-import { randomisableNodes } from "./common";
+import {
+  graphicHeight,
+  graphicWidth,
+  mapNodeTypes,
+  maxNodeHeight,
+  maxNodeWidth,
+  randomisableNodes,
+} from "./common";
 import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
 import SpTooltip from "../SpTooltip";
@@ -14,8 +22,7 @@ export interface SimplifiedWorkspaceInfo {
   hasChildren: boolean;
 }
 
-export interface SpWorkspaceProps extends Record<string, unknown> {
-  className?: string;
+export interface SpWorkspaceProps extends SpMenuItemProps {
   data: SimplifiedWorkspaceInfo;
 }
 
@@ -24,14 +31,43 @@ export const SpWorkspace = ({
   data,
   ...attrs
 }: SpWorkspaceProps) => {
-  const [nodeType, setNodeType] = useState("unknown");
+  const [baseNodeType, setBaseNodeType] = useState("unknown");
+
+  const [isVisited, setVisited] = useState(false);
   const { displayName, hasFocus, isDisplayed, hasChildren } = data;
+
+  useEffect(() => {
+    if (!isVisited && isDisplayed) {
+      setVisited(true);
+    }
+  }, [isVisited, isDisplayed]);
+
+  useEffect(() => {
+    if (!isVisited && isDisplayed) {
+      setVisited(true);
+    }
+  }, [isVisited, isDisplayed]);
 
   useEffect(() => {
     const result =
       randomisableNodes[Math.floor(Math.random() * randomisableNodes.length)];
-    setNodeType(result);
+    setBaseNodeType(result);
   }, [displayName]);
+
+  let renderedNodeType, path;
+  if (!hasChildren) {
+    if (isVisited) {
+      renderedNodeType = baseNodeType;
+      path = `unknown_${baseNodeType}`;
+    } else {
+      renderedNodeType = "unknown";
+      path = renderedNodeType;
+    }
+  } else {
+    renderedNodeType = baseNodeType;
+    path = baseNodeType;
+  }
+  const renderedNodeDetails = mapNodeTypes[renderedNodeType];
 
   className ??= "";
   const label = `Workspace ${displayName}`;
@@ -49,16 +85,25 @@ export const SpWorkspace = ({
     "workspace--empty": !hasChildren,
   });
 
+  const style: CSSProperties = {
+    "--max-node-height": `${maxNodeHeight}px`,
+    "--max-node-width": `${maxNodeWidth}px`,
+    "--graphic-width": `${graphicWidth}px`,
+    "--graphic-height": `${graphicHeight}px`,
+    "--node-width": `${renderedNodeDetails.width}px`,
+    "--node-height": `${renderedNodeDetails.height}px`,
+  } as CSSProperties;
+
   const anchor = (tooltipId: string) => (
-    <div className="workspace-shrinkwrap">
+    <div className="workspace-shrinkwrap" style={style}>
       <MapNodeGraphic
-        nodeType={nodeType}
-        hasChildren={hasChildren}
+        details={renderedNodeDetails}
+        path={path}
         isDisplayed={isDisplayed}
         hasFocus={hasFocus}
       />
       <SpMenuItem
-        className={`workspace workspace--${nodeType} ${filteredClasses} ${className}`}
+        className={`workspace workspace--${baseNodeType} ${filteredClasses} ${className}`}
         aria-label={label}
         aria-describedby={tooltipId}
         {...attrs}

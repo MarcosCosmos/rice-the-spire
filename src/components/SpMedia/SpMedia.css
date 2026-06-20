@@ -13,6 +13,8 @@
     column-gap: .25rem;
     row-gap: 0;
 
+    text-shadow: .1em .1em 0px hsla(0, 0%, 50%, .5);
+
     
 
     .media__track-info-wrapper {
@@ -65,7 +67,7 @@
         }
 
         .media__time-marker {
-            --image-size: 1.25em;
+            --image-size: 1lh;
             position: relative;
             left: calc((100% - var(--image-size)) * var(--song-progress));
         }

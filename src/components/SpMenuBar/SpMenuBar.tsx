@@ -1,11 +1,18 @@
-import { useEffect, type ReactNode } from "react";
+import React, { useEffect, type ReactNode } from "react";
 import "./SpMenuBar.css";
 import { NavigationContext } from "../../contexts";
+export interface SpMenuBarProps extends React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> {
+  className?: string;
+  children: ReactNode;
+}
 export const SpMenuBar = ({
   className,
   children,
   ...attrs
-}: { className?: string; children: ReactNode } & Record<string, unknown>) => {
+}: SpMenuBarProps) => {
   useEffect(() => {
     NavigationContext.start();
     return () => {

@@ -1,10 +1,10 @@
 .map-node-graphic {
     position: absolute;
-    left: calc(-1 * var(--width-offset) * var(--icon-size) + (var(--icon-size) / 2) + var(--item-padding));
-    bottom: calc(((-1 * (var(--height-scale) - var(--height-offset)) * var(--icon-size)) / 2) + var(--item-padding));
-    width: calc(var(--width-scale) * var(--icon-size));
-    height: calc(var(--height-scale) * var(--icon-size));
-
+    width: var(--scaled-width);
+    height: var(--scaled-height);
+    left: calc(var(--graphic-scale) * (var(--node-width) - var(--graphic-width)) / 2 + var(--icon-scale-margin));
+    bottom: calc(var(--graphic-scale) * (var(--node-height) - var(--graphic-height)) / 2 + var(--icon-scale-margin));
+    
     circle {
         fill: none;
         stroke-linecap: round;

@@ -3,7 +3,6 @@
   position: relative;
   align-items: start;
   height: 100%;
-  padding-block: 3px;
 
   .tooltip__box {
     visibility: hidden;
@@ -19,11 +18,9 @@
     border-top-color: #516B76;
     border-bottom-color: #31505C;
     border-radius: 5px;
-    padding: 4px;
-    text-align: left;
-    /* color: #FFF6E2; */
-    text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
-    box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 4px;
+    padding: calc(1rlh - 1rem);
+    padding-top: 0;
+    box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 2px;
 
 
     &, .anchor-tooltips-block-end & {

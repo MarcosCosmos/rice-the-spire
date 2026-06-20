@@ -84,7 +84,7 @@ const Widget = () => {
           <div className="column">
             <SpMedia />
           </div>
-          <div className="column anchor-tooltips-inline-end">
+          <div className="column anchor-tooltips-inline-end block-margin">
             <SpSystemTray
               iconLimit={3}
               sortComparator={customSort}
