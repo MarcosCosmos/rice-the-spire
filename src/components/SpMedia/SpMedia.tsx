@@ -82,13 +82,13 @@ export const SpMedia = () => {
     };
 
     return (
-      <div className="media">
+      <div className="media anchor-tooltips-block-start">
         <SpTooltip
+          className="media__track-info-wrapper"
           anchor={(tooltipId: string) => (
-            <div className="media__track-info" aria-labelledby={tooltipId}>
-              <span>{title}</span>
-              <div>&nbsp;·&nbsp;</div>
-              <span>{artist}</span>
+            <div className="media__track-info" aria-describedby={tooltipId}>
+              <div className="media__track-title">{title}</div>
+              <div className="media__track-artist">{artist}</div>
             </div>
           )}
         >
@@ -112,7 +112,7 @@ export const SpMedia = () => {
             ⏮
           </SpButton>
           <SpButton className="media__toggle-play" onClick={onToggle}>
-            {currentSession.isPlaying ? "⏸" : "▶"}
+            {currentSession.isPlaying ? "⏸" : "⏵"}
           </SpButton>
           <SpButton className="media__next" onClick={onNext}>
             ⏭

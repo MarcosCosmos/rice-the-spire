@@ -3,7 +3,6 @@ body {
 }
 
 :root {
-  text-shadow: .1em .1em 0px hsla(0, 0%, 50%, .5);
   font-family: Kreon, Georgia, sans-serif;
   font-size: 12px;
   --icon-size: 2rem;
@@ -11,7 +10,7 @@ body {
   --hover-scale: 1.2;
   --hover-transition: transform .1s;
   --item-padding: 1px;
-  line-height: 1em;
+  line-height: normal;
   cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
 
   --normal-text-color: #FFF6E2;

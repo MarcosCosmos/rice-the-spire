@@ -10,30 +10,32 @@
     grid-template: 
         "info controls" auto 
         "progress controls" auto / auto min-content;
-    gap: .25em;
+    column-gap: .25rem;
+    row-gap: 0;
 
     
-    line-height: normal;
 
-    .media__track-info {
-        color: var(--legend-heading-text-color);
+    .media__track-info-wrapper {
         grid-area: info;
-        width: 100%;
-        display: flex;
-        font-size: 1.25rem;
-        justify-content: left;
-        > span {
-            display: block;
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 0;
-            max-width: min-content;
-            width: 0px;
-            flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        padding: 0;
+
+        .media__track-info {
+            max-width: 100%;
         }
-        > div {
-            flex: 0 0 auto;
+        
+        .media__track-title, .media__track-artist {
+            color: var(--legend-heading-text-color);
+            max-width: 100%;
+            overflow: hidden;
+            text-wrap-mode: wrap;
+        }
+        .media__track-title {
+            font-size: 1.2rem;
+        }
+        .media__track-artist {
+            font-size: 1.1rem;
         }
     }
 
@@ -42,8 +44,9 @@
         display: flex;
         width: 100%;
         color: var(--legend-text-color);
+        align-items: center;
+        font-size: 1rem;
         .media__timeline {
-            min-width: 10ch;
             flex: 1 0 auto;
             display: flex;
             align-items: center;
@@ -62,17 +65,18 @@
         }
 
         .media__time-marker {
-            --image-size: 1.5rem;
+            --image-size: 1.25em;
             position: relative;
             left: calc((100% - var(--image-size)) * var(--song-progress));
         }
 
         .media__duration {
-            text-align: left;
+            min-width: var(--duration-width);
             font-weight: bold;
-            padding-top: .25em;
-            padding-inline: .5em;
-            padding-inline-end: .25em;
+
+            &:last-child {
+                text-align: end;
+            }
         }
     }
 
@@ -82,5 +86,6 @@
         font-size: 2em;
         display: flex;
         align-items: center;
+        text-align: center;
     }
 }
