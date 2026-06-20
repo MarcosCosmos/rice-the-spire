@@ -6,14 +6,16 @@
     --scaled-width: calc(var(--graphic-scale) * var(--graphic-width));
     --scaled-height: calc(var(--graphic-scale) * var(--graphic-height));
     --icon-width: calc(var(--graphic-scale) * var(--node-width));
-    &:not(:first-child) {
-        margin-inline-start: calc(var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) / 2);
-    }
 
     position: relative;
     display: flex;
     align-self: flex-end;
     align-items: end;
+
+    &:not(:first-child) {
+        margin-inline-start: calc(var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) / 2);
+    }
+    
     &:has(button:not(:disabled):hover) {
         .map-node {
             transform: scale(var(--hover-scale));

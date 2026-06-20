@@ -5,10 +5,13 @@ import SpSpireImage from "../SpSpireImage";
 import { useEffect, useState } from "react";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
-  dateStyle: "short",
+  year: "2-digit",
+  month: "2-digit",
+  day: "2-digit",
 });
 const shortTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
+  hour12: false,
 });
 const longFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "full",

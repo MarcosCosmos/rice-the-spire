@@ -53,7 +53,7 @@ button, [type='button'], [type='reset'], [type='submit'] {
   flex-direction: row;
   justify-self: center;
   justify-content: space-around;
-  gap: 3rch;
+  gap: 1rch;
 }
 
 .column:first-child {

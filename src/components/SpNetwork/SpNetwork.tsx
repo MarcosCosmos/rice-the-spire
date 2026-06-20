@@ -4,6 +4,13 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
 import "./SpNetwork.css";
+import { widestDigit, widestUnitChar } from "../../util/measureText";
+
+const assumedText = {
+  text: `${widestDigit.repeat(2)}.${widestDigit.repeat(2)}${widestUnitChar}B`,
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  font: `400 ${0.9 * 12}px Kreon`,
+};
 
 export const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
@@ -32,6 +39,7 @@ export const SpNetwork = () => {
   const path = gateway
     ? "relics/gold_plated_cables"
     : ["relics/gold_plated_cables", "powers/well_laid_plans"];
+
   return (
     <SpMenuItem
       className="network"
@@ -39,7 +47,7 @@ export const SpNetwork = () => {
       aria-label={label}
       tooltip={tooltip}
     >
-      <SpPower path={path}>
+      <SpPower path={path} assumedText={assumedText}>
         {traffic?.transmitted ? useDataSize(traffic.transmitted) : "-"}
         <br />
         {traffic?.received ? useDataSize(traffic.received) : "-"}

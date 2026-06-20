@@ -6,6 +6,10 @@
   padding: var(--item-padding);
   margin: var(--icon-scale-margin);
 
+  &[aria-disabled] {
+    margin-inline: 0;
+  }
+
   &:not([aria-disabled]) {
     &:hover {
       transform: scale(var(--hover-scale));

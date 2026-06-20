@@ -4,6 +4,8 @@ import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpAudio.css";
 
+const assumedText = { text: "100%", font: "400 12px Kreon" };
+
 export const SpAudio = () => {
   const zebar = useContext(ZebarContext);
   const device = zebar?.audio?.defaultPlaybackDevice ?? {
@@ -47,7 +49,9 @@ export const SpAudio = () => {
       aria-label={label}
       onWheel={onWheel}
     >
-      <SpPower path={path}>{displayVolume}</SpPower>
+      <SpPower path={path} assumedText={assumedText}>
+        {displayVolume}
+      </SpPower>
     </SpMenuItem>
   );
 };

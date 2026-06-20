@@ -1,5 +1,5 @@
 .item-label {
   z-index: 10;
   display: block;
-  text-align: end;
+  text-align: start;
 }

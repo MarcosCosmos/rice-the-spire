@@ -8,6 +8,8 @@ export interface DiskProps {
   label?: string;
 }
 
+const assumedText = { text: "100%", font: "400 12px Kreon" };
+
 export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
   label ??= "Disk";
   const usage = Math.round(
@@ -33,7 +35,9 @@ export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
       aria-label="Disk"
       {...attrs}
     >
-      <SpPower path="relics/data_disk">{usage}%</SpPower>
+      <SpPower path="relics/data_disk" assumedText={assumedText}>
+        {usage}%
+      </SpPower>
     </SpMenuItem>
   );
 };

@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { useContext, useState, useEffect, type CSSProperties } from "react";
+import { useContext } from "react";
 import SpireContext from "../../contexts/SpireContext/SpireContext";
 import resolveSpireImage from "../../util/resolveSpireImage";
 import {
-  mapNodeTypes,
-  type MapNodeTypeName,
   mapMarkerDetails,
-  maxNodeHeight,
-  maxNodeWidth,
   circleRadius,
   circleStrokeWidth,
   graphicHeight,

@@ -3,6 +3,8 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 
+const assumedText = { text: "100%", font: "400 12px Kreon" };
+
 export const SpMemory = () => {
   const zebar = useContext(ZebarContext);
   const memory = zebar?.memory;
@@ -30,7 +32,9 @@ export const SpMemory = () => {
       tooltip={tooltip}
       disabled
     >
-      <SpPower path="relics/emotion_chip">{usage}%</SpPower>
+      <SpPower path="relics/emotion_chip" assumedText={assumedText}>
+        {usage}%
+      </SpPower>
     </SpMenuItem>
   );
 };

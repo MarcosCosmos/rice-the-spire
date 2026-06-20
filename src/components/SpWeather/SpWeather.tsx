@@ -3,6 +3,7 @@ import ZebarContext from "../../contexts/ZebarContext";
 import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import type { WeatherOutput, WeatherStatus } from "zebar";
+import { widestDigit } from "../../util/measureText";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -13,6 +14,11 @@ const weatherMap = {
   snow: "hailstorm",
   thunder: "storm",
   unknown: "child_of_the_stars",
+};
+
+const assumedText = {
+  text: `${widestDigit}${widestDigit}.${widestDigit}°C`,
+  font: `400 12px Kreon`,
 };
 
 export const SpWeather = ({ ...attrs }) => {
@@ -70,7 +76,10 @@ export const SpWeather = ({ ...attrs }) => {
       tooltip={tooltip}
       {...attrs}
     >
-      <SpPower path={`powers/${weatherMap[simplifiedStatus]}`}>
+      <SpPower
+        path={`powers/${weatherMap[simplifiedStatus]}`}
+        assumedText={assumedText}
+      >
         {displayTemp}
       </SpPower>
     </SpMenuItem>
