@@ -15,11 +15,7 @@ export const SpMemory = () => {
   return (
     <SpTooltip
       anchor={(id) => (
-        <SpNote
-          className="memory"
-          aria-label={label}
-          aria-describedby={id}
-        >
+        <SpNote className="memory" aria-label={label} aria-describedby={id}>
           <SpPower path="relics/emotion_chip" assumedText={assumedText}>
             {usage}%
           </SpPower>

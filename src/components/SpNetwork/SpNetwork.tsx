@@ -27,11 +27,7 @@ export const SpNetwork = () => {
   return (
     <SpTooltip
       anchor={(id) => (
-        <SpNote
-          className="network"
-          aria-label={label}
-          aria-describedby={id}
-        >
+        <SpNote className="network" aria-label={label} aria-describedby={id}>
           <SpPower path={path} assumedText={assumedText}>
             {traffic?.transmitted ? useDataSize(traffic.transmitted) : "-"}
             <br />
