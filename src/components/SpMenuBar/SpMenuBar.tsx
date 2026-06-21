@@ -18,7 +18,12 @@ export const SpMenuBar = ({
 }: SpMenuBarProps) => {
   className ??= "";
   return (
-    <div className={`menubar ${className}`} role="application" {...attrs}>
+    <div
+      className={`menubar ${className}`}
+      role="application"
+      aria-label="Zebar (Rice the Spire)"
+      {...attrs}
+    >
       <div className="menubar__background" />
       <div className="menubar__content">{children}</div>
     </div>

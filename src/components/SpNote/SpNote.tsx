@@ -15,6 +15,7 @@ export const SpNote = ({ className, children, ...attrs }: SpNoteProps) => {
   return (
     <div
       className={`sp-note ${className}`}
+      role="note"
       tabIndex={0}
       {...navAttrs}
       {...attrs}
