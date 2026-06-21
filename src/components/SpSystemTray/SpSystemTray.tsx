@@ -41,12 +41,12 @@ export const SpSystemTray = ({
     if ((availableIcons?.length ?? 0) === 0 && sortedIcons.length === 0) {
       return;
     }
-    const result =
+    let result =
       (sortComparator
         ? availableIcons?.toSorted(sortComparator)
         : availableIcons) ?? [];
     if (expandDirection === "start") {
-      result.toReversed();
+      result = result.toReversed();
     }
     setSortedIcons(result);
   }, [expanded, availableIcons, iconsToShow]);
@@ -106,7 +106,7 @@ export const SpSystemTray = ({
 
   // TODO: USE ARIA ACTIVE DESCENDANT TO MANAGE SELECTION WITHOUT INCURRING BLUR PENALTIES
 
-  // todo: fix visibility issue (maybe by also using height and overflow y: hidden?)
+  // todo: use margin trickery tob improve expansion animation (having the items flow out from beneath each other instead of just growing?)
 
   return (
     <div

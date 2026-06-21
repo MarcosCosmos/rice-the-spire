@@ -53,9 +53,11 @@ export const SpGlazeWmBindingMode = ({
         )}
         desc={
           <>
-            <h2>{displayName} mode</h2>
+            <strong>{displayName}</strong> mode{" "}
             {active ? (
-              <>is on (click to disable)</>
+              <>
+                is <em>on</em> (click to disable)
+              </>
             ) : (
               <>is off (click to enable)</>
             )}
