@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import "./SpRegion.css";
+import "./SpToolbar.css";
 
 export interface SpRegionProps {
   className?: string;
@@ -7,14 +7,18 @@ export interface SpRegionProps {
   children: ReactNode;
 }
 
-export const SpRegion = ({
+export const SpToolbar = ({
   className,
   "aria-label": ariaLabel,
   children,
 }: SpRegionProps) => {
   className ??= "";
   return (
-    <div className={`region ${className}`} role="region" aria-label={ariaLabel}>
+    <div
+      className={`toolbar ${className}`}
+      role="toolbar"
+      aria-label={ariaLabel}
+    >
       {children}
     </div>
   );

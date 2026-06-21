@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import SpRegion from "../SpRegion";
+import SpToolbar from "../SpToolbar";
 import "./SpSystemTray.css";
 import { ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
-import SpMenuItem from "../SpMenuItem";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
 import { resolveSpireImage } from "../../util";
+import { SpButton } from "../SpButton/SpButton";
+import SpTooltip from "../SpTooltip";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
@@ -52,7 +53,7 @@ export const SpSystemTray = ({
       : resolveSpireImage("ui/compendium/settings_tiny_right_arrow");
 
   return (
-    <SpRegion aria-label="System Tray">
+    <SpToolbar aria-label="System Tray">
       <SpStretchBox
         className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
         path="ui/top_bar/top_bar_char_backdrop"
@@ -62,14 +63,19 @@ export const SpSystemTray = ({
       >
         <div className="system-tray__interior">
           {iconLimit && (
-            <SpMenuItem
-              className="system-tray__icon system-tray__expander"
-              aria-label={expanderLabel}
-              tooltip={expanderLabel}
-              onClick={onClick}
-            >
-              <img src={expandIcon} aria-hidden="true" />
-            </SpMenuItem>
+            <SpTooltip
+              anchor={(id) => (
+                <SpButton
+                  className="system-tray__icon system-tray__expander"
+                  aria-label={expanderLabel}
+                  aria-describedby={id}
+                  onClick={onClick}
+                >
+                  <img src={expandIcon} aria-hidden="true" />
+                </SpButton>
+              )}
+              desc={expanderLabel}
+            />
           )}
           <div className="system-tray__icons">
             {shownIcons.map((data) => (
@@ -78,6 +84,6 @@ export const SpSystemTray = ({
           </div>
         </div>
       </SpStretchBox>
-    </SpRegion>
+    </SpToolbar>
   );
 };

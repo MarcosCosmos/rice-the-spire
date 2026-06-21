@@ -1,7 +1,7 @@
 .system-tray {
-    margin-block-start: var(--icon-scale-margin);
     height: 2.5rem;
     --icon-size: 2rem;
+    padding: .25rem;
     --image-size: 1rem;
     .system-tray__interior {
         .system-tray--expand-start & {

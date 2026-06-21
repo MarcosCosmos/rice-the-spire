@@ -1,27 +1,26 @@
-import { useContext, type ReactNode } from "react";
-import SpireContext from "../../contexts/SpireContext/SpireContext";
+import { useContext } from "react";
+import SpireContext from "../../contexts/SpireContext";
 import "./SpWorkspaces.css";
+import { SpWorkspace, type SpWorkspaceProps } from "../SpWorkspace";
 
+export interface WorkspaceProps extends SpWorkspaceProps {
+  key: string;
+}
 export interface SpWorkspacesProps {
   className?: string;
-  children: ReactNode;
+  workspaces: WorkspaceProps[];
 }
 
-export const SpWorkspaces = ({
-  className,
-  children,
-  ...attrs
-}: SpWorkspacesProps) => {
+export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
   className ??= "";
   const config = useContext(SpireContext);
   return (
     <div
       className={`workspaces workspaces--${config.act} anchor-tooltips-block-start ${className}`}
-      role="region"
-      aria-label={"Workspaces"}
-      {...attrs}
+      role="tablist"
+      aria-label="Workspaces"
     >
-      <div className="workspaces__content">{children}</div>
+      <div className="workspaces__content">{workspaces.map(SpWorkspace)}</div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ export interface DataSizeMeasure {
   iecUnit: string;
 }
 
-const useDataSize = (size: DataSizeMeasure, places?: number) => {
+export const useDataSize = (size: DataSizeMeasure, places?: number) => {
   places ??= 2;
   const result = size.siValue.toFixed(places).replace(/\.0+$/, "");
   return `${result}${size.siUnit}`;

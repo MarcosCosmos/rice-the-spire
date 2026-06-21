@@ -5,8 +5,6 @@ import {
   SpBattery,
   SpDateTime,
   SpFullestDisk,
-  SpGlazeWorkspaces,
-  SpGlazeControls,
   SpireContext,
   SpMemory,
   SpMenuBar,
@@ -14,10 +12,14 @@ import {
   SpProcessor,
   SpWeather,
   ZebarContext,
-  SpRegion,
+  SpToolbar,
   useRandomSpireConfig,
   SpSystemTray,
   SpMedia,
+  SpGlazeWmDirection,
+  SpGlazeWmPause,
+  SpGlazeWmBindingModes,
+  SpGlazeWmWorkspaces,
 } from "@rice-the-spire";
 import { createProviderGroup, type SystrayIcon } from "zebar";
 
@@ -51,8 +53,13 @@ const providers = createProviderGroup({
 
 const Widget = () => {
   const randomConfig = useRandomSpireConfig();
-
-  const priorities = [
+  const bindingModes = {
+    focus: {
+      displayName: "focus",
+      path: "intents/summon",
+    },
+  };
+  const trayPriorities = [
     "Zebar",
     "Safely Remove Hardware and Eject Media",
     "Bluetooth",
@@ -60,9 +67,9 @@ const Widget = () => {
     "Steam",
     "GlazeWM",
   ];
-  const customSort = (a: SystrayIcon, b: SystrayIcon) => {
+  const traySort = (a: SystrayIcon, b: SystrayIcon) => {
     const key = (icon: SystrayIcon) => {
-      const hint = priorities.findIndex((x) => icon.tooltip.startsWith(x));
+      const hint = trayPriorities.findIndex((x) => icon.tooltip.startsWith(x));
       return hint === -1 ? Infinity : hint;
     };
     return key(a) - key(b);
@@ -73,35 +80,39 @@ const Widget = () => {
       <SpireContext value={randomConfig}>
         <BoundMenuBar>
           <div className="column">
-            <SpGlazeWorkspaces />
-            <SpRegion
+            <SpGlazeWmWorkspaces />
+            <SpToolbar
               className="wm-controls"
               aria-label="Window Manager controls"
             >
-              <SpGlazeControls />
-            </SpRegion>
+              <SpGlazeWmDirection />
+              <SpGlazeWmPause showAlways />
+              <SpGlazeWmBindingModes configMap={bindingModes} showAlways />
+            </SpToolbar>
           </div>
           <div className="column">
             <SpMedia />
           </div>
-          <div className="column anchor-tooltips-inline-end block-margin">
+          <div className="column">
             <SpSystemTray
               iconLimit={3}
-              sortComparator={customSort}
+              sortComparator={traySort}
               expandAnchor="end"
             />
-            <SpDateTime />
-            <SpRegion className="resources" aria-label="Resources">
-              <SpBattery />
-              <SpNetwork />
-              <SpProcessor />
-              <SpMemory />
-              <SpFullestDisk />
-            </SpRegion>
-            <SpRegion className="statuses" aria-label="Statuses">
+
+            <SpToolbar
+              className="statuses anchor-tooltips-inline-end margin-block-start"
+              aria-label="Statuses"
+            >
+              <SpDateTime />
               <SpAudio />
               <SpWeather />
-            </SpRegion>
+              <SpBattery />
+              <SpMemory />
+              <SpFullestDisk />
+              <SpProcessor />
+              <SpNetwork />
+            </SpToolbar>
           </div>
         </BoundMenuBar>
       </SpireContext>

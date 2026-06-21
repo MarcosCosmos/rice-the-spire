@@ -1,7 +1,8 @@
-import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import useDataSize from "../../util/useDataSize";
 import type { Disk as ZDisk } from "zebar";
+import SpTooltip from "../SpTooltip";
+import SpNote from "../SpNote";
 
 export interface DiskProps {
   data: ZDisk;
@@ -18,26 +19,29 @@ export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
       100,
   );
   const name = data.name ?? data.mountPoint;
-  const tooltip = (
-    <>
-      <h2>{label}: </h2>
-      {name} {data.isRemovable ? " (removable)" : ""} <h2>Used space: </h2>
-      <strong>{useDataSize(data.availableSpace)}</strong>/
-      <strong>{useDataSize(data.totalSpace)}</strong> <h2>Mounted at: </h2>
-      {data.mountPoint}
-    </>
-  );
   return (
-    <SpMenuItem
-      className="disk"
-      disabled
-      tooltip={tooltip}
-      aria-label="Disk"
-      {...attrs}
-    >
-      <SpPower path="relics/data_disk" assumedText={assumedText}>
-        {usage}%
-      </SpPower>
-    </SpMenuItem>
+    <SpTooltip
+      anchor={(id) => (
+        <SpNote
+          className="disk"
+          aria-label="Disk"
+          aria-describedby={id}
+          {...attrs}
+        >
+          <SpPower path="relics/data_disk" assumedText={assumedText}>
+            {usage}%
+          </SpPower>
+        </SpNote>
+      )}
+      desc={
+        <>
+          <h2>{label}: </h2>
+          {name} {data.isRemovable ? " (removable)" : ""} <h2>Used space: </h2>
+          <strong>{useDataSize(data.availableSpace)}</strong>/
+          <strong>{useDataSize(data.totalSpace)}</strong> <h2>Mounted at: </h2>
+          {data.mountPoint}
+        </>
+      }
+    />
   );
 };

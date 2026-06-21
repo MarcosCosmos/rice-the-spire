@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
-import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import type { WeatherOutput, WeatherStatus } from "zebar";
 import { widestDigit } from "../../util/measureText";
+import SpTooltip from "../SpTooltip";
+import SpNote from "../SpNote";
 
 const weatherMap = {
   clear_day: "radiance",
@@ -31,12 +32,6 @@ export const SpWeather = ({ ...attrs }) => {
     ? `${Math.round(data.celsiusTemp).toPrecision(3)}°C`
     : "?";
   const label = "Weather";
-  const tooltip = (
-    <>
-      <h2>{label}: </h2>
-      {cleanStatus} (<strong>{displayTemp}</strong>)
-    </>
-  );
 
   let simplifiedStatus: keyof typeof weatherMap;
   switch (data.status) {
@@ -69,19 +64,28 @@ export const SpWeather = ({ ...attrs }) => {
   }
 
   return (
-    <SpMenuItem
-      disabled
-      className={`weather weather--${simplifiedStatus}`}
-      aria-label={label}
-      tooltip={tooltip}
-      {...attrs}
-    >
-      <SpPower
-        path={`powers/${weatherMap[simplifiedStatus]}`}
-        assumedText={assumedText}
-      >
-        {displayTemp}
-      </SpPower>
-    </SpMenuItem>
+    <SpTooltip
+      anchor={(id) => (
+        <SpNote
+          className={`weather weather--${simplifiedStatus}`}
+          aria-label={label}
+          aria-describedby={id}
+          {...attrs}
+        >
+          <SpPower
+            path={`powers/${weatherMap[simplifiedStatus]}`}
+            assumedText={assumedText}
+          >
+            {displayTemp}
+          </SpPower>
+        </SpNote>
+      )}
+      desc={
+        <>
+          <h2>{label}: </h2>
+          {cleanStatus} (<strong>{displayTemp}</strong>)
+        </>
+      }
+    />
   );
 };

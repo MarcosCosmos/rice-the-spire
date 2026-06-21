@@ -1,28 +1,34 @@
-import React, { useContext, useId, type ReactNode } from "react";
+import {
+  useContext,
+  useId,
+  type DetailedHTMLProps,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
 import "./SpTooltip.css";
-import { TooltipTargetingContext } from "../../contexts";
+import { TooltipFocusContext } from "../../contexts";
 
-export interface SpTooltipProps extends React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
+export interface SpTooltipProps extends DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > {
   className?: string;
   anchor: (id: string) => ReactNode;
-  children: ReactNode;
+  desc: ReactNode;
 }
 
 export const SpTooltip = ({
   className,
   anchor,
-  children,
+  desc,
   ...attrs
 }: SpTooltipProps) => {
   className ??= "";
   const id = useId();
-  const tooltipTargetingContext = useContext(TooltipTargetingContext);
-  const isFocal = tooltipTargetingContext?.targetId === id;
+  const tooltipFocusContext = useContext(TooltipFocusContext);
+  const isFocal = tooltipFocusContext?.targetId === id;
   const takeFocal = () => {
-    tooltipTargetingContext?.updateTarget(id);
+    tooltipFocusContext?.update(id);
   };
   return (
     <div
@@ -33,7 +39,7 @@ export const SpTooltip = ({
     >
       {anchor(id)}
       <div id={id} className="tooltip__box" role="tooltip" key={id}>
-        {children}
+        {desc}
       </div>
     </div>
   );

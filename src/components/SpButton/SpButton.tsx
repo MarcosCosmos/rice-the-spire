@@ -1,10 +1,9 @@
-import type { ReactNode } from "react";
-import { NavigationContext } from "../../contexts";
-import type React from "react";
+import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import "./SpButton.css";
+import useNavigation from "../../util/useNavigation";
 
-export interface MenuButtonProps extends React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
+export interface SpButtonProps extends DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > {
   className?: string;
@@ -12,25 +11,20 @@ export interface MenuButtonProps extends React.DetailedHTMLProps<
   disabled?: boolean;
 }
 
-const register = (element: HTMLElement | null) => {
-  if (element) {
-    return NavigationContext.register(element);
-  }
-};
-
 export const SpButton = ({
   className,
   children,
   disabled,
   ...attrs
-}: MenuButtonProps) => {
+}: SpButtonProps) => {
   className ??= "";
+  const navAttrs = useNavigation(disabled);
   return (
     <button
       className={`sp-button ${className}`}
-      aria-disabled={disabled}
-      tabIndex={0}
-      ref={register}
+      role="menuitem"
+      disabled={disabled}
+      {...navAttrs}
       {...attrs}
     >
       {children}

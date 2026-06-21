@@ -1,63 +1,25 @@
-import { useEffect, useState, type ReactNode } from "react";
-import {
-  type ProviderConfigMap,
-  type ProviderGroup,
-  type ProviderGroupConfig,
-  type ProviderMap,
-} from "zebar";
-import ZebarContext from "../../contexts/ZebarContext";
+import { type ReactNode } from "react";
+import { type ProviderGroup, type ProviderGroupConfig } from "zebar";
+import ZebarContext, { useZebarProviders } from "../../contexts/ZebarContext";
 import "./SpApp.css";
-import { TooltipTargetingContext, type TooltipTargeting } from "../../contexts";
+import { TooltipFocusContext, useProvideTooltipFocus } from "../../contexts";
+import { useProvideNavigation } from "../../util/useNavigation";
 
 export interface SpAppProps {
   zebarProviders: ProviderGroup<ProviderGroupConfig>;
   children: ReactNode;
 }
 
+// TODO: ENHANCE KEYBOARD MANAGEMENT ENOUGH THAT WE CAN APPLY ROLE=APPLICATION TO THE ROOT, SHOULDN'T BE TO DIFFICULT ACTUALLY
 export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
-  const [output, setOutput] = useState<
-    | Partial<{
-        [TName in keyof ProviderConfigMap]: ProviderMap[ProviderConfigMap[TName]["type"]]["output"];
-      }>
-    | undefined
-  >();
-
-  useEffect(() => {
-    zebarProviders.onOutput(() => {
-      setOutput(zebarProviders.outputMap);
-    });
-  }, [zebarProviders]);
-  const [tooltipTargeting, setTooltipTargeting] = useState<
-    TooltipTargeting | undefined
-  >();
-  useEffect(() => {
-    const updateTarget = (newTarget: string | null) => {
-      if (newTarget !== tooltipTargeting?.targetId) {
-        setTooltipTargeting({
-          targetId: newTarget,
-          updateTarget,
-        });
-      }
-    };
-    setTooltipTargeting({
-      targetId: tooltipTargeting?.targetId ?? null,
-      updateTarget,
-    });
-    const escapeListener = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        updateTarget("none");
-      }
-    };
-    document.addEventListener("keydown", escapeListener);
-    return () => {
-      document.removeEventListener("keydown", escapeListener);
-    };
-  }, []);
+  useProvideNavigation();
+  const zebar = useZebarProviders(zebarProviders);
+  const tooltipTargetting = useProvideTooltipFocus();
   return (
-    <ZebarContext value={output}>
-      <TooltipTargetingContext value={tooltipTargeting}>
+    <ZebarContext value={zebar}>
+      <TooltipFocusContext value={tooltipTargetting}>
         {children}
-      </TooltipTargetingContext>
+      </TooltipFocusContext>
     </ZebarContext>
   );
 };

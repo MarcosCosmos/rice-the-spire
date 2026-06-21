@@ -4,18 +4,19 @@ import {
   SpBattery,
   SpDateTime,
   SpFullestDisk,
-  SpGlazeWorkspaces,
-  SpGlazeControls,
+  SpGlazeWmWorkspaces,
   SpireContext,
   SpMemory,
   SpMenuBar,
   SpNetwork,
   SpProcessor,
   SpWeather,
-  SpRegion,
+  SpToolbar,
   useRandomSpireConfig,
-  SpCredits,
   SpSystemTray,
+  SpGlazeWmPause,
+  SpGlazeWmDirection,
+  SpGlazeWmBindingModes,
 } from "@rice-the-spire";
 import { createProviderGroup } from "zebar";
 
@@ -39,35 +40,34 @@ const Widget = () => {
       <SpireContext value={randomSpireConfig}>
         <SpMenuBar>
           <div className="column">
-            <SpGlazeWorkspaces />
-            <SpRegion
+            <SpGlazeWmWorkspaces />
+            <SpToolbar
               className="wm-controls"
               aria-label="Window Manager controls"
             >
-              <SpGlazeControls />
-            </SpRegion>
+              <SpGlazeWmDirection />
+              <SpGlazeWmPause />
+              <SpGlazeWmBindingModes />
+            </SpToolbar>
           </div>
           <div className="column">
-            <SpRegion aria-label="Datetime">
+            <SpToolbar aria-label="Datetime">
               <SpDateTime />
-            </SpRegion>
+            </SpToolbar>
           </div>
           <div className="column anchor-tooltips-inline-end">
             <SpSystemTray />
-            <SpRegion className="resources" aria-label="Resources">
+            <SpToolbar className="resources" aria-label="Resources">
               <SpBattery />
               <SpNetwork />
               <SpProcessor />
               <SpMemory />
               <SpFullestDisk />
-            </SpRegion>
-            <SpRegion className="statuses" aria-label="Statuses">
+            </SpToolbar>
+            <SpToolbar className="statuses" aria-label="Statuses">
               <SpAudio />
               <SpWeather />
-            </SpRegion>
-            <SpRegion aria-label="Credits">
-              <SpCredits />
-            </SpRegion>
+            </SpToolbar>
           </div>
         </SpMenuBar>
       </SpireContext>

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState, type CSSProperties } from "react";
 import { SpireContext, ZebarContext } from "../../contexts";
 import SpSpireImage from "../SpSpireImage";
-import SpButton from "../SpMenuItem";
 import "./SpMedia.css";
 import SpTooltip from "../SpTooltip";
+import { SpButton } from "../SpButton/SpButton";
 
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
@@ -22,7 +22,12 @@ const formatDuration = (timeInSeconds: number): string => {
   return `${isNegative ? "-" : ""}${result}`;
 };
 
-export const SpMedia = () => {
+export interface SpMediaProps {
+  className?: string;
+}
+
+export const SpMedia = ({ className }: SpMediaProps) => {
+  className ??= "";
   const zebar = useContext(ZebarContext);
   const spire = useContext(SpireContext);
   const currentSession = zebar?.media?.currentSession;
@@ -81,8 +86,15 @@ export const SpMedia = () => {
       zebar.media?.next({ sessionId: currentSession.sessionId });
     };
 
+    // todo: this needs improved accessibility that I haven't quite figured out yet; might have to refer to some examples!
+    // toolbar is probably not quite right
+
     return (
-      <div className="media anchor-tooltips-block-start">
+      <div
+        className={`media anchor-tooltips-block-start ${className}`}
+        role="toolbar"
+        aria-label="Media Player"
+      >
         <SpTooltip
           className="media__track-info-wrapper"
           anchor={(tooltipId: string) => (
@@ -91,11 +103,14 @@ export const SpMedia = () => {
               <div className="media__track-artist">{artist}</div>
             </div>
           )}
-        >
-          <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
-          <strong>{currentSession.albumTitle}</strong> via session{" "}
-          <em>{currentSession.sessionId}</em>
-        </SpTooltip>
+          desc={
+            <>
+              <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
+              <strong>{currentSession.albumTitle}</strong> via session{" "}
+              <em>{currentSession.sessionId}</em>
+            </>
+          }
+        />
         <div className="media__progress" style={style}>
           <div className="media__duration">{ellapsedTime}</div>
           <div className="media__timeline">
@@ -119,7 +134,6 @@ export const SpMedia = () => {
           </SpButton>
         </div>
       </div>
-      // </CardPlaque>
     );
   }
 };

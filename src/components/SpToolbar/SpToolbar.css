@@ -1,0 +1,8 @@
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  padding: var(--icon-scale-margin);
+  gap: var(--icon-scale-margin);
+  padding-block-end: 0;
+  height: 100%;
+}

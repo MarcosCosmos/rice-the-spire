@@ -1,8 +1,9 @@
 import { useContext, type WheelEvent } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
-import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpAudio.css";
+import SpTooltip from "../SpTooltip";
+import { SpButton } from "../SpButton/SpButton";
 
 const assumedText = { text: "100%", font: "400 12px Kreon" };
 
@@ -16,14 +17,6 @@ export const SpAudio = () => {
   };
   const displayVolume = `${device.volume.toFixed(0)}%`;
   const label = "Volume";
-  const tooltip = (
-    <>
-      <h2>{label}: </h2>
-      <strong>{displayVolume}</strong>
-      {device.isMuted && " (muted)"} <h2>Audio device: </h2>
-      {device.name}
-    </>
-  );
   const onClick = () => {
     void zebar?.audio?.setMute(!device.isMuted, { deviceId: device.deviceId });
   };
@@ -42,16 +35,29 @@ export const SpAudio = () => {
     : "powers/ringing";
 
   return (
-    <SpMenuItem
-      className="volume"
-      tooltip={tooltip}
-      onClick={onClick}
-      aria-label={label}
-      onWheel={onWheel}
-    >
-      <SpPower path={path} assumedText={assumedText}>
-        {displayVolume}
-      </SpPower>
-    </SpMenuItem>
+    <SpTooltip
+      anchor={(id) => (
+        <SpButton
+          className="volume"
+          onClick={onClick}
+          aria-pressed={device.isMuted}
+          aria-label={label}
+          aria-describedby={id}
+          onWheel={onWheel}
+        >
+          <SpPower path={path} assumedText={assumedText}>
+            {displayVolume}
+          </SpPower>
+        </SpButton>
+      )}
+      desc={
+        <>
+          <h2>{label}: </h2>
+          <strong>{displayVolume}</strong>
+          {device.isMuted && " (muted)"} <h2>Audio device: </h2>
+          {device.name}
+        </>
+      }
+    />
   );
 };

@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { useState, useEffect, type CSSProperties } from "react";
-import useClassFilter from "../../util/useClassFilter";
-import SpMenuItem, { type SpMenuItemProps } from "../SpMenuItem";
+import {
+  useState,
+  useEffect,
+  type CSSProperties,
+  type MouseEventHandler,
+} from "react";
 import { MapNodeGraphic } from "./MapNodeGraphic";
 import {
   graphicHeight,
@@ -11,29 +14,32 @@ import {
   maxNodeWidth,
   randomisableNodes,
 } from "./common";
-import SpItemLabel from "../SpItemLabel";
 import "./SpWorkspace.css";
+import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
+import SpItemLabel from "../SpItemLabel";
 import SpTooltip from "../SpTooltip";
-export interface SimplifiedWorkspaceInfo {
+
+export interface SpWorkspaceProps extends SpButtonProps {
+  className?: string;
+  disabled?: boolean;
   displayName: string;
   hasFocus: boolean;
   isDisplayed: boolean;
   hasChildren: boolean;
-}
-
-export interface SpWorkspaceProps extends SpMenuItemProps {
-  data: SimplifiedWorkspaceInfo;
+  onClick: MouseEventHandler;
 }
 
 export const SpWorkspace = ({
   className,
-  data,
+  displayName,
+  hasFocus,
+  isDisplayed,
+  hasChildren,
   ...attrs
 }: SpWorkspaceProps) => {
   const [baseNodeType, setBaseNodeType] = useState("unknown");
 
   const [isVisited, setVisited] = useState(false);
-  const { displayName, hasFocus, isDisplayed, hasChildren } = data;
 
   useEffect(() => {
     if (!isVisited && isDisplayed) {
@@ -70,20 +76,6 @@ export const SpWorkspace = ({
 
   className ??= "";
   const label = `Workspace ${displayName}`;
-  const tooltip = (
-    <>
-      <h2>Workspace state: </h2>
-      {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
-      {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
-      {hasChildren ? <em>filled</em> : <>empty</>}
-    </>
-  );
-  const filteredClasses = useClassFilter({
-    "workspace--focused": hasFocus,
-    "workspace--displayed": isDisplayed,
-    "workspace--empty": !hasChildren,
-  });
-
   const style: CSSProperties = {
     "--max-node-height": `${maxNodeHeight}px`,
     "--max-node-width": `${maxNodeWidth}px`,
@@ -93,28 +85,38 @@ export const SpWorkspace = ({
     "--node-height": `${renderedNodeDetails.height}px`,
   } as CSSProperties;
 
-  const anchor = (tooltipId: string) => (
-    <>
-      <MapNodeGraphic
-        details={renderedNodeDetails}
-        path={path}
-        isDisplayed={isDisplayed}
-        hasFocus={hasFocus}
-      />
-      <SpMenuItem
-        className={`workspace workspace--${baseNodeType} ${filteredClasses} ${className}`}
-        aria-label={label}
-        aria-describedby={tooltipId}
-        {...attrs}
-      >
-        <SpItemLabel>{displayName}</SpItemLabel>
-      </SpMenuItem>
-    </>
-  );
-
   return (
-    <SpTooltip anchor={anchor} className="workspace-shrinkwrap" style={style}>
-      {tooltip}
-    </SpTooltip>
+    <SpTooltip
+      className="workspace-shrinkwrap"
+      style={style}
+      anchor={(tooltipId: string) => (
+        <>
+          <MapNodeGraphic
+            details={renderedNodeDetails}
+            path={path}
+            isDisplayed={isDisplayed}
+            hasFocus={hasFocus}
+          />
+          <SpButton
+            className={`workspace workspace--${baseNodeType} ${className}`}
+            role="tab"
+            aria-selected={isDisplayed}
+            aria-label={label}
+            aria-describedby={tooltipId}
+            {...attrs}
+          >
+            <SpItemLabel>{displayName}</SpItemLabel>
+          </SpButton>
+        </>
+      )}
+      desc={
+        <>
+          <h2>Workspace state: </h2>
+          {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
+          {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
+          {hasChildren ? <em>filled</em> : <>empty</>}
+        </>
+      }
+    />
   );
 };

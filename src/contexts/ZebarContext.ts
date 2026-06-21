@@ -1,8 +1,31 @@
-import { createContext } from "react";
-import { type ProviderConfigMap, type ProviderMap } from "zebar";
+import { createContext, useEffect, useState } from "react";
+import {
+  type ProviderConfigMap,
+  type ProviderGroup,
+  type ProviderGroupConfig,
+  type ProviderMap,
+} from "zebar";
 
+export const useZebarProviders = (
+  zebarProviders: ProviderGroup<ProviderGroupConfig>,
+) => {
+  const [output, setOutput] = useState<
+    | Partial<{
+        [TName in keyof ProviderConfigMap]: ProviderMap[ProviderConfigMap[TName]["type"]]["output"];
+      }>
+    | undefined
+  >();
+
+  useEffect(() => {
+    zebarProviders.onOutput(() => {
+      setOutput(zebarProviders.outputMap);
+    });
+  }, [zebarProviders]);
+
+  return output;
+};
 // expect to use the default names for simplicity.
-const ZebarContext = createContext<
+export const ZebarContext = createContext<
   | Partial<{
       [TName in keyof ProviderConfigMap]: ProviderMap[ProviderConfigMap[TName]["type"]]["output"];
     }>

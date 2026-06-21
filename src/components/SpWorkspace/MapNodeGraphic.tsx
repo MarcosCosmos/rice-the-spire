@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useContext } from "react";
-import SpireContext from "../../contexts/SpireContext/SpireContext";
+import SpireContext from "../../contexts/SpireContext";
 import resolveSpireImage from "../../util/resolveSpireImage";
 import {
   mapMarkerDetails,

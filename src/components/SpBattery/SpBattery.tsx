@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
-import SpMenuItem from "../SpMenuItem";
 import SpPower from "../SpPower";
 import "./SpBattery.css";
-
+import SpTooltip from "../SpTooltip";
+import SpNote from "../SpNote";
 const assumedText = { text: "100%", font: "400 12px Kreon" };
 
 export const SpBattery = () => {
@@ -16,35 +16,37 @@ export const SpBattery = () => {
   if (data.state !== "unknown") {
     const value = Math.round(data.chargePercent);
     const label = "Battery";
-    const eta =
-      data.state === "charging" ? (
-        <>
-          charging - <strong>{data.timeTillFull}</strong> until full
-        </>
-      ) : (
-        <>
-          discharging - <strong>${data.timeTillEmpty}</strong> of charge
-          remaining
-        </>
-      );
-    const tooltip = (
-      <>
-        <h2>{label}: </h2>
-        <strong>{value}%</strong> ({eta})
-      </>
-    );
-
     return (
-      <SpMenuItem
-        className={`battery battery--${data.state}`}
-        disabled
-        aria-label="Battery"
-        tooltip={tooltip}
-      >
-        <SpPower path="relics/power_cell" assumedText={assumedText}>
-          {value}%
-        </SpPower>
-      </SpMenuItem>
+      <SpTooltip
+        anchor={(id) => (
+          <SpNote
+            className={`battery battery--${data.state}`}
+            aria-label={label}
+            aria-describedby={id}
+          >
+            <SpPower path="relics/power_cell" assumedText={assumedText}>
+              {value}%
+            </SpPower>
+          </SpNote>
+        )}
+        desc={
+          <>
+            <h2>{label}: </h2>
+            <strong>{value}%</strong> (
+            {data.state === "charging" ? (
+              <>
+                charging - <strong>{data.timeTillFull}</strong> until full
+              </>
+            ) : (
+              <>
+                discharging - <strong>${data.timeTillEmpty}</strong> of charge
+                remaining
+              </>
+            )}
+            )
+          </>
+        }
+      />
     );
   }
 

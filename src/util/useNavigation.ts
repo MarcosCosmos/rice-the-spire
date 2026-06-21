@@ -1,3 +1,6 @@
+import type React from "react";
+import { useEffect } from "react";
+
 interface ItemData {
   element: HTMLElement;
   focusListener: (event: Event) => void;
@@ -113,8 +116,30 @@ export class Navigation {
   }
 }
 
-// here we are abusing the persistence of modules a little,
-// we only need one global instance per page (and they won't persist across widgets) so exporting a copy created here is actually fine and react hooks are redundant.
-// technically persistence across widgets would be nice but require extra work and possibly be tricky to set up nicely.
+// we only need one global instance per page
 const theNavigation = new Navigation();
-export default theNavigation;
+const refCallback: React.RefCallback<HTMLElement> = (
+  element: HTMLElement | null,
+) => {
+  if (element) {
+    return theNavigation.register(element);
+  }
+};
+
+export const useProvideNavigation = () => {
+  useEffect(() => {
+    theNavigation.start();
+    return () => {
+      theNavigation.stop();
+    };
+  }, []);
+};
+
+export const useNavigation = (disabled?: boolean) =>
+  disabled
+    ? {
+        tabIndex: 0,
+        ref: refCallback,
+      }
+    : {};
+export default useNavigation;

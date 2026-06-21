@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 export type Act = "overgrowth" | "underdocks" | "hive" | "glory";
 export type Character =
   | "ironclad"
@@ -18,10 +18,24 @@ export const characters: Character[] = [
   "regent",
   "necrobinder",
 ];
+
 export const defaultSpireConfig: SpireConfig = {
   act: "overgrowth",
   character: "ironclad",
 };
 
-const SpireContext = createContext<SpireConfig>(defaultSpireConfig);
+export const useRandomSpireConfig = () => {
+  const [spireConfig, setSpireConfig] =
+    useState<SpireConfig>(defaultSpireConfig);
+  useEffect(() => {
+    const randomConfig: SpireConfig = {
+      act: acts[Math.floor(Math.random() * acts.length)],
+      character: characters[Math.floor(Math.random() * characters.length)],
+    };
+    setSpireConfig(randomConfig);
+  }, []);
+  return spireConfig;
+};
+
+export const SpireContext = createContext<SpireConfig>(defaultSpireConfig);
 export default SpireContext;

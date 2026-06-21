@@ -29,8 +29,9 @@
   .workspaces__content {
     min-width: 20vw;
     display: flex;
-    /* gap: 2rem; */
+    gap: 1rex;
     justify-content: space-between;
     align-items: end;
+    padding-block-end: var(--icon-scale-margin);
   }
 }

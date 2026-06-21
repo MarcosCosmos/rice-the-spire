@@ -1,3 +1,3 @@
-import { SpWorkspaces } from "./SpWorkspaces";
+import { SpWorkspaces } from "../SpWorkspaces";
 export default SpWorkspaces;
-export * from "./SpWorkspaces";
+export * from "../SpWorkspaces";
