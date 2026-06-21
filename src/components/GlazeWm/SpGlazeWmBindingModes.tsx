@@ -11,6 +11,8 @@ export interface SpGlazeWmBindingModesProps {
   fallbackIcon?: string;
 }
 
+// todo: drop-shadow animations for wm controls
+
 export const SpGlazeWmBindingModes = ({
   showAlways,
   configMap,
@@ -18,8 +20,6 @@ export const SpGlazeWmBindingModes = ({
 }: SpGlazeWmBindingModesProps) => {
   const glazewm = useContext(ZebarContext)?.glazewm;
   if (glazewm) {
-    // the page should in principle order the objects by first occurence of the keys, so that it is stable with respect to the provided order.
-
     const resolvedEntries = new Map<string, SpGlazeWmBindingModeConfig>([
       ...Object.entries(configMap ?? {}),
       ...glazewm.bindingModes.map(

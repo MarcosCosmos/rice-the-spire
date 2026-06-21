@@ -21,7 +21,7 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
 export interface SpDateTimeProps {
   className?: string;
 }
-export const SpDateTime = ({ className } : SpDateTimeProps) => {
+export const SpDateTime = ({ className }: SpDateTimeProps) => {
   className ??= "";
   const [now, setNow] = useState<number>(Date.now());
   useEffect(() => {
@@ -34,6 +34,7 @@ export const SpDateTime = ({ className } : SpDateTimeProps) => {
   });
   const label = "Datetime";
 
+  // TODO: this needs an assumed width
   return (
     <SpTooltip
       anchor={(id) => (
