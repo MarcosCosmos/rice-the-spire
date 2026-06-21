@@ -100,13 +100,13 @@ export const SpSystemTray = ({
   );
 
   const style: CSSProperties = {
-    "--primary-icon-count": (
-      1 + Math.min(iconLimit ?? 0, sortedIcons.length)
-    ).toFixed(0),
+    "--primary-icon-count": 1 + Math.min(iconLimit ?? 0, sortedIcons.length),
     "--secondary-icon-count": secondaryIcons.length,
   } as CSSProperties;
 
   // TODO: USE ARIA ACTIVE DESCENDANT TO MANAGE SELECTION WITHOUT INCURRING BLUR PENALTIES
+
+  // todo: fix visibility issue (maybe by also using height and overflow y: hidden?)
 
   return (
     <div

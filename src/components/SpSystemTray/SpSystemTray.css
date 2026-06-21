@@ -5,7 +5,7 @@
     margin-top: var(--icon-scale-margin);
     --icon-size: 2rem;
     --image-size: 1rem;
-    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
+    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 1));
     --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
 }
 .system-tray__exterior {
@@ -50,13 +50,14 @@
 .system-tray__secondary-icons {
     display: flex;
     gap: var(--icon-scale-margin);
-    width: 0px;
-    overflow: hidden;
+    width: 0;
+    transform: scaleX(0);
     .system-tray--expanded & {
         width: var(--secondary-width);
+        transform: scaleX(1);
     }
     @media not (prefers-reduced-motion) {
-        transition-property: width;
+        transition-property: width, transform;
         transition-duration: .5s;
         transition-delay: .5s;
     }
