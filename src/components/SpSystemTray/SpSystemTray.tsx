@@ -1,27 +1,35 @@
-import { useContext, useEffect, useState } from "react";
-import "./SpSystemTray.css";
+import {
+  useContext,
+  useEffect,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from "react";
 import { ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
-import { resolveSpireImage } from "../../util";
 import { SpButton } from "../SpButton/SpButton";
 import SpTooltip from "../SpTooltip";
+import "./SpSystemTray.css";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
   sortComparator?: (a: SystrayIcon, b: SystrayIcon) => number;
-  expandAnchor?: "start" | "end";
+  expandDirection?: "start" | "end";
+  expandFloating?: boolean;
 }
 export const SpSystemTray = ({
   iconLimit,
   sortComparator,
-  expandAnchor,
+  expandDirection,
+  expandFloating,
 }: SpSystemTrayProps) => {
-  expandAnchor ??= "start";
+  expandDirection ??= "start";
+  expandFloating ??= false;
   const zebar = useContext(ZebarContext);
   const [expanded, setExpanded] = useState(false);
-  const [shownIcons, setShownIcons] = useState<SystrayIcon[]>([]);
+  const [sortedIcons, setSortedIcons] = useState<SystrayIcon[]>([]);
   const availableIcons = zebar?.systray?.icons;
   if (iconLimit && iconLimit >= (availableIcons?.length ?? 0)) {
     iconLimit = undefined;
@@ -30,59 +38,83 @@ export const SpSystemTray = ({
   const iconsToShow = !iconLimit || expanded ? undefined : iconLimit;
 
   useEffect(() => {
-    if ((availableIcons?.length ?? 0) === 0 && shownIcons.length === 0) {
+    if ((availableIcons?.length ?? 0) === 0 && sortedIcons.length === 0) {
       return;
     }
-    const sortedIcons = sortComparator
-      ? availableIcons?.sort(sortComparator)
-      : availableIcons;
-    setShownIcons(sortedIcons?.slice(0, iconsToShow) ?? []);
+    setSortedIcons(
+      (sortComparator
+        ? availableIcons?.sort(sortComparator)
+        : availableIcons) ?? [],
+    );
   }, [expanded, availableIcons, iconsToShow]);
+
+  const primaryIcons = sortedIcons.slice(0, iconLimit);
+  const secondaryIcons = iconLimit ? sortedIcons.slice(iconLimit) : [];
 
   const expanderLabel = expanded ? "Collapse tray" : "Expand tray";
 
-  const onClick = () => {
+  const onExpanderClick = () => {
     setExpanded(!expanded);
   };
 
-  const expandIcon =
-    (expanded && expandAnchor === "start") ||
-    (!expanded && expandAnchor === "start")
-      ? resolveSpireImage("ui/compendium/settings_tiny_left_arrow")
-      : resolveSpireImage("ui/compendium/settings_tiny_right_arrow");
+  const onBlur = () => {
+    setExpanded(false);
+  };
+
+  const onEscape = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setExpanded(false);
+    }
+  };
+
+  const style: CSSProperties = {
+    "--primary-icon-count": (
+      1 + Math.min(iconLimit ?? 0, sortedIcons.length)
+    ).toFixed(0),
+    "--secondary-icon-count": secondaryIcons.length,
+  } as CSSProperties;
+
+  // TODO: USE ARIA ACTIVE DESCENDANT TO MANAGE SELECTION WITHOUT INCURRING BLUR PENALTIES
 
   return (
-    <SpStretchBox
-      className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
-      aria-role="toolbar"
-      aria-label="System Tray"
-      path="ui/top_bar/top_bar_char_backdrop"
-      width={90}
-      height={85}
-      inset={30}
+    <div
+      className={`system-tray system-tray--expand-${expandDirection} ${expanded ? "system-tray--expanded" : ""} ${expandFloating ? "system-tray--expand-floating" : ""}`}
+      style={style}
+      onKeyDown={onEscape}
     >
-      <div className="system-tray__interior">
-        {iconLimit && (
+      <SpStretchBox
+        className="system-tray__exterior"
+        aria-role="toolbar"
+        aria-label="System Tray"
+        path="ui/top_bar/top_bar_char_backdrop"
+        width={90}
+        height={85}
+        inset={30}
+      >
+        <div className="system-tray__interior" onBlurCapture={onBlur}>
           <SpTooltip
             anchor={(id) => (
               <SpButton
-                className="system-tray__icon system-tray__expander"
+                className="tray-icon system-tray__expander"
                 aria-label={expanderLabel}
                 aria-describedby={id}
-                onClick={onClick}
+                onClick={onExpanderClick}
               >
-                <img src={expandIcon} aria-hidden="true" />
+                ⋯
               </SpButton>
             )}
             desc={expanderLabel}
           />
-        )}
-        <div className="system-tray__icons">
-          {shownIcons.map((data) => (
+          {primaryIcons.map((data) => (
             <SpTrayIcon key={data.id} {...data} />
           ))}
+          <div className="system-tray__secondary-icons">
+            {secondaryIcons.map((data) => (
+              <SpTrayIcon key={data.id} {...data} />
+            ))}
+          </div>
         </div>
-      </div>
-    </SpStretchBox>
+      </SpStretchBox>
+    </div>
   );
 };

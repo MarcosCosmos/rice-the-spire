@@ -17,6 +17,7 @@ import {
   SpGlazeWmPause,
   SpGlazeWmDirection,
   SpGlazeWmBindingModes,
+  SpMedia,
 } from "@rice-the-spire";
 import { createProviderGroup } from "zebar";
 
@@ -51,22 +52,23 @@ const Widget = () => {
             </SpToolbar>
           </div>
           <div className="column">
-            <SpToolbar aria-label="Datetime">
-              <SpDateTime />
-            </SpToolbar>
+            <SpMedia />
           </div>
-          <div className="column anchor-tooltips-inline-end">
-            <SpSystemTray />
-            <SpToolbar className="resources" aria-label="Resources">
-              <SpBattery />
-              <SpNetwork />
-              <SpProcessor />
-              <SpMemory />
-              <SpFullestDisk />
-            </SpToolbar>
-            <SpToolbar className="statuses" aria-label="Statuses">
+          <div className="column">
+            <SpSystemTray iconLimit={3} expandDirection="start" />
+
+            <SpToolbar
+              className="statuses anchor-tooltips-inline-end margin-block-start"
+              aria-label="Statuses"
+            >
+              <SpDateTime />
               <SpAudio />
               <SpWeather />
+              <SpBattery />
+              <SpMemory />
+              <SpFullestDisk />
+              <SpProcessor />
+              <SpNetwork />
             </SpToolbar>
           </div>
         </SpMenuBar>

@@ -1,29 +1,69 @@
 .system-tray {
-    height: 2.25rem;
-    --icon-size: 2rem;
+    display: flex;
+    height: 2.5rem;
+    position: relative;
     margin-top: var(--icon-scale-margin);
+    --icon-size: 2rem;
     --image-size: 1rem;
-    .system-tray__interior {
-        padding: .125rem;
-        .system-tray--expand-start & {
-            flex-direction: row;
-        }
+    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
+    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
+}
+.system-tray__exterior {
+    height: 100%;
+}
 
+.system-tray--expand-floating {
+    width: var(--primary-width);
+    max-width: var(--primary-width);
+
+    > .system-tray__exterior {
+        position: absolute;
+        z-index: 1;
+        .system-tray--expand-start & {
+            right: 0;
+        }
         .system-tray--expand-end & {
+            left: 0;
+        }
+    }
+}
+.system-tray__interior {
+    display: flex;
+    padding: calc(var(--icon-scale-margin));
+    padding-block-end: 0;
+    height: calc(100vh - var(--icon-scale-margin));
+    gap: var(--icon-scale-margin);
+    .system-tray--expand-start & {
+        justify-content: end;
+        &, .system-tray__secondary-icons {
             flex-direction: row-reverse;
         }
-
-        display: flex;
-        height: calc(100vh - var(--icon-scale-margin));
     }
-
-    .system-tray__expander img {
-        height: var(--image-size);
-        width: var(--image-size);
+    .system-tray--expand-end & {
+        justify-content: start;
+        &, .system-tray__secondary-icons {
+            flex-direction: row;
+        }
     }
+}
 
-    .system-tray__icons {
-        display: flex;
-        z-index: 1;
+.system-tray__expander {
+    font-size: var(--image-size);
+    font-weight: bold;
+    color: var(--heading-text-color);
+}
+
+.system-tray__secondary-icons {
+    display: flex;
+    gap: var(--icon-scale-margin);
+    width: 0px;
+    overflow: hidden;
+    .system-tray--expanded & {
+        width: var(--secondary-width);
+    }
+    @media not (prefers-reduced-motion) {
+        transition-property: width;
+        transition-duration: .5s;
+        transition-delay: .5s;
     }
 }

@@ -97,7 +97,8 @@ const Widget = () => {
             <SpSystemTray
               iconLimit={3}
               sortComparator={traySort}
-              expandAnchor="end"
+              expandDirection="start"
+              expandFloating
             />
 
             <SpToolbar
