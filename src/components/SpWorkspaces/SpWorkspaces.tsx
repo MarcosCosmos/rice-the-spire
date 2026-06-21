@@ -15,12 +15,14 @@ export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
   className ??= "";
   const config = useContext(SpireContext);
   return (
-    <div
-      className={`workspaces workspaces--${config.act} anchor-tooltips-block-start ${className}`}
-      role="tablist"
-      aria-label="Workspaces"
-    >
-      <div className="workspaces__content">{workspaces.map(SpWorkspace)}</div>
-    </div>
+    <nav tabIndex={-1}>
+      <div
+        className={`workspaces workspaces--${config.act} anchor-tooltips-block-start ${className}`}
+        role="tablist"
+        aria-label="Workspaces"
+      >
+        <div className="workspaces__content">{workspaces.map(SpWorkspace)}</div>
+      </div>
+    </nav>
   );
 };

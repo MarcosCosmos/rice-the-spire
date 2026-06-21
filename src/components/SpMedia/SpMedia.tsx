@@ -92,7 +92,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
     return (
       <div
         className={`media anchor-tooltips-block-start ${className}`}
-        role="contentinfo"
+        role="complementary"
         aria-label="Media Player"
       >
         <SpTooltip
