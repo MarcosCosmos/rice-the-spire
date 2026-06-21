@@ -1,9 +1,10 @@
 .system-tray {
-    height: 2.5rem;
+    height: 2.25rem;
     --icon-size: 2rem;
-    padding: .25rem;
+    margin-top: var(--icon-scale-margin);
     --image-size: 1rem;
     .system-tray__interior {
+        padding: .125rem;
         .system-tray--expand-start & {
             flex-direction: row;
         }

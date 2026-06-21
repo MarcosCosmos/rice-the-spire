@@ -1,5 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
 import { useNavigation } from "../../util";
+import "./SpNote.css";
 
 export interface SpNoteProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,

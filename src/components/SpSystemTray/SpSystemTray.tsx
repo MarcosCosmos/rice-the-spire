@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import SpToolbar from "../SpToolbar";
 import "./SpSystemTray.css";
 import { ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
@@ -53,37 +52,37 @@ export const SpSystemTray = ({
       : resolveSpireImage("ui/compendium/settings_tiny_right_arrow");
 
   return (
-    <SpToolbar aria-label="System Tray">
-      <SpStretchBox
-        className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
-        path="ui/top_bar/top_bar_char_backdrop"
-        width={90}
-        height={85}
-        inset={30}
-      >
-        <div className="system-tray__interior">
-          {iconLimit && (
-            <SpTooltip
-              anchor={(id) => (
-                <SpButton
-                  className="system-tray__icon system-tray__expander"
-                  aria-label={expanderLabel}
-                  aria-describedby={id}
-                  onClick={onClick}
-                >
-                  <img src={expandIcon} aria-hidden="true" />
-                </SpButton>
-              )}
-              desc={expanderLabel}
-            />
-          )}
-          <div className="system-tray__icons">
-            {shownIcons.map((data) => (
-              <SpTrayIcon key={data.id} {...data} />
-            ))}
-          </div>
+    <SpStretchBox
+      className={`system-tray system-tray--expand-${expandAnchor} ${expanded ? "system-tray--expanded" : ""}`}
+      aria-role="toolbar"
+      aria-label="System Tray"
+      path="ui/top_bar/top_bar_char_backdrop"
+      width={90}
+      height={85}
+      inset={30}
+    >
+      <div className="system-tray__interior">
+        {iconLimit && (
+          <SpTooltip
+            anchor={(id) => (
+              <SpButton
+                className="system-tray__icon system-tray__expander"
+                aria-label={expanderLabel}
+                aria-describedby={id}
+                onClick={onClick}
+              >
+                <img src={expandIcon} aria-hidden="true" />
+              </SpButton>
+            )}
+            desc={expanderLabel}
+          />
+        )}
+        <div className="system-tray__icons">
+          {shownIcons.map((data) => (
+            <SpTrayIcon key={data.id} {...data} />
+          ))}
         </div>
-      </SpStretchBox>
-    </SpToolbar>
+      </div>
+    </SpStretchBox>
   );
 };
