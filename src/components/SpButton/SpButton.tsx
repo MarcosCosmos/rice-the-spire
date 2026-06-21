@@ -22,7 +22,6 @@ export const SpButton = ({
   return (
     <button
       className={`sp-button ${className}`}
-      role="menuitem"
       disabled={disabled}
       {...navAttrs}
       {...attrs}

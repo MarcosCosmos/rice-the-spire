@@ -7,8 +7,9 @@ export interface IconProps {
   id: string;
   iconUrl: string;
   tooltip?: string;
+  disabled?: boolean;
 }
-export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
+export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
   const zebar = useContext(ZebarContext);
   const onContextMenu = (event: MouseEvent) => {
     event.preventDefault();
@@ -25,6 +26,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip }: IconProps) => {
         <SpButton
           id={`systray-icon-${id}`}
           className="tray-icon"
+          disabled={disabled}
           aria-label={tooltip}
           aria-describedby={id}
           onMouseEnter={() => void zebar?.systray?.onHoverEnter(id)}

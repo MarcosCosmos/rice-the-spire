@@ -137,9 +137,9 @@ export const useProvideNavigation = () => {
 
 export const useNavigation = (disabled?: boolean) =>
   disabled
-    ? {
+    ? { }
+    : {
         tabIndex: 0,
         ref: refCallback,
-      }
-    : {};
+      };
 export default useNavigation;

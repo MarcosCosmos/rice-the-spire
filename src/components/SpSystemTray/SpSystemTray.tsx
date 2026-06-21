@@ -41,15 +41,31 @@ export const SpSystemTray = ({
     if ((availableIcons?.length ?? 0) === 0 && sortedIcons.length === 0) {
       return;
     }
-    setSortedIcons(
+    const result =
       (sortComparator
         ? availableIcons?.sort(sortComparator)
-        : availableIcons) ?? [],
-    );
+        : availableIcons) ?? [];
+    if (expandDirection === "start") {
+      result.reverse();
+    }
+    setSortedIcons(result);
   }, [expanded, availableIcons, iconsToShow]);
 
-  const primaryIcons = sortedIcons.slice(0, iconLimit);
-  const secondaryIcons = iconLimit ? sortedIcons.slice(iconLimit) : [];
+  const [primaryIcons, secondaryIcons] =
+    expandDirection === "end"
+      ? [
+          sortedIcons.slice(0, iconLimit),
+          iconLimit ? sortedIcons.slice(iconLimit) : [],
+        ]
+      : [
+          sortedIcons.slice(iconLimit ? -iconLimit : 0),
+          iconLimit ? sortedIcons.slice(0, -iconLimit) : [],
+        ];
+
+  if (expandDirection == "start") {
+    primaryIcons.reverse();
+  }
+  secondaryIcons.reverse();
 
   const expanderLabel = expanded ? "Collapse tray" : "Expand tray";
 
@@ -66,6 +82,22 @@ export const SpSystemTray = ({
       setExpanded(false);
     }
   };
+
+  const expander = (
+    <SpTooltip
+      anchor={(id) => (
+        <SpButton
+          className="tray-icon system-tray__expander"
+          aria-label={expanderLabel}
+          aria-describedby={id}
+          onClick={onExpanderClick}
+        >
+          ⋯
+        </SpButton>
+      )}
+      desc={expanderLabel}
+    />
+  );
 
   const style: CSSProperties = {
     "--primary-icon-count": (
@@ -92,27 +124,31 @@ export const SpSystemTray = ({
         inset={30}
       >
         <div className="system-tray__interior" onBlurCapture={onBlur}>
-          <SpTooltip
-            anchor={(id) => (
-              <SpButton
-                className="tray-icon system-tray__expander"
-                aria-label={expanderLabel}
-                aria-describedby={id}
-                onClick={onExpanderClick}
-              >
-                ⋯
-              </SpButton>
-            )}
-            desc={expanderLabel}
-          />
-          {primaryIcons.map((data) => (
-            <SpTrayIcon key={data.id} {...data} />
-          ))}
-          <div className="system-tray__secondary-icons">
-            {secondaryIcons.map((data) => (
-              <SpTrayIcon key={data.id} {...data} />
-            ))}
-          </div>
+          {expandDirection === "end" ? (
+            <>
+              {expander}
+              {primaryIcons.map((data) => (
+                <SpTrayIcon key={data.id} {...data} />
+              ))}
+              <div className="system-tray__secondary-icons">
+                {secondaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="system-tray__secondary-icons">
+                {secondaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                ))}
+              </div>
+              {primaryIcons.map((data) => (
+                <SpTrayIcon key={data.id} {...data} />
+              ))}
+              {expander}
+            </>
+          )}
         </div>
       </SpStretchBox>
     </div>

@@ -35,15 +35,9 @@
     gap: var(--icon-scale-margin);
     .system-tray--expand-start & {
         justify-content: end;
-        &, .system-tray__secondary-icons {
-            flex-direction: row-reverse;
-        }
     }
     .system-tray--expand-end & {
         justify-content: start;
-        &, .system-tray__secondary-icons {
-            flex-direction: row;
-        }
     }
 }
 

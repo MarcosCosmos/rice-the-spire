@@ -1,4 +1,8 @@
-import { type DetailedHTMLProps, type HTMLAttributes, type ReactNode } from "react";
+import {
+  type DetailedHTMLProps,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
 import "./SpMenuBar.css";
 export interface SpMenuBarProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
@@ -14,7 +18,7 @@ export const SpMenuBar = ({
 }: SpMenuBarProps) => {
   className ??= "";
   return (
-    <div className={`menubar ${className}`} role="menubar" {...attrs}>
+    <div className={`menubar ${className}`} role="application" {...attrs}>
       <div className="menubar__background" />
       <div className="menubar__content">{children}</div>
     </div>
