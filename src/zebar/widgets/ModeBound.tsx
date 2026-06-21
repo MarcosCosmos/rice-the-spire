@@ -70,7 +70,7 @@ const Widget = () => {
   const traySort = (a: SystrayIcon, b: SystrayIcon) => {
     const key = (icon: SystrayIcon) => {
       const hint = trayPriorities.findIndex((x) => icon.tooltip.startsWith(x));
-      return hint === -1 ? Infinity : hint;
+      return hint === -1 ? trayPriorities.length : hint;
     };
     return key(a) - key(b);
   };

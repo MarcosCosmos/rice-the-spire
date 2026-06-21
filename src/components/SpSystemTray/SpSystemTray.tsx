@@ -43,10 +43,10 @@ export const SpSystemTray = ({
     }
     const result =
       (sortComparator
-        ? availableIcons?.sort(sortComparator)
+        ? availableIcons?.toSorted(sortComparator)
         : availableIcons) ?? [];
     if (expandDirection === "start") {
-      result.reverse();
+      result.toReversed();
     }
     setSortedIcons(result);
   }, [expanded, availableIcons, iconsToShow]);
