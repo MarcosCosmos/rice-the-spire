@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState, type CSSProperties } from "react";
-import { SpireContext, ZebarContext } from "../../contexts";
+import {
+  NavigationContext,
+  SpireContext,
+  useNavigationGroup,
+  ZebarContext,
+} from "../../contexts";
 import SpSpireImage from "../SpSpireImage";
 import "./SpMedia.css";
 import SpTooltip from "../SpTooltip";
@@ -30,9 +35,9 @@ export const SpMedia = ({ className }: SpMediaProps) => {
   className ??= "";
   const zebar = useContext(ZebarContext);
   const spire = useContext(SpireContext);
+  const { navAttrs, navigation } = useNavigationGroup();
   const currentSession = zebar?.media?.currentSession;
   const [position, setPosition] = useState(currentSession?.endTime ?? 0);
-
   const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -94,45 +99,48 @@ export const SpMedia = ({ className }: SpMediaProps) => {
         className={`media anchor-tooltips-block-start ${className}`}
         role="complementary"
         aria-label="Media Player"
+        {...navAttrs}
       >
-        <SpTooltip
-          className="media__track-info-wrapper"
-          anchor={(tooltipId: string) => (
-            <div className="media__track-info" aria-describedby={tooltipId}>
-              <div className="media__track-title">{title}</div>
-              <div className="media__track-artist">{artist}</div>
+        <NavigationContext value={navigation}>
+          <SpTooltip
+            className="media__track-info-wrapper"
+            anchor={(tooltipId: string) => (
+              <div className="media__track-info" aria-describedby={tooltipId}>
+                <div className="media__track-title">{title}</div>
+                <div className="media__track-artist">{artist}</div>
+              </div>
+            )}
+            desc={
+              <>
+                <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
+                <strong>{currentSession.albumTitle}</strong> via session{" "}
+                <em>{currentSession.sessionId}</em>
+              </>
+            }
+          />
+          <div className="media__progress" style={style}>
+            <div className="media__duration">{ellapsedTime}</div>
+            <div className="media__timeline">
+              <div className="media__timeline-line" />
+              <SpSpireImage
+                className="media__time-marker"
+                path={`ui/energy/${spire.character}_energy_icon`}
+              />
             </div>
-          )}
-          desc={
-            <>
-              <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
-              <strong>{currentSession.albumTitle}</strong> via session{" "}
-              <em>{currentSession.sessionId}</em>
-            </>
-          }
-        />
-        <div className="media__progress" style={style}>
-          <div className="media__duration">{ellapsedTime}</div>
-          <div className="media__timeline">
-            <div className="media__timeline-line" />
-            <SpSpireImage
-              className="media__time-marker"
-              path={`ui/energy/${spire.character}_energy_icon`}
-            />
+            <div className="media__duration">{totalTime}</div>
           </div>
-          <div className="media__duration">{totalTime}</div>
-        </div>
-        <div className="media__controls">
-          <SpButton className="media__previous" onClick={onPrevious}>
-            ⏮
-          </SpButton>
-          <SpButton className="media__toggle-play" onClick={onToggle}>
-            {currentSession.isPlaying ? "⏸" : "⏵"}
-          </SpButton>
-          <SpButton className="media__next" onClick={onNext}>
-            ⏭
-          </SpButton>
-        </div>
+          <div className="media__controls">
+            <SpButton className="media__previous" onClick={onPrevious}>
+              ⏮
+            </SpButton>
+            <SpButton className="media__toggle-play" onClick={onToggle}>
+              {currentSession.isPlaying ? "⏸" : "⏵"}
+            </SpButton>
+            <SpButton className="media__next" onClick={onNext}>
+              ⏭
+            </SpButton>
+          </div>
+        </NavigationContext>
       </div>
     );
   }

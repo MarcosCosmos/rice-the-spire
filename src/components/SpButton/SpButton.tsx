@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import "./SpButton.css";
-import useNavigation from "../../util/useNavigation";
+import { useNavigationItem } from "../../contexts";
 
 export interface SpButtonProps extends DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -18,7 +18,7 @@ export const SpButton = ({
   ...attrs
 }: SpButtonProps) => {
   className ??= "";
-  const navAttrs = useNavigation(disabled);
+  const navAttrs = useNavigationItem(disabled);
   return (
     <button
       className={`sp-button ${className}`}

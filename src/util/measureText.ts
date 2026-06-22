@@ -29,4 +29,3 @@ export const widestDigit = [
 export const widestUnitChar = ["K", "M", "G", "T"]
   .map((n) => ({ char: n, width: measureTextWidth(n, "400 17px Kreon") }))
   .sort(({ width: widthA }, { width: widthB }) => widthB - widthA)[0].char;
-console.log(widestDigit, widestUnitChar);

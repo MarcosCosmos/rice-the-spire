@@ -1,6 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
-import { useNavigation } from "../../util";
 import "./SpNote.css";
+import { useNavigationItem } from "../../contexts";
 
 export interface SpNoteProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
@@ -11,12 +11,11 @@ export interface SpNoteProps extends DetailedHTMLProps<
 }
 export const SpNote = ({ className, children, ...attrs }: SpNoteProps) => {
   className ??= "";
-  const navAttrs = useNavigation();
+  const navAttrs = useNavigationItem();
   return (
     <div
       className={`sp-note ${className}`}
       role="note"
-      tabIndex={0}
       {...navAttrs}
       {...attrs}
     >

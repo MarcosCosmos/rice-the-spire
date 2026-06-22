@@ -24,7 +24,7 @@ export const defaultSpireConfig: SpireConfig = {
   character: "ironclad",
 };
 
-export const useRandomSpireConfig = () => {
+export const useRandomSpireConfig = (): SpireConfig => {
   const [spireConfig, setSpireConfig] =
     useState<SpireConfig>(defaultSpireConfig);
   useEffect(() => {

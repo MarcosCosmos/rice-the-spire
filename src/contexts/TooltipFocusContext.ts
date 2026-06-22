@@ -1,17 +1,22 @@
 import { createContext, useEffect, useState } from "react";
 
-export interface TooltipFocus {
+export interface TooltipFocusContext {
   targetId: string | null;
   update: (targetId: string | null) => void;
 }
 
-export const useProvideTooltipFocus = () => {
-  const [tooltipTargeting, setTooltipTargeting] = useState<
-    TooltipFocus | undefined
+export const TooltipFocusContext = createContext<
+  TooltipFocusContext | undefined
+>(undefined);
+export default TooltipFocusContext;
+
+export const useProvideTooltipFocus = (): TooltipFocusContext | undefined => {
+  const [tooltipFocus, setTooltipTargeting] = useState<
+    TooltipFocusContext | undefined
   >();
   useEffect(() => {
     const updateTarget = (newTarget: string | null) => {
-      if (newTarget !== tooltipTargeting?.targetId) {
+      if (newTarget !== tooltipFocus?.targetId) {
         setTooltipTargeting({
           targetId: newTarget,
           update: updateTarget,
@@ -19,7 +24,7 @@ export const useProvideTooltipFocus = () => {
       }
     };
     setTooltipTargeting({
-      targetId: tooltipTargeting?.targetId ?? null,
+      targetId: tooltipFocus?.targetId ?? null,
       update: updateTarget,
     });
     const escapeListener = (event: KeyboardEvent) => {
@@ -32,10 +37,5 @@ export const useProvideTooltipFocus = () => {
       document.removeEventListener("keydown", escapeListener);
     };
   }, []);
-  return tooltipTargeting;
+  return tooltipFocus;
 };
-
-export const TooltipFocusContext = createContext<TooltipFocus | undefined>(
-  undefined,
-);
-export default TooltipFocusContext;

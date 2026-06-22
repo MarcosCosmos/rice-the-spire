@@ -22,13 +22,12 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
 
   return (
     <SpTooltip
-      anchor={(id) => (
+      anchor={(tooltipId) => (
         <SpButton
-          id={`systray-icon-${id}`}
           className="tray-icon"
           disabled={disabled}
           aria-label={tooltip}
-          aria-describedby={id}
+          aria-describedby={tooltipId}
           onMouseEnter={() => void zebar?.systray?.onHoverEnter(id)}
           onMouseLeave={() => void zebar?.systray?.onHoverLeave(id)}
           onMouseMove={() => void zebar?.systray?.onHoverMove(id)}

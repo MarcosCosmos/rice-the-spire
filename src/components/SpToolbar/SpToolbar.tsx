@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import "./SpToolbar.css";
+import { NavigationContext, useNavigationGroup } from "../../contexts";
 
 export interface SpRegionProps {
   className?: string;
@@ -13,13 +14,15 @@ export const SpToolbar = ({
   children,
 }: SpRegionProps) => {
   className ??= "";
+  const { navAttrs, navigation } = useNavigationGroup();
   return (
     <div
       className={`toolbar ${className}`}
       role="toolbar"
       aria-label={ariaLabel}
+      {...navAttrs}
     >
-      {children}
+      <NavigationContext value={navigation}>{children}</NavigationContext>
     </div>
   );
 };

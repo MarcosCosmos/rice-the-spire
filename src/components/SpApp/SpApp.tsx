@@ -1,9 +1,13 @@
-import { type ReactNode } from "react";
 import { type ProviderGroup, type ProviderGroupConfig } from "zebar";
-import ZebarContext, { useZebarProviders } from "../../contexts/ZebarContext";
+import type { ReactNode } from "react";
+import ZebarContext, { useProvideZebar } from "../../contexts/ZebarContext";
 import "./SpApp.css";
-import { TooltipFocusContext, useProvideTooltipFocus } from "../../contexts";
-import { useProvideNavigation } from "../../util/useNavigation";
+import {
+  NavigationContext,
+  TooltipFocusContext,
+  useProvideNavigation,
+  useProvideTooltipFocus,
+} from "../../contexts";
 
 export interface SpAppProps {
   zebarProviders: ProviderGroup<ProviderGroupConfig>;
@@ -12,14 +16,21 @@ export interface SpAppProps {
 
 // TODO: ENHANCE KEYBOARD MANAGEMENT ENOUGH THAT WE CAN APPLY ROLE=APPLICATION TO THE ROOT, SHOULDN'T BE TO DIFFICULT ACTUALLY
 export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
-  useProvideNavigation();
-  const zebar = useZebarProviders(zebarProviders);
-  const tooltipTargetting = useProvideTooltipFocus();
+  const zebar = useProvideZebar(zebarProviders);
+  const tooltipFocus = useProvideTooltipFocus();
+  const navigation = useProvideNavigation();
   return (
-    <ZebarContext value={zebar}>
-      <TooltipFocusContext value={tooltipTargetting}>
-        {children}
-      </TooltipFocusContext>
-    </ZebarContext>
+    <div
+      className="app"
+      role="application"
+      aria-label="Zebar (Rice the Spire)"
+      aria-activedescendant={navigation.activeItem}
+    >
+      <ZebarContext value={zebar}>
+        <TooltipFocusContext value={tooltipFocus}>
+          <NavigationContext value={navigation}>{children}</NavigationContext>
+        </TooltipFocusContext>
+      </ZebarContext>
+    </div>
   );
 };

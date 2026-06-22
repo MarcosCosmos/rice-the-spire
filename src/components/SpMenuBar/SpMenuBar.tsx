@@ -11,6 +11,12 @@ export interface SpMenuBarProps extends DetailedHTMLProps<
   className?: string;
   children: ReactNode;
 }
+
+/**
+ * Not actually an aria menubar, which would not be advantageous since the app has the role app anyway
+ * @param param
+ * @returns 
+ */
 export const SpMenuBar = ({
   className,
   children,
@@ -18,12 +24,7 @@ export const SpMenuBar = ({
 }: SpMenuBarProps) => {
   className ??= "";
   return (
-    <div
-      className={`menubar ${className}`}
-      role="application"
-      aria-label="Zebar (Rice the Spire)"
-      {...attrs}
-    >
+    <div className={`menubar ${className}`} {...attrs}>
       <div className="menubar__background" />
       <div className="menubar__content">{children}</div>
     </div>

@@ -6,7 +6,7 @@ import {
   type ProviderMap,
 } from "zebar";
 
-export const useZebarProviders = (
+export const useProvideZebar = (
   zebarProviders: ProviderGroup<ProviderGroupConfig>,
 ) => {
   const [output, setOutput] = useState<

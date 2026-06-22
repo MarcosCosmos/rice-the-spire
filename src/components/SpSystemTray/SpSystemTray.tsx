@@ -5,7 +5,7 @@ import {
   type CSSProperties,
   type KeyboardEvent,
 } from "react";
-import { ZebarContext } from "../../contexts";
+import { NavigationContext, useNavigationGroup, ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
@@ -28,6 +28,9 @@ export const SpSystemTray = ({
   expandDirection ??= "start";
   expandFloating ??= false;
   const zebar = useContext(ZebarContext);
+
+  const { navAttrs, navigation } = useNavigationGroup();
+
   const [expanded, setExpanded] = useState(false);
   const [sortedIcons, setSortedIcons] = useState<SystrayIcon[]>([]);
   const availableIcons = zebar?.systray?.icons;
@@ -115,6 +118,7 @@ export const SpSystemTray = ({
       role="toolbar"
       aria-label="System Tray"
       onKeyDown={onEscape}
+      {...navAttrs}
     >
       <SpStretchBox
         className="system-tray__exterior"
@@ -124,31 +128,33 @@ export const SpSystemTray = ({
         inset={30}
       >
         <div className="system-tray__interior" onBlurCapture={onBlur}>
-          {expandDirection === "end" ? (
-            <>
-              {expander}
-              {primaryIcons.map((data) => (
-                <SpTrayIcon key={data.id} {...data} />
-              ))}
-              <div className="system-tray__secondary-icons">
-                {secondaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+          <NavigationContext value={navigation}>
+            {expandDirection === "end" ? (
+              <>
+                {expander}
+                {primaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} />
                 ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="system-tray__secondary-icons">
-                {secondaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                <div className="system-tray__secondary-icons">
+                  {secondaryIcons.map((data) => (
+                    <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="system-tray__secondary-icons">
+                  {secondaryIcons.map((data) => (
+                    <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                  ))}
+                </div>
+                {primaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} />
                 ))}
-              </div>
-              {primaryIcons.map((data) => (
-                <SpTrayIcon key={data.id} {...data} />
-              ))}
-              {expander}
-            </>
-          )}
+                {expander}
+              </>
+            )}
+          </NavigationContext>
         </div>
       </SpStretchBox>
     </div>

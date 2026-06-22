@@ -1,6 +1,6 @@
 export * from "./resolveSpireImage";
 export * from "./useClassFilter";
 export * from "./useDataSize";
-export * from "./useNavigation";
+export * from "../contexts/navigation/NavigationContext";
 export * from "./measureText";
 export * from "./mount";
