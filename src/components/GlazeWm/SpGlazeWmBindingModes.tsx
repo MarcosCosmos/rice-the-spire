@@ -32,14 +32,18 @@ export const SpGlazeWmBindingModes = ({
 
     return (
       <>
-        {resolvedEntries.entries().map(([name, data]) => (
-          <SpGlazeWmBindingMode
-            key={name}
-            name={name}
-            showAlways={showAlways}
-            {...data}
-          />
-        ))}
+        {[
+          ...resolvedEntries
+            .entries()
+            .map(([name, data]) => (
+              <SpGlazeWmBindingMode
+                key={name}
+                name={name}
+                showAlways={showAlways}
+                {...data}
+              />
+            )),
+        ]}
       </>
     );
   }
