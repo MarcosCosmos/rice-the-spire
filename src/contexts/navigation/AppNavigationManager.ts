@@ -13,24 +13,48 @@ interface ItemData {
   focusListener: (event: Event) => void;
 }
 
+export type ChangeListener = (activeItem?: string) => void;
+
+// todo: it might be worth wrapping this (and groupmanager) in state/reducer pattern for scheduling purposes?
+// for now useSyncExternalStore seems appropriate at the app level though
+// related todo: consider if we still need to manage tab indices at a group leve with role=application (or try for the practice anyway)
+
 export class AppNavigationManager {
   private items: ItemData[];
   private groups: GroupData[];
+  private lastActiveItemId?: string;
   private position: number;
   private keyListener: (event: KeyboardEvent) => void;
-  private activeChangedCallback?: (activeDescendant?: string) => void;
+  private changeListeners: ChangeListener[];
   constructor() {
     this.items = [];
     this.groups = [];
     this.position = 0;
-    this.activeChangedCallback = undefined;
+    this.changeListeners = [];
+    this.lastActiveItemId = undefined;
     this.keyListener = (event: KeyboardEvent) => {
       this.onKeydown(event);
     };
   }
 
-  setActiveChangeCallback(callback: (activeDescendant?: string) => void) {
-    this.activeChangedCallback = callback;
+  get activeItem() {
+    return this.position >= this.items.length
+      ? undefined
+      : this.items[this.position].id;
+  }
+
+  get activeGroup() {
+    return this.position >= this.items.length
+      ? undefined
+      : this.items[this.position].group?.id;
+  }
+
+  subscribe(listener: ChangeListener) {
+    this.changeListeners.push(listener);
+  }
+
+  unsubscribe(listener: ChangeListener) {
+    this.changeListeners.splice(this.changeListeners.indexOf(listener), 1);
   }
 
   registerGroup(element: HTMLElement, groupId: string) {
@@ -48,7 +72,7 @@ export class AppNavigationManager {
     let i = 0;
     while (
       i < this.groups.length &&
-      element.compareDocumentPosition(this.groups[i].element) ===
+      element.compareDocumentPosition(this.groups[i].element) &
         Node.DOCUMENT_POSITION_PRECEDING
     ) {
       i++;
@@ -58,7 +82,7 @@ export class AppNavigationManager {
 
   deregisterGroup(groupId: string) {
     const index = this.groups.findIndex(({ id }) => id === groupId);
-    if (!index) {
+    if (index === -1) {
       throw new Error(`attempting to deregister unregistered group ${groupId}`);
     }
     this.groups.splice(index, 1);
@@ -98,7 +122,7 @@ export class AppNavigationManager {
     let i = 0;
     while (
       i < this.items.length &&
-      element.compareDocumentPosition(this.items[i].element) ===
+      element.compareDocumentPosition(this.items[i].element) &
         Node.DOCUMENT_POSITION_PRECEDING
     ) {
       i++;
@@ -109,7 +133,7 @@ export class AppNavigationManager {
     if (group) {
       if (
         !group.first ||
-        group.first.element.compareDocumentPosition(element) ===
+        group.first.element.compareDocumentPosition(element) &
           Node.DOCUMENT_POSITION_PRECEDING
       ) {
         group.first = item;
@@ -118,7 +142,11 @@ export class AppNavigationManager {
     }
 
     if (this.items.length === 1) {
+      // in that case we are now focusing the very first item
       this.updateFocus();
+    } else if (this.position >= i) {
+      // in all other cases where the position wasn't to the left, the position of the active item has technically shifted but we don't need to trigger an update
+      this.position += 1;
     }
   }
 
@@ -127,14 +155,15 @@ export class AppNavigationManager {
    * @param item
    */
   deregisterItem(itemId: string) {
-    const index = this.items.findIndex(({ id }) => id === itemId);
-    if (!index) {
+    const globalIndexOfItem = this.items.findIndex(({ id }) => id === itemId);
+    if (globalIndexOfItem === -1) {
       throw new Error(`attempting to deregister unregistered item ${itemId}`);
     }
-    const item = this.items[index];
+    const item = this.items[globalIndexOfItem];
     item.element.removeEventListener("focus", item.focusListener);
-    const wasActive = this.position === index;
+    const wasActive = this.position === globalIndexOfItem;
 
+    let newPosition = this.position;
     const group = item.group;
     if (group) {
       if (!group.first) {
@@ -142,59 +171,74 @@ export class AppNavigationManager {
           `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
         );
       }
+
       const groupStartIndex = this.items.indexOf(group.first);
-      const groupIndex = index - groupStartIndex;
+      const indexOfItemInGroup = globalIndexOfItem - groupStartIndex;
+
       if (group.size === 1) {
         group.first = undefined;
-        // in this case we are positioning globally in the nearest available group instead of sticking to the group.
-        if (this.position >= this.items.length) {
-          this.position = this.items.length;
-        }
-      } else if (index === groupStartIndex) {
+      } else if (globalIndexOfItem === groupStartIndex) {
         group.first = this.items[groupStartIndex + 1];
-      } else if (groupIndex >= group.size) {
-        this.position -= 1;
+        if (group.first.group !== group) {
+          throw new Error("trying to assign item out of group");
+        }
       }
+
+      // we need to pull it back one if it was at the end of the group and there are neighbours in the group, otherwise it would leave the group
+      if (wasActive && group.size > 1 && indexOfItemInGroup >= group.size - 1) {
+        newPosition -= 1;
+      }
+
       group.size--;
     }
 
-    this.items.splice(index, 1);
-    if (wasActive) {
-      this.updateFocus();
+    this.items.splice(globalIndexOfItem, 1);
+    if (newPosition === this.position) {
+      // not in a group or didn't need to be moved to stay in the group
+      if (wasActive && this.position >= this.items.length) {
+        newPosition = this.items.length - 1;
+      }
     }
-  }
-
-  /**
-   * This method allows focus to be moved to an arbitrary position, using updateFocus internally.
-   * @param position
-   */
-  private moveTo(position: number) {
-    this.position = position;
-    this.updateFocus();
+    if (wasActive || newPosition != this.position) {
+      this.position = newPosition;
+      this.updateFocus();
+    } else if (globalIndexOfItem < this.position) {
+      // the active item was after the removed item, so the position needs to slice down too, but we don't need to trigger an update as such
+      this.position -= 1;
+    }
   }
 
   /**
    * Automatically checks and updates both element focus and aria-activedescendant as neccessary, avoiding redundant operations.
    */
   private updateFocus() {
-    if (this.position >= this.items.length) {
-      this.activeChangedCallback?.(undefined);
-    } else {
+    let nextActiveItemId = this.lastActiveItemId;
+    if (this.position < this.items.length) {
       const item = this.items[this.position];
-      const group = item.group;
-      if (group) {
-        if (group.first === undefined) {
-          throw new Error(
-            `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
-          );
+      nextActiveItemId = item.id;
+      if (nextActiveItemId != this.lastActiveItemId) {
+        const group = item.group;
+        if (group) {
+          if (group.first === undefined) {
+            throw new Error(
+              `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
+            );
+          }
+          const groupStartIndex = this.items.indexOf(group.first);
+          group.position = this.position - groupStartIndex;
         }
-        const groupStartIndex = this.items.indexOf(group.first);
-        group.position = this.position - groupStartIndex;
+        if (document.activeElement !== item.element) {
+          item.element.focus();
+        }
       }
-      if (document.activeElement !== item.element) {
-        item.element.focus();
-      }
-      this.activeChangedCallback?.(item.id);
+    } else {
+      nextActiveItemId = undefined;
+    }
+    if (nextActiveItemId !== this.lastActiveItemId) {
+      this.lastActiveItemId = nextActiveItemId;
+      this.changeListeners.forEach((listener) => {
+        listener(nextActiveItemId);
+      });
     }
   }
 
@@ -219,17 +263,15 @@ export class AppNavigationManager {
           if (event.shiftKey) {
             targetGroup = nonEmptyNeighbourGroups.findLast(
               (eachGroup) =>
-                currentItem.element.compareDocumentPosition(
-                  eachGroup.element,
-                ) === Node.DOCUMENT_POSITION_PRECEDING,
+                currentItem.element.compareDocumentPosition(eachGroup.element) &
+                Node.DOCUMENT_POSITION_PRECEDING,
             );
             targetGroup ??= nonEmptyNeighbourGroups.at(-1);
           } else {
             targetGroup = nonEmptyNeighbourGroups.find(
               (eachGroup) =>
-                currentItem.element.compareDocumentPosition(
-                  eachGroup.element,
-                ) === Node.DOCUMENT_POSITION_FOLLOWING,
+                currentItem.element.compareDocumentPosition(eachGroup.element) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
             );
             targetGroup ??= nonEmptyNeighbourGroups[0];
           }
@@ -278,7 +320,10 @@ export class AppNavigationManager {
         preventDefault = false;
     }
 
-    this.moveTo(newPosition);
+    if (newPosition != this.position) {
+      this.position = newPosition;
+      this.updateFocus();
+    }
 
     if (preventDefault) {
       event.preventDefault();
@@ -292,11 +337,6 @@ export class AppNavigationManager {
 
   start() {
     document.addEventListener("keydown", this.keyListener);
-    this.activeChangedCallback?.(
-      this.position < this.items.length
-        ? this.items[this.position].id
-        : undefined,
-    );
   }
   stop() {
     document.removeEventListener("keydown", this.keyListener);

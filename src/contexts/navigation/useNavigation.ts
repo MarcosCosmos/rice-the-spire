@@ -6,6 +6,7 @@ import {
   useId,
   useContext,
   useCallback,
+  useRef,
 } from "react";
 import AppNavigationManager from "./AppNavigationManager";
 import { GroupNavigationManager } from "./GroupNavigationManager";
@@ -27,9 +28,7 @@ export const useProvideNavigation = () => {
     };
   });
   useEffect(() => {
-    navManager.setActiveChangeCallback((id) => {
-      setActiveItem(id);
-    });
+    navManager.subscribe(setActiveItem);
     navManager.start();
     return () => {
       navManager.stop();
@@ -50,19 +49,21 @@ export const useNavigationGroup: () => {
 } = () => {
   const groupId = useId();
   const navigation = useContext(NavigationContext);
-  const [groupManager] = useState(
-    () => new GroupNavigationManager(navManager, groupId),
-  );
+  const _groupManager = useRef<GroupNavigationManager>(undefined);
+  const groupManager = (_groupManager.current ??= new GroupNavigationManager(
+    navManager,
+    groupId,
+  ));
+
   const refCallback = useCallback((element: HTMLElement | null) => {
     if (element) {
-      navManager.registerGroup(element, groupId);
-      groupManager.registered = true;
+      groupManager.register(element);
       return () => {
-        groupManager.registered = false;
-        navManager.deregisterGroup(groupId);
+        groupManager.deregister();
       };
     }
   }, []);
+
   const registerItemCallback = useCallback(
     (element: HTMLElement, itemId: string) => {
       groupManager.registerItem(element, itemId);
@@ -90,17 +91,58 @@ export const useNavigationGroup: () => {
 export const useNavigationItem = (disabled?: boolean) => {
   const id = useId();
   const navigation = useContext(NavigationContext);
-  const callback = useCallback(
-    (element: HTMLElement | null) => {
-      if (element && !disabled) {
-        return navigation?.registerItem(element, id);
+  const [element, setElement] = useState<HTMLElement | undefined>(undefined);
+
+  // Notefor reasons I have yet to fathom,
+  // storing the deregistration callback in a useState causes the stored value to be called as part of the render
+  // None the less, we want the ref callback to directly register if appropriate and cache the element for us if not.
+  // To achieve this we need a specific mix of states for react to listen to in these effects, and refs that the refcallback can universally access
+  // the ref callback can call our setters but can't actually read the values without storing it in useRef
+  const [registered, setRegistered] = useState(false);
+  const deregistrationRef = useRef<(() => void) | undefined>(undefined);
+  const disabledRef = useRef<boolean>(disabled);
+  disabledRef.current = disabled;
+
+  useEffect(() => {
+    if (!registered && element && !disabled && navigation?.registerItem) {
+      console.log("registering from effect", id);
+      deregistrationRef.current = navigation.registerItem(element, id);
+      setRegistered(true);
+    } else if (registered && (!element || disabled)) {
+      if (!deregistrationRef.current) {
+        throw new Error(
+          `Invalid state: deregistrationRef.current is undefined but the registered flag is true`,
+        );
       }
-    },
-    [id, navigation?.registerItem],
-  );
+      console.log("deregistering from effect", id);
+      deregistrationRef.current();
+      deregistrationRef.current = undefined;
+      setRegistered(false);
+    }
+  }, [element, disabled, navigation?.registerItem]);
+
+  const refCallback = useCallback((element: HTMLElement | null) => {
+    if (element) {
+      setElement(element);
+      if (!deregistrationRef.current && navigation && !disabledRef.current) {
+        console.log("registering from ref", id);
+        deregistrationRef.current = navigation.registerItem(element, id);
+        setRegistered(true);
+      }
+      return () => {
+        setElement(undefined);
+        if (deregistrationRef.current) {
+          console.log("dergistering from ref", id);
+          deregistrationRef.current = undefined;
+          setRegistered(false);
+        }
+      };
+    }
+  }, []);
+
   return {
     id,
-    ref: callback,
+    ref: refCallback,
     tabIndex: disabled ? -1 : 0,
   };
 };

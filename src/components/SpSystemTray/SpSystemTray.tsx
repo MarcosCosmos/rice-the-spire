@@ -1,11 +1,18 @@
 import {
+  useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type CSSProperties,
+  type FocusEvent,
   type KeyboardEvent,
 } from "react";
-import { NavigationContext, useNavigationGroup, ZebarContext } from "../../contexts";
+import {
+  NavigationContext,
+  useNavigationGroup,
+  ZebarContext,
+} from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
@@ -33,6 +40,16 @@ export const SpSystemTray = ({
 
   const [expanded, setExpanded] = useState(false);
   const [sortedIcons, setSortedIcons] = useState<SystrayIcon[]>([]);
+
+  const root = useRef<HTMLElement>(null);
+  const refCallback = useCallback(
+    (element: HTMLElement | null) => {
+      navAttrs.ref(element);
+      root.current = element;
+    },
+    [navAttrs.ref],
+  );
+
   const availableIcons = zebar?.systray?.icons;
   if (iconLimit && iconLimit >= (availableIcons?.length ?? 0)) {
     iconLimit = undefined;
@@ -76,8 +93,24 @@ export const SpSystemTray = ({
     setExpanded(!expanded);
   };
 
-  const onBlur = () => {
-    setExpanded(false);
+  const onBlur = (event: FocusEvent) => {
+    console.log(root.current, event.relatedTarget);
+    if (
+      !event.relatedTarget ||
+      !root.current ||
+      !(
+        root.current.compareDocumentPosition(event.relatedTarget) &
+        Node.DOCUMENT_POSITION_CONTAINED_BY
+      )
+    ) {
+      console.log(
+        "not inside",
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        event.relatedTarget &&
+          root.current?.compareDocumentPosition(event.relatedTarget),
+      );
+      setExpanded(false);
+    }
   };
 
   const onEscape = (event: KeyboardEvent) => {
@@ -118,7 +151,9 @@ export const SpSystemTray = ({
       role="toolbar"
       aria-label="System Tray"
       onKeyDown={onEscape}
+      onBlur={onBlur}
       {...navAttrs}
+      ref={refCallback}
     >
       <SpStretchBox
         className="system-tray__exterior"
@@ -127,7 +162,7 @@ export const SpSystemTray = ({
         height={85}
         inset={30}
       >
-        <div className="system-tray__interior" onBlurCapture={onBlur}>
+        <div className="system-tray__interior">
           <NavigationContext value={navigation}>
             {expandDirection === "end" ? (
               <>

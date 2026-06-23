@@ -2,32 +2,33 @@ import type AppNavigationManager from "./AppNavigationManager";
 
 export class GroupNavigationManager {
   private parentManager: AppNavigationManager;
+  private groupElement?: HTMLElement;
   private items: Map<string, HTMLElement>;
-  private isRegistered: boolean;
+  private registered: boolean;
   readonly groupId: string;
   constructor(parentManager: AppNavigationManager, groupId: string) {
     this.groupId = groupId;
     this.parentManager = parentManager;
     this.items = new Map();
-    this.isRegistered = false;
+    this.registered = false;
   }
 
-  get registered() {
-    return this.isRegistered;
-  }
-
-  set registered(newValue: boolean) {
-    this.isRegistered = newValue;
-    if (newValue) {
-      for (const [itemId, itemElement] of this.items.entries()) {
-        this.parentManager.registerItem(itemElement, itemId, this.groupId);
-      }
-    } else {
-      for (const itemId of this.items.keys()) {
-        this.parentManager.deregisterItem(itemId);
-      }
-      this.parentManager.deregisterGroup(this.groupId);
+  register(element: HTMLElement) {
+    this.registered = true;
+    this.groupElement = element;
+    this.parentManager.registerGroup(element, this.groupId);
+    for (const [itemId, itemElement] of this.items.entries()) {
+      this.parentManager.registerItem(itemElement, itemId, this.groupId);
     }
+  }
+
+  deregister() {
+    for (const itemId of this.items.keys()) {
+      this.parentManager.deregisterItem(itemId);
+    }
+    this.parentManager.deregisterGroup(this.groupId);
+    this.groupElement = undefined;
+    this.registered = false;
   }
 
   registerItem(element: HTMLElement, itemId: string) {
@@ -38,7 +39,7 @@ export class GroupNavigationManager {
   }
 
   deregisterItem(itemId: string) {
-    if (this.isRegistered) {
+    if (this.registered) {
       this.parentManager.deregisterItem(itemId);
     }
     this.items.delete(itemId);
