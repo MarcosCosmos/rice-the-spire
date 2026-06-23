@@ -1,6 +1,7 @@
 import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import "./SpButton.css";
 import { useNavigationItem } from "../../contexts";
+import SpOutlinedText from "../SpOutlinedText";
 
 export interface SpButtonProps extends DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,

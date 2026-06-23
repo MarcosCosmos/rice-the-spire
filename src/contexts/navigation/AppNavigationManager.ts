@@ -4,7 +4,7 @@ interface GroupData {
   // an index relative only to the group's available children
   position: number;
   size: number;
-  startIndex?: number;
+  first?: ItemData;
 }
 interface ItemData {
   element: HTMLElement;
@@ -107,7 +107,13 @@ export class AppNavigationManager {
     element.addEventListener("focus", item.focusListener);
 
     if (group) {
-      group.startIndex ??= i;
+      if (
+        !group.first ||
+        group.first.element.compareDocumentPosition(element) ===
+          Node.DOCUMENT_POSITION_PRECEDING
+      ) {
+        group.first = item;
+      }
       group.size++;
     }
 
@@ -131,21 +137,22 @@ export class AppNavigationManager {
 
     const group = item.group;
     if (group) {
-      if (group.startIndex === undefined) {
+      if (!group.first) {
         throw new Error(
-          `invalid state: item ${item.id} belongs to group ${group.id} which has no start index.`,
+          `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
         );
       }
-      const groupIndex = index - group.startIndex;
+      const groupStartIndex = this.items.indexOf(group.first);
+      const groupIndex = index - groupStartIndex;
       if (group.size === 1) {
-        group.startIndex = undefined;
+        group.first = undefined;
         // in this case we are positioning globally in the nearest available group instead of sticking to the group.
         if (this.position >= this.items.length) {
           this.position = this.items.length;
         }
-      } else if (index === group.startIndex) {
-        group.startIndex++;
-      } else if (groupIndex > group.size) {
+      } else if (index === groupStartIndex) {
+        group.first = this.items[groupStartIndex + 1];
+      } else if (groupIndex >= group.size) {
         this.position -= 1;
       }
       group.size--;
@@ -176,12 +183,13 @@ export class AppNavigationManager {
       const item = this.items[this.position];
       const group = item.group;
       if (group) {
-        if (group.startIndex === undefined) {
+        if (group.first === undefined) {
           throw new Error(
-            `invalid state: item ${item.id} belongs to group ${group.id} which has no start index.`,
+            `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
           );
         }
-        group.position = this.position - group.startIndex;
+        const groupStartIndex = this.items.indexOf(group.first);
+        group.position = this.position - groupStartIndex;
       }
       if (document.activeElement !== item.element) {
         item.element.focus();
@@ -197,11 +205,50 @@ export class AppNavigationManager {
     }
     let preventDefault = true;
     let newPosition = this.position;
-    let refinedKey = event.key;
-    if (event.key == "Tab") {
-      refinedKey = event.shiftKey ? "ArrowUp" : "ArrowDown";
-    }
-    switch (refinedKey) {
+    switch (event.key) {
+      case "Tab": {
+        const currentItem = this.items[this.position];
+        const nonEmptyNeighbourGroups = this.groups.filter(
+          (x) => x != currentItem.group && x.size > 0,
+        );
+        // this could be optimised but we really don't need to
+        // todo: wraparound
+        // also these start indices seem broken probably due to ordering issues
+        if (nonEmptyNeighbourGroups.length > 0) {
+          let targetGroup;
+          if (event.shiftKey) {
+            targetGroup = nonEmptyNeighbourGroups.findLast(
+              (eachGroup) =>
+                currentItem.element.compareDocumentPosition(
+                  eachGroup.element,
+                ) === Node.DOCUMENT_POSITION_PRECEDING,
+            );
+            targetGroup ??= nonEmptyNeighbourGroups.at(-1);
+          } else {
+            targetGroup = nonEmptyNeighbourGroups.find(
+              (eachGroup) =>
+                currentItem.element.compareDocumentPosition(
+                  eachGroup.element,
+                ) === Node.DOCUMENT_POSITION_FOLLOWING,
+            );
+            targetGroup ??= nonEmptyNeighbourGroups[0];
+          }
+          if (!targetGroup) {
+            throw new Error(
+              `Invalid state: could not find alternative group fr item ${currentItem.id} even though there are groups it does not belong to`,
+            );
+          }
+          if (!targetGroup.first) {
+            throw new Error(
+              `Invalid state: a non-empty group lacks a first item`,
+            );
+          }
+          const groupStartIndex = this.items.indexOf(targetGroup.first);
+          newPosition = groupStartIndex + targetGroup.position;
+        } else {
+        }
+        break;
+      }
       case "ArrowDown":
       case "ArrowRight":
         newPosition = (this.position + 1) % this.items.length;

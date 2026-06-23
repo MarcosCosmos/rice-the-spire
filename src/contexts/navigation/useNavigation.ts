@@ -1,4 +1,12 @@
-import { type RefCallback, useState, useEffect, useMemo, useId, useContext, useCallback } from "react";
+import {
+  type RefCallback,
+  useState,
+  useEffect,
+  useMemo,
+  useId,
+  useContext,
+  useCallback,
+} from "react";
 import AppNavigationManager from "./AppNavigationManager";
 import { GroupNavigationManager } from "./GroupNavigationManager";
 import { NavigationContext } from "./NavigationContext";
@@ -11,9 +19,7 @@ export interface GroupNavigationProps {
 const navManager = new AppNavigationManager();
 
 export const useProvideNavigation = () => {
-  const [activeDescendant, setActiveDescendant] = useState<string | undefined>(
-    undefined,
-  );
+  const [activeItem, setActiveItem] = useState<string | undefined>(undefined);
   const [registerItem] = useState(() => (element: HTMLElement, id: string) => {
     navManager.registerItem(element, id);
     return () => {
@@ -21,7 +27,9 @@ export const useProvideNavigation = () => {
     };
   });
   useEffect(() => {
-    navManager.setActiveChangeCallback(setActiveDescendant);
+    navManager.setActiveChangeCallback((id) => {
+      setActiveItem(id);
+    });
     navManager.start();
     return () => {
       navManager.stop();
@@ -29,10 +37,10 @@ export const useProvideNavigation = () => {
   }, []);
   return useMemo<NavigationContext>(
     () => ({
-      activeDescendant,
+      activeItem,
       registerItem,
     }),
-    [activeDescendant],
+    [activeItem],
   );
 };
 
