@@ -94,7 +94,6 @@ export const SpSystemTray = ({
   };
 
   const onBlur = (event: FocusEvent) => {
-    console.log(root.current, event.relatedTarget);
     if (
       !event.relatedTarget ||
       !root.current ||
@@ -103,12 +102,6 @@ export const SpSystemTray = ({
         Node.DOCUMENT_POSITION_CONTAINED_BY
       )
     ) {
-      console.log(
-        "not inside",
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        event.relatedTarget &&
-          root.current?.compareDocumentPosition(event.relatedTarget),
-      );
       setExpanded(false);
     }
   };

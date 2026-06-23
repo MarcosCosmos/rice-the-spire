@@ -105,7 +105,6 @@ export const useNavigationItem = (disabled?: boolean) => {
 
   useEffect(() => {
     if (!registered && element && !disabled && navigation?.registerItem) {
-      console.log("registering from effect", id);
       deregistrationRef.current = navigation.registerItem(element, id);
       setRegistered(true);
     } else if (registered && (!element || disabled)) {
@@ -114,7 +113,6 @@ export const useNavigationItem = (disabled?: boolean) => {
           `Invalid state: deregistrationRef.current is undefined but the registered flag is true`,
         );
       }
-      console.log("deregistering from effect", id);
       deregistrationRef.current();
       deregistrationRef.current = undefined;
       setRegistered(false);
@@ -125,14 +123,13 @@ export const useNavigationItem = (disabled?: boolean) => {
     if (element) {
       setElement(element);
       if (!deregistrationRef.current && navigation && !disabledRef.current) {
-        console.log("registering from ref", id);
         deregistrationRef.current = navigation.registerItem(element, id);
         setRegistered(true);
       }
+
       return () => {
         setElement(undefined);
         if (deregistrationRef.current) {
-          console.log("dergistering from ref", id);
           deregistrationRef.current = undefined;
           setRegistered(false);
         }
