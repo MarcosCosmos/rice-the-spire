@@ -2,7 +2,7 @@ import { useContext } from "react";
 import SpireContext from "../../contexts/SpireContext";
 import "./SpWorkspaces.css";
 import { SpWorkspace, type SpWorkspaceProps } from "../SpWorkspace";
-import { NavigationContext, useNavigationGroup } from "../../contexts";
+import { useNavigationGroup } from "../../contexts";
 
 export interface WorkspaceProps extends SpWorkspaceProps {
   key: string;
@@ -15,7 +15,7 @@ export interface SpWorkspacesProps {
 export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
   className ??= "";
   const config = useContext(SpireContext);
-  const { navAttrs, navigation } = useNavigationGroup();
+  const navAttrs = useNavigationGroup();
   return (
     <nav
       tabIndex={-1}
@@ -27,11 +27,9 @@ export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
         aria-label="Workspaces"
         {...navAttrs}
       >
-        <NavigationContext value={navigation}>
-          {workspaces.map(({ key, ...props }) => (
-            <SpWorkspace key={key} {...props} />
-          ))}
-        </NavigationContext>
+        {workspaces.map(({ key, ...props }) => (
+          <SpWorkspace key={key} {...props} />
+        ))}
       </div>
     </nav>
   );

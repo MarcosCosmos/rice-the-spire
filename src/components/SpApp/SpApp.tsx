@@ -24,7 +24,7 @@ export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
       className="app"
       role="application"
       aria-label="Zebar (Rice the Spire)"
-      aria-activedescendant={navigation.activeItem}
+      aria-activedescendant={navigation.activeItemId}
     >
       <ZebarContext value={zebar}>
         <TooltipFocusContext value={tooltipFocus}>
