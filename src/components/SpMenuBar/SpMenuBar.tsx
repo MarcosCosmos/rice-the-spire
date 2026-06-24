@@ -15,7 +15,7 @@ export interface SpMenuBarProps extends DetailedHTMLProps<
 /**
  * Not actually an aria menubar, which would not be advantageous since the app has the role app anyway
  * @param param
- * @returns 
+ * @returns
  */
 export const SpMenuBar = ({
   className,

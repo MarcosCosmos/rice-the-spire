@@ -1,9 +1,10 @@
 import SpOutlinedText from "../SpOutlinedText";
 import "./SpDateTime.css";
 import SpSpireImage from "../SpSpireImage";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
+import { measureTextWidth } from "../../util/measureText";
 
 const shortDateFormat = new Intl.DateTimeFormat(undefined, {
   year: "2-digit",
@@ -21,6 +22,12 @@ const longFormat = new Intl.DateTimeFormat(undefined, {
 export interface SpDateTimeProps {
   className?: string;
 }
+
+const assumedText = {
+  text: "00/00/00 00:00",
+  font: "400 1.5rem Kreon",
+};
+
 export const SpDateTime = ({ className }: SpDateTimeProps) => {
   className ??= "";
   const [now, setNow] = useState<number>(Date.now());
@@ -34,6 +41,14 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
   });
   const label = "Datetime";
 
+  const [preWidth, setPreWidth] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    setPreWidth(measureTextWidth(assumedText.text, assumedText.font));
+  }, []);
+  const style: CSSProperties = {
+    minWidth: preWidth,
+  };
+
   // TODO: this needs an assumed width
   return (
     <SpTooltip
@@ -42,6 +57,7 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
           className={`datetime {className}`}
           aria-label={label}
           aria-describedby={id}
+          style={style}
         >
           <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
           <SpOutlinedText aria-hidden="true">
