@@ -1,10 +1,4 @@
-import {
-  type RefCallback,
-  useId,
-  useContext,
-  useCallback,
-  useEffect,
-} from "react";
+import { type RefCallback, useId, useContext, useCallback } from "react";
 import { NavigationContext } from "./NavigationContext";
 
 export interface GroupNavigationProps {
@@ -14,31 +8,25 @@ export interface GroupNavigationProps {
 
 export const useNavigationGroup = (): GroupNavigationProps => {
   const id = useId();
-  const navigation = useContext(NavigationContext);
+  const navManager = useContext(NavigationContext);
 
-  //   useEffect(() => {
-  //     navigation?.dispatchUpdate({
-  //       type: "RegisterGroup",
-  //       id,
-  //     });
-  //     return () => {
-  //       navigation?.dispatchUpdate({
-  //         type: "DeregisterGroup",
-  //         id,
-  //       });
-  //     };
-  //   }, []);
   const refCallback = useCallback(
     (element: HTMLElement | null) => {
       if (element) {
-        navigation?.dispatchUpdate({
-          type: "UpdateGroup",
+        navManager.dispatch({
+          type: "AddGroup",
           id,
           element,
         });
+        return () => {
+          navManager.dispatch({
+            type: "DeleteGroup",
+            id,
+          });
+        };
       }
     },
-    [id, navigation?.dispatchUpdate],
+    [id, navManager],
   );
   return {
     id: id,

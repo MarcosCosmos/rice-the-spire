@@ -1,52 +1,131 @@
-interface GroupData {
-  element?: HTMLElement;
-  id: string;
-  // an index relative only to the group's available children
-  position: number;
-  size: number;
-  first?: ItemData;
-}
-interface ItemData {
-  elementRef?: HTMLElement;
-  id: string;
-  group?: GroupData;
-  focusListener: (event: Event) => void;
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
+export interface ActionTracking {
+  uid?: number;
 }
 
-export type ChangeListener = (
-  activeItemId?: string,
-  activeGroupId?: string,
-) => void;
+export interface AddGroupAction {
+  type: "AddGroup";
+  id: string;
+  element: HTMLElement;
+}
 
-// todo: it might be worth wrapping this (and groupmanager) in state/reducer pattern for scheduling purposes?
-// for now useSyncExternalStore seems appropriate at the app level though
-// related todo: consider if we still need to manage tab indices at a group leve with role=application (or try for the practice anyway)
+export interface AddItemAction {
+  type: "AddItem";
+  id: string;
+  element: HTMLElement;
+}
 
-export class AppNavigationManager {
-  private items: ItemData[];
-  private groups: GroupData[];
-  private _activeItemId?: string;
-  private _activeGroupId?: string;
-  private position: number;
+export interface DeleteGroupAction {
+  type: "DeleteGroup";
+  id: string;
+}
+
+export interface DeleteItemAction {
+  type: "DeleteItem";
+  id: string;
+}
+
+/**
+ * Dummy action indicating a noticable change; it will cause the reducer to check for an update;
+ * again it's probably not good usage but we'll try it for now.
+ */
+export interface FocusChanged {
+  type: "FocusChanged";
+}
+
+export type NavigationAction = ActionTracking &
+  (AddGroupAction | AddItemAction | DeleteGroupAction | DeleteItemAction);
+
+interface GroupNavigationNode {
+  readonly type: "GroupNavigationNode";
+  readonly id: string;
+  readonly element: HTMLElement;
+  /**
+   * may only be nullish if there are no children
+   */
+  readonly activeChildId?: string;
+  readonly children: readonly LeafNavigationNode[];
+}
+
+interface LeafNavigationNode {
+  readonly type: "LeafNavigationNode";
+  readonly element: HTMLElement;
+  readonly id: string;
+  readonly focusListener: (event: FocusEvent) => void;
+}
+
+type NavigationNode = LeafNavigationNode | GroupNavigationNode;
+
+/**
+ * An opaque state object for logging purposes only
+ */
+export interface NavigationState {
+  type: "AppNavigationState";
+}
+
+interface AppNavigationStateInternal extends NavigationState {
+  type: "AppNavigationState";
+  readonly activeLeafId?: string;
+  readonly roots: readonly NavigationNode[];
+}
+
+/**
+ * Note: positions/cursors are indicative.
+ * This means that they are never -1 but not be indexable.
+ * Specifically, if we are querying a position with an element, we will return where it should be placed using values safe for splice/slice but not index.
+ * If instead we query with an id, the result will be nullish in the case that it is not found and concrete in the case that it is found.
+ */
+interface LeafCursor {
+  outerPosition: number;
+  innerPosition?: number;
+}
+
+enum CursorMode {
+  Any,
+  PreferSameGroup = 1 << 1,
+  PreserveActiveInGroup = 1 << 2,
+  LeastDisruptive = PreferSameGroup | PreserveActiveInGroup,
+}
+
+export type ChangeListener = (state: Readonly<NavigationState>) => void;
+
+// like the % operator but definitely wraps negatives
+const absMod = (i: number, limit: number) => (i + limit) % limit;
+
+export class NavigationManager {
+  private _state: AppNavigationStateInternal;
   private keyListener: (event: KeyboardEvent) => void;
   private changeListeners: ChangeListener[];
-  constructor() {
-    this.items = [];
-    this.groups = [];
-    this.position = 0;
-    this.changeListeners = [];
-    this._activeItemId = undefined;
-    this.keyListener = (event: KeyboardEvent) => {
-      this.onKeydown(event);
+  constructor(state?: AppNavigationStateInternal) {
+    this._state = state ?? {
+      type: "AppNavigationState",
+      activeLeafId: undefined,
+      roots: [],
     };
+    this.changeListeners = [];
+    this.keyListener = this.onKeydown.bind(this);
   }
 
-  get activeItemId() {
-    return this._activeItemId;
+  /**
+   * returns an opaque object, but does not deep copy, completely unsafe to mutate
+   */
+  get state(): NavigationState {
+    return this._state;
   }
 
-  get activeGroupId() {
-    return this._activeGroupId;
+  get activeLeafId() {
+    return this._state.activeLeafId;
+  }
+
+  shouldHaveTabIndex(leafId: string) {
+    const cursor = this.findCursor(leafId);
+    if (!cursor) {
+      return false;
+    }
+    return (
+      typeof cursor.innerPosition === "undefined" ||
+      this.groupAt(cursor.outerPosition).activeChildId === leafId
+    );
   }
 
   subscribe(listener: ChangeListener) {
@@ -57,391 +136,641 @@ export class AppNavigationManager {
     this.changeListeners.splice(this.changeListeners.indexOf(listener), 1);
   }
 
-  registerGroup(groupId: string) {
-    if (this.groups.some((group) => group.id === groupId)) {
-      console.warn("duplicate registration attempted for group", groupId);
-      return;
-    }
-    this.groups.push({
-      id: groupId,
-      position: 0,
-      size: 0,
-    });
-  }
-
-  updateGroup(groupId: string, newElement: HTMLElement) {
-    const oldIndex = this.groups.findIndex((group) => group.id === groupId);
-    const i = this.groups.findIndex(
-      (existingGroup) =>
-        !existingGroup.element ||
-        newElement.compareDocumentPosition(existingGroup.element) &
-          Node.DOCUMENT_POSITION_PRECEDING,
-    );
-
-    const group =
-      oldIndex === -1
-        ? {
-            element: newElement,
-            id: groupId,
-            position: 0,
-            size: 0,
-          }
-        : this.groups[oldIndex];
-
-    if (i !== oldIndex) {
-      if (oldIndex !== -1) {
-        this.groups.splice(oldIndex, 1);
-      }
-      this.groups.splice(i, 0, group);
-    }
-    this.findItemsForGroup(group);
-  }
-
-  findItemsForGroup(group: GroupData) {
-    const groupElement = group.element;
-    const ownedItems =
-      groupElement &&
-      this.items.filter(
-        (eachItem) =>
-          eachItem.element &&
-          groupElement.compareDocumentPosition(eachItem.element) &
-            Node.DOCUMENT_POSITION_CONTAINED_BY,
-      );
-    if (ownedItems && ownedItems.length > 0) {
-      group.first = ownedItems[0];
-      group.size = ownedItems.length;
-      for (const eachOwnedItem of ownedItems) {
-        eachOwnedItem.group = group;
-      }
-      if (ownedItems.some((item) => this.activeItemId === item.id)) {
-        this.updateFocus();
-      }
+  dispatch(action: NavigationAction) {
+    switch (action.type) {
+      case "AddGroup":
+        this.addGroup(action.id, action.element);
+        break;
+      case "AddItem":
+        this.addItem(action.id, action.element);
+        break;
+      case "DeleteGroup":
+        this.deleteGroup(action.id);
+        break;
+      case "DeleteItem":
+        this.deleteItem(action.id);
+        break;
     }
   }
 
-  deregisterGroup(groupId: string) {
-    const index = this.groups.findIndex(({ id }) => id === groupId);
-    if (index === -1) {
-      // throw new Error(`attempting to deregister unregistered group ${groupId}`);
-      console.warn("deregistration attempted for unknown group", groupId);
-      return;
-    }
-    const group = this.groups[index];
-    this.groups.splice(index, 1);
-    if (group.first) {
-      const startIndex = this.items.indexOf(group.first);
-      const ownedItems = this.items.slice(startIndex, startIndex + group.size);
-      for (const eachOwnedItem of ownedItems) {
-        eachOwnedItem.group = undefined;
-      }
-      if (ownedItems.some((item) => this.activeItemId === item.id)) {
-        this.updateFocus();
-      }
+  private notifyListeners() {
+    for (const listener of this.changeListeners) {
+      listener(this._state);
     }
   }
 
   /**
-   * Inserts the element into the list of registered items based on DOM order
-   * Also updates focus if it's the first item
+   *
    * @param element
-   * @param itemId
-   * @returns a cleanup method that deregisters the element/item
+   * @returns [0, roots.length] - note that a past the end will be at the value.length, not -1; this is safer for splicing
    */
-  registerItem(itemId: string) {
-    if (this.items.some((item) => item.id === itemId)) {
-      console.warn("duplicate registration attempted for item", itemId);
-      return;
-    }
-    const item = {
-      id: itemId,
-      focusListener: () => {
-        this.focusListener(item);
-      },
-    };
-    this.items.push(item);
-  }
-
-  updateItem(itemId: string, newElement: HTMLElement) {
-    const oldIndex = this.items.findIndex((item) => item.id === itemId);
-    const i = this.items.findIndex(
-      (existingItem) =>
-        !existingItem.element ||
-        newElement.compareDocumentPosition(existingItem.element) &
-          Node.DOCUMENT_POSITION_PRECEDING,
+  private suggestPosition(element: HTMLElement) {
+    const index = this._state.roots.findIndex(
+      (otherNode) =>
+        element.compareDocumentPosition(otherNode.element) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     );
-
-    const item =
-      oldIndex === -1
-        ? {
-            element: newElement,
-            id: itemId,
-            focusListener: () => {
-              this.focusListener(item);
-            },
-          }
-        : this.items[oldIndex];
-
-    let changed = false;
-    if (i !== oldIndex) {
-      if (oldIndex !== -1) {
-        this.items.splice(oldIndex, 1);
-      }
-      this.items.splice(i, 0, item);
-      changed = true;
-    }
-    if (newElement !== item.element) {
-      item.element?.removeEventListener("focus", item.focusListener);
-      newElement.addEventListener("focus", item.focusListener);
-      item.element = newElement;
-      changed = true;
-    }
-
-    // see if the item belongs in a group
-    this.findGroupForItem(item);
-
-    if (changed) {
-      if (this.items.length === 1) {
-        // in that case we are now focusing the very first item
-        this.updateFocus();
-      } else if (this.position >= i) {
-        // in all other cases where the position wasn't to the left, the position of the active item has technically shifted but we don't need to trigger an update
-        this.position += 1;
-        this.updateFocus();
+    if (index != -1) {
+      const otherNode = this._state.roots[index];
+      if (
+        otherNode.type === "GroupNavigationNode" &&
+        element.compareDocumentPosition(otherNode.element) &
+          Node.DOCUMENT_POSITION_CONTAINED_BY
+      ) {
+        throw new Error(
+          `Invalid state: group ${otherNode.id} should not be nested inside another prospective group, by apparently is`,
+        );
       }
     }
+    return index === -1 ? this._state.roots.length : index;
   }
 
-  private findGroupForItem(item: ItemData) {
-    const itemElement = item.element;
-    const group =
-      itemElement &&
-      this.groups.find(
-        (eachGroup) =>
-          eachGroup.element &&
-          itemElement.compareDocumentPosition(eachGroup.element) &
-            Node.DOCUMENT_POSITION_CONTAINS,
-      );
-    if (group && group != item.group) {
-      if (
-        !group.first?.element ||
-        group.first.element.compareDocumentPosition(itemElement) &
-          Node.DOCUMENT_POSITION_PRECEDING
-      ) {
-        group.first = item;
-      }
-      group.size++;
+  private findPosition(id: string) {
+    const index = this._state.roots.findIndex((group) => group.id === id);
+    return index === -1 ? undefined : index;
+  }
 
-      if (item.id === this.activeItemId) {
-        this.updateFocus();
+  /**
+   * Enscapsulates error checking
+   */
+  private groupAt(position: number) {
+    if (position < 0 || position > this._state.roots.length) {
+      throw new Error(
+        `Invalid group position: ${position.toFixed(0)} is out of range [0, ${this._state.roots.length.toFixed(0)})`,
+      );
+    }
+    const result = this._state.roots[position];
+    if (result.type !== "GroupNavigationNode") {
+      throw new Error(
+        `Invalid group position: got an existing node for a group id that isn't a group node. You may incorrectly used AddItem with a Group somehow.`,
+      );
+    }
+    return result;
+  }
+
+  addGroup(id: string, element: HTMLElement) {
+    const destination = this.suggestPosition(element);
+    const existingPosition = this.findPosition(id);
+
+    // todo: we can optimise this by moving the splicing out the preceding nodes and only bother processing actual potential children but we'll deal with that later
+    if (typeof existingPosition !== "undefined") {
+      let isChange = false;
+      if (destination !== existingPosition) {
+        isChange = true;
+      } else {
+        const existingGroup = this.groupAt(existingPosition);
+        isChange =
+          !existingGroup.children.every(
+            (otherLeaf) =>
+              element.compareDocumentPosition(otherLeaf.element) &
+              Node.DOCUMENT_POSITION_CONTAINED_BY,
+          ) ||
+          this._state.roots.some(
+            (otherNode) =>
+              element.compareDocumentPosition(otherNode.element) &
+              Node.DOCUMENT_POSITION_CONTAINED_BY,
+          );
+      }
+
+      if (isChange) {
+        // first delete the group so we have a clean state to work with
+        this.deleteGroupImpure(existingPosition);
+      } else {
+        return;
+      }
+    }
+
+    const freeRoots = [];
+    const children: LeafNavigationNode[] = [];
+    for (const otherNode of this._state.roots.slice(destination)) {
+      const outcome = element.compareDocumentPosition(otherNode.element);
+      if (otherNode.type === "GroupNavigationNode") {
+        if (
+          outcome &
+          (Node.DOCUMENT_POSITION_CONTAINS |
+            Node.DOCUMENT_POSITION_CONTAINED_BY)
+        ) {
+          throw new Error(
+            `Invalid state: groups ${id} and ${otherNode.id} had a contains or containedby relationship`,
+          );
+        }
+
+        freeRoots.push(otherNode);
+      } else if (outcome & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+        children.push(otherNode);
+      } else {
+        freeRoots.push(otherNode);
+      }
+      // technically we could add more assertions but we'll worry about that later
+    }
+
+    const group: GroupNavigationNode = {
+      type: "GroupNavigationNode",
+      id,
+      element,
+      children,
+      activeChildId:
+        children.length === 0
+          ? undefined
+          : (children.find((child) => child.id === this._state.activeLeafId)
+              ?.id ?? children[0].id),
+    };
+    this._state = {
+      ...this._state,
+      roots: [...this._state.roots.slice(0, destination), group, ...freeRoots],
+    };
+
+    this.notifyListeners();
+  }
+
+  /**
+   * Importantly, this does not delete any children, it only ungroups them. It also is a no-op if the group is absent.
+   * This is (somewhat) neccessary due to relative instability in react refs and more importantly, the insistence on purity.
+   * @param groupId
+   * @returns
+   */
+  deleteGroup(groupId: string) {
+    const position = this.findPosition(groupId);
+    if (typeof position === "undefined") {
+      return; // could be a duplicate attempt at deleting the group, which is permitted because react likes to be 'pure'
+    }
+
+    this.deleteGroupImpure(position);
+
+    this.notifyListeners();
+  }
+
+  /**
+   * Only to be run after doing safety checks that ensure the group exists; does not send notifications (since that could be redundant)
+   * @param position
+   */
+  private deleteGroupImpure(position: number) {
+    const group = this.groupAt(position);
+    this._state = {
+      ...this._state,
+      roots: this._state.roots.toSpliced(
+        position,
+        1,
+        ...group.children.map((leaf) => ({ ...leaf, parent: undefined })),
+      ),
+    };
+  }
+
+  private suggestCursor(element: HTMLElement): LeafCursor {
+    let rootOutcome = 0;
+    const rootIndex = this._state.roots.findIndex((otherNode) => {
+      rootOutcome = element.compareDocumentPosition(otherNode.element);
+      return (
+        rootOutcome &
+        (Node.DOCUMENT_POSITION_CONTAINS | Node.DOCUMENT_POSITION_FOLLOWING)
+      );
+    });
+    if (rootIndex === -1) {
+      return { outerPosition: this._state.roots.length };
+    }
+
+    if (rootOutcome & Node.DOCUMENT_POSITION_CONTAINS) {
+      const otherNode = this.groupAt(rootIndex);
+      const innerIndex = otherNode.children.findIndex(
+        (otherChild) =>
+          element.compareDocumentPosition(otherChild.element) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+      if (innerIndex === -1) {
+        return {
+          outerPosition: rootIndex,
+          innerPosition: otherNode.children.length,
+        };
+      } else {
+        return {
+          outerPosition: rootIndex,
+          innerPosition: innerIndex,
+        };
       }
     } else {
-      item.group = undefined;
+      return {
+        outerPosition: rootIndex,
+      };
+    }
+  }
+
+  private findCursor(id: string): LeafCursor | undefined {
+    for (
+      let rootPosition = 0;
+      rootPosition < this._state.roots.length;
+      rootPosition++
+    ) {
+      const otherNode = this._state.roots[rootPosition];
+      if (otherNode.id === id) {
+        return { outerPosition: rootPosition };
+      } else if (otherNode.type === "GroupNavigationNode") {
+        const innerPosition = otherNode.children.findIndex(
+          (otherChild) => otherChild.id === id,
+        );
+        if (innerPosition !== -1) {
+          return {
+            outerPosition: rootPosition,
+            innerPosition,
+          };
+        }
+      }
+    }
+    return undefined;
+  }
+
+  private leafAt({
+    outerPosition,
+    innerPosition,
+  }: LeafCursor): LeafNavigationNode {
+    if (typeof innerPosition !== "undefined") {
+      const group = this.groupAt(outerPosition);
+      if (innerPosition < 0 || innerPosition > group.children.length) {
+        throw new Error(
+          `Invalid cursor: root position is out of range for length ${this._state.roots.length.toFixed(0)}: : ${JSON.stringify({ rootPosition: outerPosition, innerPosition })}`,
+        );
+      }
+      return group.children[innerPosition];
+    } else {
+      if (outerPosition < 0 || outerPosition > this._state.roots.length) {
+        throw new Error(
+          `Invalid cursor: root position is out of range for length ${this._state.roots.length.toFixed(0)}: : ${JSON.stringify({ rootPosition: outerPosition, innerPosition })}`,
+        );
+      }
+      const leaf = this._state.roots[outerPosition];
+      if (leaf.type !== "LeafNavigationNode") {
+        throw new Error(
+          `Invalid cursor points to non-leaf ${leaf.id}: ${JSON.stringify({ rootPosition: outerPosition, innerPosition })}`,
+        );
+      }
+      return leaf;
+    }
+  }
+
+  addItem(id: string, element: HTMLElement) {
+    const destination = this.suggestCursor(element);
+    const existingCursor = this.findCursor(id);
+
+    if (existingCursor) {
+      let isChange = false;
+      const existingLeaf = this.leafAt(existingCursor);
+      isChange =
+        destination.outerPosition != existingCursor.outerPosition ||
+        destination.innerPosition !== existingCursor.innerPosition ||
+        existingLeaf.id !== id ||
+        existingLeaf.element !== element;
+      if (isChange) {
+        this.deleteItemImpure(existingCursor);
+      } else {
+        return;
+      }
+    }
+
+    const leaf: LeafNavigationNode = {
+      type: "LeafNavigationNode",
+      id,
+      element,
+      focusListener: () => {
+        this.onFocus(id);
+      },
+    };
+
+    let outerReplacement: NavigationNode;
+    if (typeof destination.innerPosition === "undefined") {
+      outerReplacement = leaf;
+    } else {
+      const parent = this.groupAt(destination.outerPosition);
+      outerReplacement = {
+        ...parent,
+        children: parent.children.toSpliced(destination.innerPosition, 0, leaf),
+        activeChildId: parent.activeChildId ?? id,
+      };
+    }
+
+    const activeLeafChanged = !this._state.activeLeafId;
+
+    this._state = {
+      ...this._state,
+      roots: this._state.roots.toSpliced(
+        destination.outerPosition,
+        outerReplacement.type === "GroupNavigationNode" ? 1 : 0,
+        outerReplacement,
+      ),
+      activeLeafId: this._state.activeLeafId ?? id,
+    };
+
+    this.notifyListeners();
+
+    // do the focus change after notifying listeners to avoid potentially receiving some other instruction before we can notify.
+    if (activeLeafChanged) {
+      element.focus();
     }
   }
 
   /**
-   * Removes the item from registration and corrects focus as neccessary
-   * @param item
+   * Note: this permits attempts to delete non-existant items, mostly because react requires that.
    */
-  deregisterItem(itemId: string) {
-    const globalIndexOfItem = this.items.findIndex(({ id }) => id === itemId);
-    if (globalIndexOfItem === -1) {
-      // throw new Error(`attempting to deregister unregistered item ${itemId}`);
-      console.warn("deregistration attempted for unknown item", itemId);
-      return;
+  deleteItem(id: string) {
+    const wasActive = this._state.activeLeafId === id;
+    const cursor = this.findCursor(id);
+    if (cursor) {
+      this.deleteItemImpure(cursor);
     }
-    const item = this.items[globalIndexOfItem];
-    item.element?.removeEventListener("focus", item.focusListener);
-    const wasActive = this.position === globalIndexOfItem;
 
-    let newPosition = this.position;
-    const group = item.group;
-    if (group) {
-      if (!group.first) {
+    this.notifyListeners();
+
+    if (wasActive && this._state.activeLeafId) {
+      const activeCursor = this.findCursor(this._state.activeLeafId);
+      if (!activeCursor) {
         throw new Error(
-          `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
+          "Invalid state: could not find the current active leaf by id",
+        );
+      }
+      this.leafAt(activeCursor).element.focus();
+    }
+  }
+
+  /**
+   * Only to be run after safety checks ensuring the item exists, does not check any of it's params more than neccessary for eslint.
+   * Does NOT notify listeners or update focus
+   * @param cursor
+   * @param leaf
+   */
+  private deleteItemImpure(cursor: LeafCursor) {
+    const leaf = this.leafAt(cursor);
+    let activeLeafId = this._state.activeLeafId;
+    let replacementGroup: GroupNavigationNode | undefined = undefined;
+    if (typeof cursor.innerPosition !== "undefined") {
+      const parent = this.groupAt(cursor.outerPosition);
+      if (!parent.children.some((child) => child.id === leaf.id)) {
+        throw new Error(
+          "Invalid cursor: the suggested parent is not actually the parent",
         );
       }
 
-      const groupStartIndex = this.items.indexOf(group.first);
-      const indexOfItemInGroup = globalIndexOfItem - groupStartIndex;
-
-      if (group.size === 1) {
-        group.first = undefined;
-      } else if (globalIndexOfItem === groupStartIndex) {
-        group.first = this.items[groupStartIndex + 1];
-        if (group.first.group !== group) {
-          throw new Error("trying to assign item out of group");
+      let activeChildId = parent.activeChildId;
+      if (leaf.id === parent.activeChildId) {
+        if (parent.children.length === 1) {
+          activeChildId = undefined;
+        } else if (cursor.innerPosition === parent.children.length - 1) {
+          activeChildId = parent.children[cursor.innerPosition - 1].id;
+        } else {
+          activeChildId = parent.children[cursor.innerPosition + 1].id;
+        }
+        if (leaf.id === activeLeafId) {
+          activeLeafId = activeChildId;
         }
       }
+      replacementGroup = {
+        ...parent,
+        activeChildId,
+        children: parent.children.toSpliced(cursor.innerPosition, 1),
+      };
+    }
 
-      // we need to pull it back one if it was at the end of the group and there are neighbours in the group, otherwise it would leave the group
-      if (wasActive && group.size > 1 && indexOfItemInGroup >= group.size - 1) {
-        newPosition -= 1;
+    if (activeLeafId === leaf.id) {
+      const nextCursor = this.findNextCursor(
+        cursor,
+        CursorMode.LeastDisruptive,
+      );
+      if (nextCursor) {
+        activeLeafId = this.leafAt(nextCursor).id;
+        if (activeLeafId === leaf.id) {
+          throw new Error(
+            "Invalid state: the next cursor cannot be the same as the current cursor",
+          );
+        }
+      } else {
+        activeLeafId = undefined;
       }
-
-      group.size--;
     }
+    this._state = {
+      ...this._state,
+      roots: replacementGroup
+        ? this._state.roots.toSpliced(cursor.outerPosition, 1, replacementGroup)
+        : this._state.roots.toSpliced(cursor.outerPosition, 1),
+      activeLeafId,
+    };
+  }
 
-    this.items.splice(globalIndexOfItem, 1);
-    if (newPosition === this.position) {
-      // not in a group or didn't need to be moved to stay in the group
-      if (wasActive && this.position >= this.items.length) {
-        newPosition = this.items.length > 0 ? this.items.length - 1 : 0;
+  private findPreviousCursor(
+    cursor: LeafCursor,
+    mode: CursorMode,
+  ): LeafCursor | undefined {
+    if (typeof cursor.innerPosition !== "undefined") {
+      const initialRoot = this.groupAt(cursor.outerPosition);
+      if (
+        (mode & CursorMode.PreferSameGroup ||
+          !(mode & CursorMode.PreserveActiveInGroup)) &&
+        cursor.innerPosition > 0
+      ) {
+        return {
+          ...cursor,
+          innerPosition: cursor.innerPosition - 1,
+        };
+      } else if (
+        mode & CursorMode.PreferSameGroup &&
+        initialRoot.children.length > 1
+      ) {
+        return {
+          ...cursor,
+          innerPosition: cursor.innerPosition + 1,
+        };
       }
     }
-    if (wasActive || newPosition != this.position) {
-      this.position = newPosition;
-      this.updateFocus();
-    } else if (globalIndexOfItem <= this.position) {
-      // the active item was after the removed item, so the position needs to slice down too, but we don't need to trigger an update as such
-      this.position -= 1;
-      this.updateFocus();
+    const len = this._state.roots.length;
+    for (
+      let outerPosition = absMod(cursor.outerPosition - 1, len);
+      outerPosition != cursor.outerPosition;
+      outerPosition = absMod(outerPosition - 1, len)
+    ) {
+      const otherNode = this._state.roots[outerPosition];
+      if (otherNode.type === "LeafNavigationNode") {
+        return { outerPosition: outerPosition };
+      } else if (otherNode.children.length > 0) {
+        return {
+          outerPosition: outerPosition,
+          innerPosition:
+            mode & CursorMode.PreserveActiveInGroup
+              ? otherNode.children.findIndex(
+                  (child) => child.id === otherNode.activeChildId,
+                )
+              : otherNode.children.length - 1,
+        };
+      }
     }
+    return undefined;
+  }
+
+  private findNextCursor(
+    cursor: LeafCursor,
+    mode: CursorMode,
+  ): LeafCursor | undefined {
+    if (typeof cursor.innerPosition !== "undefined") {
+      const initialRoot = this.groupAt(cursor.outerPosition);
+      if (
+        (mode & CursorMode.PreferSameGroup ||
+          !(mode & CursorMode.PreserveActiveInGroup)) &&
+        cursor.innerPosition < initialRoot.children.length - 1
+      ) {
+        return {
+          ...cursor,
+          innerPosition: cursor.innerPosition + 1,
+        };
+      } else if (
+        mode & CursorMode.PreferSameGroup &&
+        initialRoot.children.length > 1
+      ) {
+        return {
+          ...cursor,
+          innerPosition: cursor.innerPosition - 1,
+        };
+      }
+    }
+    const len = this._state.roots.length;
+    for (
+      let outerPosition = (cursor.outerPosition + 1) % len;
+      outerPosition != cursor.outerPosition;
+      outerPosition = (outerPosition + 1) % len
+    ) {
+      const otherNode = this._state.roots[cursor.outerPosition];
+      if (otherNode.type === "LeafNavigationNode") {
+        return { outerPosition };
+      } else if (otherNode.children.length > 0) {
+        return {
+          outerPosition,
+          innerPosition:
+            mode & CursorMode.PreserveActiveInGroup
+              ? otherNode.children.findIndex(
+                  (child) => child.id === otherNode.activeChildId,
+                )
+              : 0,
+        };
+      }
+    }
+    return undefined;
+  }
+
+  private findFirstCursor(): LeafCursor | undefined {
+    if (this._state.roots.length === 0) {
+      return undefined;
+    }
+
+    const first = this._state.roots[0];
+    if (first.type === "GroupNavigationNode" && first.children.length > 0) {
+      return { outerPosition: 0, innerPosition: 0 };
+    }
+
+    return this.findNextCursor({ outerPosition: 0 }, CursorMode.Any);
+  }
+
+  private findLastCursor(): LeafCursor | undefined {
+    if (this._state.roots.length === 0) {
+      return undefined;
+    }
+
+    const outerPosition = this._state.roots.length - 1;
+
+    const last = this._state.roots[outerPosition];
+    if (last.type === "GroupNavigationNode" && last.children.length > 0) {
+      return { outerPosition, innerPosition: last.children.length - 1 };
+    }
+
+    return this.findPreviousCursor({ outerPosition }, CursorMode.Any);
   }
 
   /**
-   * Automatically checks and updates both element focus and aria-activedescendant as neccessary, avoiding redundant operations.
-   * Does NOT call change listeners (to avoid recursion as an effect of something from react), instead it returns a bool as to whether or not the targets were updated.
+   * This is a notifying action
+   * @param cursor
    */
-  private updateFocus(): boolean {
-    if (this.position < 0) {
-      throw new Error(
-        `Invalid state: position ${this.position.toString()} cannot be leses than 0`,
-      );
+  private moveLoudlyTo(cursor: LeafCursor) {
+    const target = this.leafAt(cursor);
+    if (this._state.activeLeafId === target.id) {
+      return;
     }
-    let nextActiveItemId = this._activeItemId;
-    let nextActiveGroupId = this._activeGroupId;
-    if (this.position < this.items.length) {
-      const item = this.items[this.position];
-      nextActiveItemId = item.id;
-      nextActiveGroupId = item.group?.id;
-      if (nextActiveItemId != this._activeItemId) {
-        const group = item.group;
-        if (group) {
-          if (group.first === undefined) {
-            throw new Error(
-              `invalid state: item ${item.id} belongs to group ${group.id} which has no first item.`,
-            );
-          }
-          const groupStartIndex = this.items.indexOf(group.first);
-          group.position = this.position - groupStartIndex;
-        }
-        if (document.activeElement !== item.element) {
-          item.element?.focus();
-        }
-      }
+
+    if (cursor.innerPosition) {
+      const parent = this.groupAt(cursor.outerPosition);
+      this._state = {
+        ...this._state,
+        activeLeafId: target.id,
+        roots: this._state.roots.toSpliced(cursor.outerPosition, 1, {
+          ...parent,
+          activeChildId: target.id,
+        }),
+      };
     } else {
-      nextActiveItemId = undefined;
-      nextActiveGroupId = undefined;
+      this._state = {
+        ...this._state,
+        activeLeafId: target.id,
+      };
     }
-    if (
-      nextActiveItemId !== this._activeItemId ||
-      nextActiveGroupId !== this._activeGroupId
-    ) {
-      this._activeItemId = nextActiveItemId;
-      this._activeGroupId = nextActiveGroupId;
-      return true;
-    } else {
-      return false;
-    }
+
+    this.notifyListeners();
+
+    target.element.focus();
   }
 
   private onKeydown(event: KeyboardEvent) {
-    // no-op
-    if (this.items.length === 0) {
-      return;
+    if (this._state.roots.length === 0) {
+      return; // no
     }
+
+    if (!this._state.activeLeafId) {
+      throw new Error(
+        "Invalid state: there is no active leaf id even though there is at least one item",
+      );
+    }
+    const activeCursor = this.findCursor(this._state.activeLeafId);
+
+    if (!activeCursor) {
+      throw new Error(
+        "Invalid state: could not find the current active leaf by id",
+      );
+    }
+
+    let newCursor: LeafCursor | undefined;
     let preventDefault = true;
-    let newPosition = this.position;
+
     switch (event.key) {
-      case "Tab": {
-        const currentItem = this.items[this.position];
-        const currentElement = currentItem.element;
-        if (currentElement) {
-          const nonEmptyNeighbourGroups = this.groups.filter(
-            (x) => x != currentItem.group && x.element && x.size > 0,
-          );
-          // this could be optimised but we really don't need to
-          // todo: wraparound
-          // also these start indices seem broken probably due to ordering issues
-          if (nonEmptyNeighbourGroups.length > 0) {
-            let targetGroup;
-            if (event.shiftKey) {
-              targetGroup = nonEmptyNeighbourGroups.findLast(
-                (eachGroup) =>
-                  eachGroup.element &&
-                  currentElement.compareDocumentPosition(eachGroup.element) &
-                    Node.DOCUMENT_POSITION_PRECEDING,
-              );
-              targetGroup ??= nonEmptyNeighbourGroups.at(-1);
-            } else {
-              targetGroup = nonEmptyNeighbourGroups.find(
-                (eachGroup) =>
-                  eachGroup.element &&
-                  currentElement.compareDocumentPosition(eachGroup.element) &
-                    Node.DOCUMENT_POSITION_FOLLOWING,
-              );
-              targetGroup ??= nonEmptyNeighbourGroups[0];
-            }
-            if (!targetGroup) {
-              throw new Error(
-                `Invalid state: could not find alternative group fr item ${currentItem.id} even though there are groups it does not belong to`,
-              );
-            }
-            if (!targetGroup.first) {
-              throw new Error(
-                `Invalid state: a non-empty group lacks a first item`,
-              );
-            }
-            const groupStartIndex = this.items.indexOf(targetGroup.first);
-            newPosition = groupStartIndex + targetGroup.position;
-          }
-        }
-        break;
-      }
-      case "ArrowDown":
-      case "ArrowRight":
-        newPosition = (this.position + 1) % this.items.length;
+      case "Tab":
+        newCursor = event.shiftKey
+          ? this.findPreviousCursor(
+              activeCursor,
+              CursorMode.PreserveActiveInGroup,
+            )
+          : this.findNextCursor(activeCursor, CursorMode.PreserveActiveInGroup);
         break;
       case "ArrowUp":
       case "ArrowLeft":
-        newPosition =
-          (this.position - 1 + this.items.length) % this.items.length;
+        newCursor = this.findPreviousCursor(activeCursor, CursorMode.Any);
+        break;
+      case "ArrowDown":
+      case "ArrowRight":
+        newCursor = this.findNextCursor(activeCursor, CursorMode.Any);
         break;
       case "Home":
-        newPosition = 0;
+        newCursor = this.findFirstCursor();
         break;
       case "End":
-        newPosition =
-          (this.items.length - 1 + this.items.length) % this.items.length;
+        newCursor = this.findLastCursor();
         break;
       // enter is covered by it being a button
       //   case "Enter":
       case "Space": {
-        const currentElement = this.items[this.position].element;
-        if (currentElement) {
-          currentElement.dispatchEvent(
-            new MouseEvent("click", {
-              button: 0,
-            }),
-          );
-        } else {
-          preventDefault = false;
-        }
+        const activeLeaf = this.leafAt(activeCursor);
+        activeLeaf.element.dispatchEvent(
+          new MouseEvent("click", {
+            button: 0,
+          }),
+        );
         break;
       }
       default:
         preventDefault = false;
     }
 
-    if (newPosition != this.position) {
-      this.position = newPosition;
-      if (this.updateFocus()) {
-        this.changeListeners.forEach((listener) => {
-          listener(this._activeItemId, this._activeGroupId);
-        });
-      }
+    if (newCursor) {
+      this.moveLoudlyTo(newCursor);
     }
 
     if (preventDefault) {
@@ -449,9 +778,14 @@ export class AppNavigationManager {
     }
   }
 
-  private focusListener(item: ItemData) {
-    this.position = this.items.indexOf(item);
-    this.updateFocus();
+  private onFocus(id: string) {
+    if (this._state.activeLeafId !== id) {
+      this._state = {
+        ...this._state,
+        activeLeafId: id,
+      };
+      this.notifyListeners();
+    }
   }
 
   start() {
@@ -462,4 +796,4 @@ export class AppNavigationManager {
   }
 }
 
-export default AppNavigationManager;
+export default NavigationManager;

@@ -3,9 +3,8 @@ import type { ReactNode } from "react";
 import ZebarContext, { useProvideZebar } from "../../contexts/ZebarContext";
 import "./SpApp.css";
 import {
-  NavigationContext,
   TooltipFocusContext,
-  useProvideNavigation,
+  useNavigationApp,
   useProvideTooltipFocus,
 } from "../../contexts";
 
@@ -18,17 +17,17 @@ export interface SpAppProps {
 export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
   const zebar = useProvideZebar(zebarProviders);
   const tooltipFocus = useProvideTooltipFocus();
-  const navigation = useProvideNavigation();
+  const { activeDescendant } = useNavigationApp();
   return (
     <div
       className="app"
       role="application"
       aria-label="Zebar (Rice the Spire)"
-      aria-activedescendant={navigation.activeItemId}
+      aria-activedescendant={activeDescendant ?? ""}
     >
       <ZebarContext value={zebar}>
         <TooltipFocusContext value={tooltipFocus}>
-          <NavigationContext value={navigation}>{children}</NavigationContext>
+          {children}
         </TooltipFocusContext>
       </ZebarContext>
     </div>
