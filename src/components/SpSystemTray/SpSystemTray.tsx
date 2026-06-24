@@ -15,6 +15,7 @@ import { SpStretchBox } from "../SpStretchBox";
 import { SpButton } from "../SpButton/SpButton";
 import SpTooltip from "../SpTooltip";
 import "./SpSystemTray.css";
+import SpSpireImage from "../SpSpireImage";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
@@ -117,7 +118,7 @@ export const SpSystemTray = ({
           aria-describedby={id}
           onClick={onExpanderClick}
         >
-          ⋯
+          {expanded ? <SpSpireImage path="powers/surrounded" /> : <>⋯</>}
         </SpButton>
       )}
       desc={expanderLabel}
@@ -154,10 +155,10 @@ export const SpSystemTray = ({
         <div className="system-tray__interior">
           {expandDirection === "end" ? (
             <>
-              {expander}
               {primaryIcons.map((data) => (
                 <SpTrayIcon key={data.id} {...data} />
               ))}
+              {expander}
               <div className="system-tray__secondary-icons">
                 {secondaryIcons.map((data) => (
                   <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
@@ -171,10 +172,10 @@ export const SpSystemTray = ({
                   <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
                 ))}
               </div>
+              {expander}
               {primaryIcons.map((data) => (
                 <SpTrayIcon key={data.id} {...data} />
               ))}
-              {expander}
             </>
           )}
         </div>

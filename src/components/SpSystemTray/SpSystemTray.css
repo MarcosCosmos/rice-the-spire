@@ -57,8 +57,10 @@
         transform: scaleX(1);
     }
     @media not (prefers-reduced-motion) {
-        transition-property: width, transform;
-        transition-duration: .5s;
-        transition-delay: .5s;
+        transition: width .5s .5s ease-in, transform .5s .5s ease-in-out;
+
+        .system-tray--expanded & {
+            transition: width .5s .5s ease-out, transform .5s .5s ease-in-out;
+        }
     }
 }

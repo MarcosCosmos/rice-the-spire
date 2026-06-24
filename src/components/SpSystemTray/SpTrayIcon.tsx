@@ -1,4 +1,4 @@
-import { useContext, type MouseEvent } from "react";
+import { useContext, type KeyboardEvent, type MouseEvent } from "react";
 import "./SpTrayIcon.css";
 import { ZebarContext } from "../../contexts";
 import SpTooltip from "../SpTooltip";
@@ -10,15 +10,31 @@ export interface IconProps {
   disabled?: boolean;
 }
 export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
-  const zebar = useContext(ZebarContext);
+  const systray = useContext(ZebarContext)?.systray;
   const onContextMenu = (event: MouseEvent) => {
     event.preventDefault();
-    void zebar?.systray?.onRightClick(id);
+    void systray?.onRightClick(id);
   };
 
   if ((tooltip?.length ?? 0) === 0) {
     tooltip = "Tray icon (Nameless)";
   }
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Space" || event.key === "Enter") {
+      if (event.shiftKey) {
+        void systray?.onLeftDoubleClick(id);
+      } else if (event.altKey) {
+        void systray?.onRightClick(id);
+      } else if (event.ctrlKey) {
+        void systray?.onMiddleClick(id);
+      } else {
+        void systray?.onLeftClick(id);
+      }
+    } else if (event.key === "ContextMenu") {
+      void systray?.onRightClick(id);
+    }
+  };
 
   return (
     <SpTooltip
@@ -28,11 +44,11 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
           disabled={disabled}
           aria-label={tooltip}
           aria-describedby={tooltipId}
-          onMouseEnter={() => void zebar?.systray?.onHoverEnter(id)}
-          onMouseLeave={() => void zebar?.systray?.onHoverLeave(id)}
-          onMouseMove={() => void zebar?.systray?.onHoverMove(id)}
-          onClick={() => void zebar?.systray?.onLeftClick(id)}
-          onDoubleClick={() => void zebar?.systray?.onLeftClick(id)}
+          onMouseEnter={() => void systray?.onHoverEnter(id)}
+          onMouseLeave={() => void systray?.onHoverLeave(id)}
+          onMouseMove={() => void systray?.onHoverMove(id)}
+          onClick={() => void systray?.onLeftClick(id)}
+          onDoubleClick={() => void systray?.onLeftClick(id)}
           onContextMenu={onContextMenu}
         >
           <img
