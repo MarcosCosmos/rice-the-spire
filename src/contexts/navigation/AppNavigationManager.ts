@@ -92,8 +92,6 @@ export type ChangeListener = (state: Readonly<NavigationState>) => void;
 // like the % operator but definitely wraps negatives
 const absMod = (i: number, limit: number) => (i + limit) % limit;
 
-let actionCounter = 0;
-
 export class NavigationManager {
   private _state: AppNavigationStateInternal;
   private keyListener: (event: KeyboardEvent) => void;
@@ -139,10 +137,6 @@ export class NavigationManager {
   }
 
   dispatch(action: NavigationAction) {
-    console.log(
-      actionCounter++,
-      JSON.stringify({ ...action, element: undefined }),
-    );
     switch (action.type) {
       case "AddGroup":
         this.addGroup(action.id, action.element);
@@ -160,7 +154,6 @@ export class NavigationManager {
   }
 
   private notifyListeners() {
-    console.log(this._state);
     for (const listener of this.changeListeners) {
       listener(this._state);
     }
