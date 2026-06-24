@@ -632,7 +632,7 @@ export class NavigationManager {
       outerPosition != cursor.outerPosition;
       outerPosition = (outerPosition + 1) % len
     ) {
-      const otherNode = this._state.roots[cursor.outerPosition];
+      const otherNode = this._state.roots[outerPosition];
       if (otherNode.type === "LeafNavigationNode") {
         return { outerPosition };
       } else if (otherNode.children.length > 0) {
