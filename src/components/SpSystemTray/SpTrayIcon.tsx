@@ -50,6 +50,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
           onClick={() => void systray?.onLeftClick(id)}
           onDoubleClick={() => void systray?.onLeftClick(id)}
           onContextMenu={onContextMenu}
+          onKeyDown={onKeyDown}
         >
           <img
             className="tray-icon__src-icon"
