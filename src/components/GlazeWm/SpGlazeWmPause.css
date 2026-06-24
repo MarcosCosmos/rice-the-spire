@@ -1,3 +1,11 @@
 .glazewm-pause--unpaused {
-    filter: grayscale(.8);
+    filter: grayscale(1);
+}
+.glazewm-pause--paused {
+    box-shadow: var(--fallback-active-pulse-box-shadow);
+
+    @media not (prefers-reduced-motion)
+    {
+        animation: var(--active-pulse-animation);
+    }
 }

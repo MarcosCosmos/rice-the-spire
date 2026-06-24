@@ -15,6 +15,9 @@ export const SpGlazeWmPause = ({ showAlways }: SpGlazeWmPauseProps) => {
       void glazewm.runCommand("wm-toggle-pause");
     };
 
+    // todo: the animation doesn't seem to have enough distinct layers yet to match the game but for now that's OK.
+    // also we could use svg to achieve fancy drop shadow effects later.
+
     return showAlways || glazewm.isPaused ? (
       <SpTooltip
         anchor={(id) => (

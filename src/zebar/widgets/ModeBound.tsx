@@ -1,4 +1,3 @@
-import { useContext, type ReactNode } from "react";
 import {
   SpApp,
   SpAudio,
@@ -7,11 +6,9 @@ import {
   SpFullestDisk,
   SpireContext,
   SpMemory,
-  SpMenuBar,
   SpNetwork,
   SpProcessor,
   SpWeather,
-  ZebarContext,
   SpToolbar,
   useRandomSpireConfig,
   SpSystemTray,
@@ -20,23 +17,9 @@ import {
   SpGlazeWmPause,
   SpGlazeWmBindingModes,
   SpGlazeWmWorkspaces,
+  SpMenuBar,
 } from "@rice-the-spire";
 import { createProviderGroup, type SystrayIcon } from "zebar";
-
-const BoundMenuBar = ({ children }: { children: ReactNode }) => {
-  const zebar = useContext(ZebarContext);
-  const bindingModeClasses =
-    (zebar?.glazewm?.bindingModes
-      .map((mode) => "menubar--binding-mode-" + mode.name)
-      .join("") ??
-      "") ||
-    "menubar--no-binding-mode";
-  return (
-    <SpMenuBar className={`menubar--modebound ${bindingModeClasses}`}>
-      {children}
-    </SpMenuBar>
-  );
-};
 
 const providers = createProviderGroup({
   glazewm: { type: "glazewm" },
@@ -78,7 +61,7 @@ const Widget = () => {
   return (
     <SpApp zebarProviders={providers}>
       <SpireContext value={randomConfig}>
-        <BoundMenuBar>
+        <SpMenuBar>
           <div className="column">
             <SpGlazeWmWorkspaces />
             <SpToolbar
@@ -115,7 +98,7 @@ const Widget = () => {
               <SpNetwork />
             </SpToolbar>
           </div>
-        </BoundMenuBar>
+        </SpMenuBar>
       </SpireContext>
     </SpApp>
   );
