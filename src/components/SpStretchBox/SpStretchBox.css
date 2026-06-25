@@ -1,14 +1,18 @@
 .stretch-box {
+    display: flex;    
+    block-size: fit-content;
+    inline-size: fit-content;
 }
 
 .stretch-box__grid {
     display: grid;
-    grid-template: "all" 100% / 100%;
+    > * {
+        grid-row-start: 1;
+        grid-column-start: 1;
+    }
 }
-.stretch-box__background-wrapper {
+.stretch-box__position-wrapper {
     position: relative;
-    grid-row-start: all;
-    grid-column-start: all;
 }
 .stretch-box__background {
     position: absolute;
@@ -28,9 +32,4 @@
 }
 .stretch-box__center-background {
     flex: 1 0 0px;
-}
-.stretch-box__content {
-    
-    grid-row-start: all;
-    grid-column-start: all;
 }

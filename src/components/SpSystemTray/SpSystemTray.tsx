@@ -23,6 +23,13 @@ export interface SpSystemTrayProps {
   expandDirection?: "start" | "end";
   expandFloating?: boolean;
 }
+
+const stretchBoxConfig = {
+  path: "ui/top_bar/top_bar_char_backdrop",
+  width: 90,
+  height: 85,
+  inset: 30,
+};
 export const SpSystemTray = ({
   iconLimit,
   sortComparator,
@@ -137,22 +144,18 @@ export const SpSystemTray = ({
   return (
     <div
       className={`system-tray system-tray--expand-${expandDirection} ${expanded ? "system-tray--expanded" : ""} ${expandFloating ? "system-tray--expand-floating" : ""}`}
-      style={style}
-      role="toolbar"
-      aria-label="System Tray"
       onKeyDown={onEscape}
       onBlur={onBlur}
+      style={style}
       {...navAttrs}
       ref={refCallback}
     >
-      <SpStretchBox
-        className="system-tray__exterior"
-        path="ui/top_bar/top_bar_char_backdrop"
-        width={90}
-        height={85}
-        inset={30}
-      >
-        <div className="system-tray__interior">
+      <SpStretchBox {...stretchBoxConfig}>
+        <div
+          className="system-tray__interior"
+          role="toolbar"
+          aria-label="System Tray"
+        >
           {expandDirection === "end" ? (
             <>
               {primaryIcons.map((data) => (

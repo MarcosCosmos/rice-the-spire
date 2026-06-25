@@ -27,7 +27,7 @@
         flex-direction: row;
         justify-content: end;
         align-items: end;
-        min-width: var(--icon-width);
+        min-width: max(var(--icon-width), var(--icon-size));
         min-height: var(--icon-size);
         padding-inline-start: calc(var(--icon-width) / 2);
         color: #D8C5A6;

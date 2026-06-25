@@ -1,44 +1,29 @@
 .system-tray {
     display: flex;
     height: 2.5rem;
-    position: relative;
     margin-top: var(--icon-scale-margin);
     --icon-size: 2rem;
     --image-size: 1rem;
-    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 1));
+    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 2));
     --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
-}
-.system-tray__exterior {
-    height: 100%;
-}
-
-.system-tray--expand-floating {
-    width: var(--primary-width);
-    max-width: var(--primary-width);
-
-    > .system-tray__exterior {
-        position: absolute;
-        z-index: 1;
-        .system-tray--expand-start & {
-            right: 0;
-        }
-        .system-tray--expand-end & {
-            left: 0;
-        }
+    
+    &.system-tray--expand-floating {
+        width: var(--primary-width);
+        max-width: var(--primary-width);
+    }
+    &.system-tray--expand-start {
+        justify-content: end;
+    }
+    &.system-tray--expand-end {
+        justify-content: start;
     }
 }
+
 .system-tray__interior {
     display: flex;
     padding: calc(var(--icon-scale-margin));
     padding-block-end: 0;
-    height: calc(100vh - var(--icon-scale-margin));
     gap: var(--icon-scale-margin);
-    .system-tray--expand-start & {
-        justify-content: end;
-    }
-    .system-tray--expand-end & {
-        justify-content: start;
-    }
 }
 
 .system-tray__expander {
@@ -51,6 +36,7 @@
     display: flex;
     gap: var(--icon-scale-margin);
     width: 0;
+    overflow: hidden;
     transform: scaleX(0);
     .system-tray--expanded & {
         width: var(--secondary-width);

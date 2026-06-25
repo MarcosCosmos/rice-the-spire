@@ -17,13 +17,10 @@ export interface SpTooltipProps extends DetailedHTMLProps<
   desc: ReactNode;
 }
 
-export const SpTooltip = ({
-  className,
-  anchor,
-  desc,
-  ...attrs
-}: SpTooltipProps) => {
-  className ??= "";
+/**
+ * Much like stretchbox, tooltip is intentionally opaque and should not be treated as an accessible element
+ */
+export const SpTooltip = ({ anchor, desc }: SpTooltipProps) => {
   const id = useId();
   const tooltipFocusContext = useContext(TooltipFocusContext);
   const isFocal = tooltipFocusContext?.targetId === id;
@@ -32,14 +29,17 @@ export const SpTooltip = ({
   };
   return (
     <div
-      className={`tooltip ${isFocal ? "tooltip--focal" : ""} ${className}`}
+      className={`tooltip ${isFocal ? "tooltip--focal" : ""}`}
       onFocus={takeFocal}
       onMouseEnter={takeFocal}
-      {...attrs}
     >
-      {anchor(id)}
-      <div id={id} className="tooltip__box" role="tooltip" key={id}>
-        {desc}
+      <div className="tooltip-grid">
+        <div className="tooltip__anchor">{anchor(id)}</div>
+        <div className="tooltip__position-wrapper">
+          <div id={id} className="tooltip__box" role="tooltip" key={id}>
+            {desc}
+          </div>
+        </div>
       </div>
     </div>
   );

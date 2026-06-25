@@ -1,49 +1,74 @@
 .tooltip {
-  display: inline-flex;
-  position: relative;
-  align-items: start;
-  height: 100%;
-
-  .tooltip__box {
-    visibility: hidden;
-    position: absolute;
-    z-index: 100;
-    width: max-content;
-
-    background: #222E33;
-    border-width: 3px;
-    border-style: solid;
-    border-left-color: #475D66;
-    border-right-color: #475D66;
-    border-top-color: #516B76;
-    border-bottom-color: #31505C;
-    border-radius: 5px;
-    padding: calc(1rlh - 1rem);
-    padding-top: 0;
-    box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 2px;
-
-
-    &, .anchor-tooltips-block-end & {
-      inset-block-end: 0;
+  display: flex;
+  block-size: fit-content;
+  inline-size: fit-content;
+}
+.tooltip__grid {
+    display: grid;
+    > * {
+        grid-column-start: 1;
     }
+}
+.tooltip__position-wrapper {
+  contain: size;
+  height: 0px;
+  display: flex;
 
-    .anchor-tooltips-block-start & {
-      inset-block-start: 0;
-      inset-block-end: unset;
-    }
-
-    &, .anchor-tooltips-inline-start & {
-      inset-inline-start: 0;
-    }
-
-    .anchor-tooltips-inline-end & {
-      inset-inline-end: 0;
-      inset-inline-start: unset;
-    }
+  &, .anchor-tooltips-inline-start & {
+    justify-content: start;
   }
-  
-  &.tooltip--focal:is(:hover, :focus-within) > .tooltip__box {
-    visibility: visible;
+
+  .anchor-tooltips-inline-end & {
+    justify-content: end;
   }
 }
+.tooltip__zone{
+  position: absolute;
+  inset-block-start: 0;
+  block-size: 100vh;
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 
+.tooltip__box-wrap {
+  display: flex;
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 100%;
+  border: 1px dotted red;
+}
+
+.tooltip__box {
+  visibility: hidden;
+  position: absolute;
+  z-index: 100;
+  width: max-content;
+
+  background: #222E33;
+  border-width: 3px;
+  border-style: solid;
+  border-left-color: #475D66;
+  border-right-color: #475D66;
+  border-top-color: #516B76;
+  border-bottom-color: #31505C;
+  border-radius: 5px;
+  padding: calc(1rlh - 1rem);
+  padding-top: 0;
+  box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 2px;
+
+  .tooltip--focal:is(:hover, :focus-within) & {
+    visibility: visible;
+  }
+
+  &, .anchor-tooltips-block-end & {
+    inset-block-end: 0;
+  }
+
+  .anchor-tooltips-block-start & {
+    inset-block-start: 0;
+    inset-block-end: unset;
+  }
+}
+  

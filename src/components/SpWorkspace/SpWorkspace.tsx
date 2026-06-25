@@ -87,10 +87,8 @@ export const SpWorkspace = ({
 
   return (
     <SpTooltip
-      className="workspace-shrinkwrap"
-      style={style}
       anchor={(tooltipId: string) => (
-        <>
+        <div className="workspace-shrinkwrap" style={style}>
           <MapNodeGraphic
             details={renderedNodeDetails}
             path={path}
@@ -107,7 +105,7 @@ export const SpWorkspace = ({
           >
             <SpItemLabel>{displayName}</SpItemLabel>
           </SpButton>
-        </>
+        </div>
       )}
       desc={
         <>
