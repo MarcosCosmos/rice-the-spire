@@ -22,7 +22,6 @@
 .system-tray__interior {
     display: flex;
     padding: calc(var(--icon-scale-margin));
-    padding-block-end: 0;
     gap: var(--icon-scale-margin);
 }
 
@@ -37,10 +36,8 @@
     gap: var(--icon-scale-margin);
     width: 0;
     overflow: hidden;
-    transform: scaleX(0);
     .system-tray--expanded & {
         width: var(--secondary-width);
-        transform: scaleX(1);
     }
     @media not (prefers-reduced-motion) {
         transition: width .5s .5s ease-in, transform .5s .5s ease-in-out;
