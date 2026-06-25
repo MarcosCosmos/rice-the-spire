@@ -34,8 +34,11 @@ export const SpTooltip = ({ anchor, desc }: SpTooltipProps) => {
       onMouseEnter={takeFocal}
     >
       <div className="tooltip-grid">
+        <div className="tooltip__hover-wrapper">
+          <div className="tooltip__hover-zone"></div>
+        </div>
         <div className="tooltip__anchor">{anchor(id)}</div>
-        <div className="tooltip__position-wrapper">
+        <div className="tooltip__box-wrapper">
           <div id={id} className="tooltip__box" role="tooltip" key={id}>
             {desc}
           </div>

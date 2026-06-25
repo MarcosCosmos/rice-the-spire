@@ -18,4 +18,22 @@
   @media not (prefers-reduced-motion) {
     transition: var(--hover-transition);
   }
+
+  &.sp-button--highlight-active {
+    &[aria-pressed=true], &[aria-expanded=true] {
+      box-shadow: var(--fallback-active-pulse-box-shadow);
+
+      @media not (prefers-reduced-motion)
+      {
+          animation: var(--active-pulse-animation);
+      }
+    }
+  }
+
+  &.sp-button--highlight-inactive {
+    &[aria-pressed=false], &[aria-expanded=false] {
+      filter: grayscale(1);
+    }
+  }
+
 }

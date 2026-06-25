@@ -3,7 +3,6 @@ import { ZebarContext } from "../../contexts";
 import { SpButton } from "../SpButton/SpButton";
 import SpSpireImage from "../SpSpireImage";
 import SpTooltip from "../SpTooltip";
-import "./SpGlazeWmPause.css";
 
 export interface SpGlazeWmPauseProps {
   showAlways?: boolean;
@@ -23,8 +22,11 @@ export const SpGlazeWmPause = ({ showAlways }: SpGlazeWmPauseProps) => {
         anchor={(id) => (
           <SpButton
             className={`glazewm-pause glazewm-pause--${glazewm.isPaused ? "paused" : "unpaused"}`}
+            highlightWhenActive
+            highlightWhenInactive
             aria-label="paused"
-            aria-pressed={glazewm.isPaused}
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            aria-pressed={glazewm.isPaused ?? false}
             aria-describedby={id}
             onClick={onClick}
           >

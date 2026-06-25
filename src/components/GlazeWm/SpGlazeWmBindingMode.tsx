@@ -3,7 +3,6 @@ import { ZebarContext } from "../../contexts";
 import SpPower from "../SpPower";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
-import "./SpGlazeWmBindingMode.css";
 export const defaultIconPath = "intents/status";
 
 export interface SpGlazeWmBindingModeConfig {
@@ -41,6 +40,8 @@ export const SpGlazeWmBindingMode = ({
         anchor={(id) => (
           <SpButton
             className={`glazewm-binding-mode glazewm-binding-mode--${active ? "active" : "inactive"}`}
+            highlightWhenActive
+            highlightWhenInactive
             aria-label={label}
             aria-pressed={!!active}
             aria-describedby={id}

@@ -9,7 +9,23 @@
         grid-column-start: 1;
     }
 }
-.tooltip__position-wrapper {
+.tooltip__hover-wrapper {
+  contain: layout;
+  height: 0px;
+  display: block;
+  position: relative;
+}
+
+
+.tooltip__hover-zone {
+  position: absolute;
+  display: block;
+  inline-size: 100%;
+  block-size: 200vh;
+  inset-block-start: -100vh;
+}
+
+.tooltip__box-wrapper {
   contain: size;
   height: 0px;
   display: flex;
@@ -21,15 +37,6 @@
   .anchor-tooltips-inline-end & {
     justify-content: end;
   }
-}
-.tooltip__zone{
-  position: absolute;
-  inset-block-start: 0;
-  block-size: 100vh;
-  inline-size: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 }
 
 .tooltip__box-wrap {

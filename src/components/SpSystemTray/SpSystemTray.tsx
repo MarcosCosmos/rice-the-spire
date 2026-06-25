@@ -2,6 +2,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useRef,
   useState,
   type CSSProperties,
@@ -36,6 +37,7 @@ export const SpSystemTray = ({
   expandDirection,
   expandFloating,
 }: SpSystemTrayProps) => {
+  const id = useId();
   expandDirection ??= "start";
   expandFloating ??= false;
   const zebar = useContext(ZebarContext);
@@ -91,7 +93,7 @@ export const SpSystemTray = ({
   }
   secondaryIcons.reverse();
 
-  const expanderLabel = expanded ? "Collapse tray" : "Expand tray";
+  const expanderLabel = `Additional Icons (${(sortedIcons.length - (iconLimit ?? 0)).toFixed(0)})`;
 
   const onExpanderClick = () => {
     setExpanded(!expanded);
@@ -116,16 +118,25 @@ export const SpSystemTray = ({
     }
   };
 
+  const secondaryIconsKey = `systray-${id}__secondary-icons`;
+  const expanderPath =
+    (expandDirection === "start" && !expanded) ||
+    (expandDirection === "end" && expanded)
+      ? "ui/compendium/settings_tiny_left_arrow"
+      : "ui/compendium/settings_tiny_right_arrow";
   const expander = (
     <SpTooltip
-      anchor={(id) => (
+      anchor={(tooltipId) => (
         <SpButton
           className="tray-icon system-tray__expander"
+          role="menuitem"
           aria-label={expanderLabel}
-          aria-describedby={id}
+          aria-describedby={tooltipId}
+          aria-expanded={expanded}
+          aria-controls={secondaryIconsKey}
           onClick={onExpanderClick}
         >
-          {expanded ? <SpSpireImage path="powers/surrounded" /> : <>⋯</>}
+          <SpSpireImage path={expanderPath} />
         </SpButton>
       )}
       desc={expanderLabel}
@@ -144,6 +155,8 @@ export const SpSystemTray = ({
   return (
     <div
       className={`system-tray system-tray--expand-${expandDirection} ${expanded ? "system-tray--expanded" : ""} ${expandFloating ? "system-tray--expand-floating" : ""}`}
+      role="menubar"
+      aria-label="System Tray"
       onKeyDown={onEscape}
       onBlur={onBlur}
       style={style}
@@ -151,34 +164,54 @@ export const SpSystemTray = ({
       ref={refCallback}
     >
       <SpStretchBox {...stretchBoxConfig}>
-        <div
-          className="system-tray__interior"
-          role="toolbar"
-          aria-label="System Tray"
-        >
+        <div className="system-tray__interior">
           {expandDirection === "end" ? (
             <>
-              {primaryIcons.map((data) => (
-                <SpTrayIcon key={data.id} {...data} />
-              ))}
-              {expander}
-              <div className="system-tray__secondary-icons">
-                {secondaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+              <div className="system-tray__icons">
+                {primaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} />
                 ))}
+                {secondaryIcons.length > 0 && expander}
               </div>
+              {secondaryIcons.length > 0 && (
+                <>
+                  <div
+                    className="system-tray__icons system-tray__secondary-icons"
+                    role="menu"
+                    id={secondaryIconsKey}
+                    key={secondaryIconsKey}
+                  >
+                    {secondaryIcons.map((data) => (
+                      <SpTrayIcon
+                        key={data.id}
+                        {...data}
+                        disabled={!expanded}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <>
-              <div className="system-tray__secondary-icons">
-                {secondaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+              {secondaryIcons.length > 0 && (
+                <div
+                  className="system-tray__icons system-tray__secondary-icons"
+                  role="menu"
+                  id={secondaryIconsKey}
+                  key={secondaryIconsKey}
+                >
+                  {secondaryIcons.map((data) => (
+                    <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+                  ))}
+                </div>
+              )}
+              <div className="system-tray__icons">
+                {secondaryIcons.length > 0 && expander}
+                {primaryIcons.map((data) => (
+                  <SpTrayIcon key={data.id} {...data} />
                 ))}
               </div>
-              {expander}
-              {primaryIcons.map((data) => (
-                <SpTrayIcon key={data.id} {...data} />
-              ))}
             </>
           )}
         </div>

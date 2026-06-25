@@ -41,6 +41,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
       anchor={(tooltipId) => (
         <SpButton
           className="tray-icon"
+          role="menuitem"
           disabled={disabled}
           aria-label={tooltip}
           aria-describedby={tooltipId}

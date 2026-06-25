@@ -5,7 +5,7 @@
     --icon-size: 2rem;
     --image-size: 1rem;
     --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 2));
-    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 1));
+    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) - 1));
     
     &.system-tray--expand-floating {
         width: var(--primary-width);
@@ -21,8 +21,13 @@
 
 .system-tray__interior {
     display: flex;
-    padding: calc(var(--icon-scale-margin));
+    padding-inline: calc(var(--icon-scale-margin));
     gap: var(--icon-scale-margin);
+    .system-tray__icons {   
+        display: flex;
+        padding-block: calc(var(--icon-scale-margin));
+        gap: var(--icon-scale-margin);
+    }
 }
 
 .system-tray__expander {
@@ -33,9 +38,10 @@
 
 .system-tray__secondary-icons {
     display: flex;
-    gap: var(--icon-scale-margin);
     width: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
+    scrollbar-width: none;
     .system-tray--expanded & {
         width: var(--secondary-width);
     }
