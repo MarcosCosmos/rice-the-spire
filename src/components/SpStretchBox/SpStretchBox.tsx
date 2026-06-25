@@ -29,31 +29,35 @@ export const SpStretchBox = ({
   );
   return (
     <div className={`stretch-box ${className}`}>
-      <div className="stretch-box__background">
-        <svg
-          className="stretch-box__left-bookend"
-          viewBox={`0 0 ${inset} ${height}`}
-          aria-hidden="true"
-        >
-          {image}
-        </svg>
-        <svg
-          className="stretch-box__center-background"
-          viewBox={`${inset} 0 ${midWidth} ${height}`}
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          {image}
-        </svg>
-        <svg
-          className="stretch-box__right-bookend"
-          viewBox={`${rightInset} 0 ${inset} ${height}`}
-          aria-hidden="true"
-        >
-          {image}
-        </svg>
+      <div className="stretch-box__grid">
+        <div className="stretch-box__background-wrapper">
+          <div className="stretch-box__background">
+            <svg
+              className="stretch-box__left-bookend"
+              viewBox={`0 0 ${inset} ${height}`}
+              aria-hidden="true"
+            >
+              {image}
+            </svg>
+            <svg
+              className="stretch-box__center-background"
+              viewBox={`${inset} 0 ${midWidth} ${height}`}
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              {image}
+            </svg>
+            <svg
+              className="stretch-box__right-bookend"
+              viewBox={`${rightInset} 0 ${inset} ${height}`}
+              aria-hidden="true"
+            >
+              {image}
+            </svg>
+          </div>
+        </div>
+        <div className="stretch-box__content">{children}</div>
       </div>
-      {children}
     </div>
   );
 };
