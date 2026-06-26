@@ -11,7 +11,7 @@ body {
   --item-padding: 0px;
   --icon-scale-margin: round(up, calc(var(--icon-size) * (var(--hover-scale) - 1) / 2), 1px);
   --text-stroke-width: round(up, 0.2em, 1px);
-  --text-stroke-padding: calc(var(--stroke-width) / 2);
+  --text-stroke-padding: calc(var(--text-stroke-width) / 2);
   --normal-text-color: #FFF6E2;
   --heading-text-color:#EFC851;
   --upgrade-text-color: #7EFD01;
@@ -49,6 +49,7 @@ button, [type='button'], [type='reset'], [type='submit'] {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  text-shadow: inherit;
   &:not([aria-disabled="true"]) {
     cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_tilted.png), pointer;
   }
