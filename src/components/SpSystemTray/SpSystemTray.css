@@ -4,8 +4,9 @@
     margin-top: var(--icon-scale-margin);
     --icon-size: 2rem;
     --image-size: 1rem;
-    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 2));
-    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) - 1));
+    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 1));
+    /* math for secondary-width scale-margin multipl: primary + 2 for focus-visible glow and + 1 more to create an artificial gap */
+    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 4));
     
     &.system-tray--expand-floating {
         width: var(--primary-width);
@@ -21,13 +22,6 @@
 
 .system-tray__interior {
     display: flex;
-    padding-inline: calc(var(--icon-scale-margin));
-    gap: var(--icon-scale-margin);
-    .system-tray__icons {   
-        display: flex;
-        padding-block: calc(var(--icon-scale-margin));
-        gap: var(--icon-scale-margin);
-    }
 }
 
 .system-tray__expander {
@@ -36,8 +30,21 @@
     color: var(--heading-text-color);
 }
 
-.system-tray__secondary-icons {
+.system-tray__icons, .system-tray__secondary-icons {   
     display: flex;
+    padding: calc(var(--icon-scale-margin) * 2);
+    gap: var(--icon-scale-margin);
+    margin: calc(-1 * var(--icon-scale-margin));
+}
+
+.system-tray__icons:not(:first-child) {
+    padding-inline-start: 0;
+}
+.system-tray__icons:not(:last-child) {
+    padding-inline-end: 0;
+}
+
+.system-tray__secondary-icons {
     width: 0;
     overflow-x: hidden;
     overflow-y: visible;

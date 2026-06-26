@@ -13,10 +13,8 @@ import { useNavigationGroup, ZebarContext } from "../../contexts";
 import { SpTrayIcon } from "./SpTrayIcon";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
-import { SpButton } from "../SpButton/SpButton";
-import SpTooltip from "../SpTooltip";
 import "./SpSystemTray.css";
-import SpSpireImage from "../SpSpireImage";
+import { ExhaustButton } from "./ExhaustButton";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
@@ -93,8 +91,6 @@ export const SpSystemTray = ({
   }
   secondaryIcons.reverse();
 
-  const expanderLabel = `Additional Icons (${(sortedIcons.length - (iconLimit ?? 0)).toFixed(0)})`;
-
   const onExpanderClick = () => {
     setExpanded(!expanded);
   };
@@ -119,29 +115,6 @@ export const SpSystemTray = ({
   };
 
   const secondaryIconsKey = `systray-${id}__secondary-icons`;
-  const expanderPath =
-    (expandDirection === "start" && !expanded) ||
-    (expandDirection === "end" && expanded)
-      ? "ui/compendium/settings_tiny_left_arrow"
-      : "ui/compendium/settings_tiny_right_arrow";
-  const expander = (
-    <SpTooltip
-      anchor={(tooltipId) => (
-        <SpButton
-          className="tray-icon system-tray__expander"
-          role="menuitem"
-          aria-label={expanderLabel}
-          aria-describedby={tooltipId}
-          aria-expanded={expanded}
-          aria-controls={secondaryIconsKey}
-          onClick={onExpanderClick}
-        >
-          <SpSpireImage path={expanderPath} />
-        </SpButton>
-      )}
-      desc={expanderLabel}
-    />
-  );
 
   const style: CSSProperties = {
     "--primary-icon-count": 1 + Math.min(iconLimit ?? 0, sortedIcons.length),
@@ -171,12 +144,19 @@ export const SpSystemTray = ({
                 {primaryIcons.map((data) => (
                   <SpTrayIcon key={data.id} {...data} />
                 ))}
-                {secondaryIcons.length > 0 && expander}
+                {secondaryIcons.length > 0 && (
+                  <ExhaustButton
+                    controls={secondaryIconsKey}
+                    count={secondaryIcons.length}
+                    expanded={expanded}
+                    onClick={onExpanderClick}
+                  />
+                )}
               </div>
               {secondaryIcons.length > 0 && (
                 <>
                   <div
-                    className="system-tray__icons system-tray__secondary-icons"
+                    className="system-tray__secondary-icons"
                     role="menu"
                     id={secondaryIconsKey}
                     key={secondaryIconsKey}
@@ -196,7 +176,7 @@ export const SpSystemTray = ({
             <>
               {secondaryIcons.length > 0 && (
                 <div
-                  className="system-tray__icons system-tray__secondary-icons"
+                  className="system-tray__secondary-icons"
                   role="menu"
                   id={secondaryIconsKey}
                   key={secondaryIconsKey}
@@ -207,7 +187,14 @@ export const SpSystemTray = ({
                 </div>
               )}
               <div className="system-tray__icons">
-                {secondaryIcons.length > 0 && expander}
+                {secondaryIcons.length > 0 && (
+                  <ExhaustButton
+                    controls={secondaryIconsKey}
+                    count={secondaryIcons.length}
+                    expanded={expanded}
+                    onClick={onExpanderClick}
+                  />
+                )}
                 {primaryIcons.map((data) => (
                   <SpTrayIcon key={data.id} {...data} />
                 ))}

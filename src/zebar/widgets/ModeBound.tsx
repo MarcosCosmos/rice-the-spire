@@ -67,6 +67,7 @@ const Widget = () => {
             <SpToolbar
               className="wm-controls"
               aria-label="Window Manager controls"
+              style={{ marginInline: "5rch" }}
             >
               <SpGlazeWmDirection />
               <SpGlazeWmPause showAlways />

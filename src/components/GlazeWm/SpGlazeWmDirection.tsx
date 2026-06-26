@@ -32,7 +32,7 @@ export const SpGlazeWmDirection = () => {
         desc={
           <>
             <h2>Tiling direction: </h2>
-            <strong>{direction}</strong> (click to swap)
+            <strong>{direction}</strong>
           </>
         }
       />

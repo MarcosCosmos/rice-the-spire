@@ -2,7 +2,7 @@
   position: relative;
   min-width: var(--icon-size);
   min-height: var(--icon-size);
-  border-radius: 3px;
+  border-radius: var(--icon-scale-margin);
   padding: var(--item-padding);
 
   &[aria-disabled] {
@@ -19,16 +19,36 @@
     transition: var(--hover-transition);
   }
 
-  &.sp-button--highlight-active {
-    --pulse-size: calc(2 * var(--icon-scale-margin));
+  > * {
+    position: relative;
+    z-index: 10;
+  }
+
+  .sp-button__pulse {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    border-radius: var(--icon-scale-margin);
+  }
+
+  &.sp-button--toggle {
+    --pulse-size: calc(4 * var(--icon-scale-margin));
     --pulse-rgb: 100, 255, 255; 
-    &[aria-pressed=true], &[aria-expanded=true] {
+
+    &:not(.sp-button--inverted):is([aria-pressed=false], [aria-expanded=false]),
+    &.sp-button--inverted:is([aria-pressed=true], [aria-expanded=true]) {
+      filter: grayscale(1);
+    }
+
+    &:is([aria-pressed=true],[aria-expanded=true]) .sp-button__pulse {
       @media (prefers-reduced-motion)
-      {
+      {        
         box-shadow:
-          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .1),
-          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .4),
-          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .7);
+            0px 0px 0px 0px rgba(var(--pulse-rgb), .75),
+            0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
+            0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
+            0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125);
       }
 
       @media not (prefers-reduced-motion)
@@ -44,13 +64,6 @@
       }
     }
   }
-
-  &.sp-button--highlight-inactive {
-    &[aria-pressed=false], &[aria-expanded=false] {
-      filter: grayscale(1);
-    }
-  }
-
 }
 
 
@@ -58,16 +71,16 @@
 @keyframes active-pulse {
     0% {
       box-shadow:
-          0px 0px 0px 0px rgba(var(--pulse-rgb), 1),
-          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .75),
-          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25);
+          0px 0px 0px 0px rgba(var(--pulse-rgb), .75),
+          0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
+          0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125);
     }
     100% {
       box-shadow:
-          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .75),
-          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25),
-          0px 0px 0px calc(4 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), 0);
+          0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
+          0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125),
+          0px 0px 0px calc(4 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0);
     }
 }

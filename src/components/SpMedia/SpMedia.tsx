@@ -96,44 +96,51 @@ export const SpMedia = ({ className }: SpMediaProps) => {
         aria-label="Media Player"
         {...navAttrs}
       >
-        <div className="media__track-info-wrapper">
-          <SpTooltip
-            anchor={(tooltipId: string) => (
-              <div className="media__track-info" aria-describedby={tooltipId}>
-                <div className="media__track-title">{title}</div>
-                <div className="media__track-artist">{artist}</div>
-              </div>
-            )}
-            desc={
-              <>
-                <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
-                <strong>{currentSession.albumTitle}</strong> via session{" "}
-                <em>{currentSession.sessionId}</em>
-              </>
-            }
-          />
-        </div>
-        <div className="media__progress" style={style}>
-          <div className="media__duration">{ellapsedTime}</div>
-          <div className="media__timeline">
-            <div className="media__timeline-line" />
-            <SpSpireImage
-              className="media__time-marker"
-              path={`ui/energy/${spire.character}_energy_icon`}
+        <div className="media__grid">
+          <div className="media__track-info-wrapper anchor-tooltips-inline-start">
+            <SpTooltip
+              anchor={(tooltipId: string) => (
+                <div className="media__track-info" aria-describedby={tooltipId}>
+                  <div className="media__track-title">{title}</div>
+                  <div className="media__track-artist">{artist}</div>
+                </div>
+              )}
+              desc={
+                <>
+                  <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
+                  <strong>{currentSession.albumTitle}</strong>
+                  <br />
+                  via session <em>{currentSession.sessionId}</em>
+                  <br />
+                  <h2>Progress: </h2>
+                  <strong>{ellapsedTime}</strong> out of{" "}
+                  <strong>{totalTime}</strong>
+                </>
+              }
             />
           </div>
-          <div className="media__duration">{totalTime}</div>
-        </div>
-        <div className="media__controls">
-          <SpButton className="media__previous" onClick={onPrevious}>
-            ⏮
-          </SpButton>
-          <SpButton className="media__toggle-play" onClick={onToggle}>
-            {currentSession.isPlaying ? "⏸" : "⏵"}
-          </SpButton>
-          <SpButton className="media__next" onClick={onNext}>
-            ⏭
-          </SpButton>
+          <div className="media__progress" style={style}>
+            <div className="media__duration">{ellapsedTime}</div>
+            <div className="media__timeline">
+              <div className="media__timeline-line" />
+              <SpSpireImage
+                className="media__time-marker"
+                path={`ui/energy/${spire.character}_energy_icon`}
+              />
+            </div>
+            <div className="media__duration">{totalTime}</div>
+          </div>
+          <div className="media__controls">
+            <SpButton className="media__previous" onClick={onPrevious}>
+              ⏮
+            </SpButton>
+            <SpButton className="media__toggle-play" onClick={onToggle}>
+              {currentSession.isPlaying ? "⏸" : "⏵"}
+            </SpButton>
+            <SpButton className="media__next" onClick={onNext}>
+              ⏭
+            </SpButton>
+          </div>
         </div>
       </div>
     );

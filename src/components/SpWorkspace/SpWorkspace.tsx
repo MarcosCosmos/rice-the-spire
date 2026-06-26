@@ -37,6 +37,7 @@ export const SpWorkspace = ({
   hasChildren,
   ...attrs
 }: SpWorkspaceProps) => {
+  className ??= "";
   const [baseNodeType, setBaseNodeType] = useState("unknown");
 
   const [isVisited, setVisited] = useState(false);
@@ -74,7 +75,6 @@ export const SpWorkspace = ({
   }
   const renderedNodeDetails = mapNodeTypes[renderedNodeType];
 
-  className ??= "";
   const label = `Workspace ${displayName}`;
   const style: CSSProperties = {
     "--max-node-height": `${maxNodeHeight}px`,
@@ -86,35 +86,37 @@ export const SpWorkspace = ({
   } as CSSProperties;
 
   return (
-    <SpTooltip
-      anchor={(tooltipId: string) => (
-        <div className="workspace-shrinkwrap" style={style}>
-          <MapNodeGraphic
-            details={renderedNodeDetails}
-            path={path}
-            isDisplayed={isDisplayed}
-            hasFocus={hasFocus}
-          />
-          <SpButton
-            className={`workspace workspace--${baseNodeType} ${className}`}
-            role="tab"
-            aria-selected={isDisplayed}
-            aria-label={label}
-            aria-describedby={tooltipId}
-            {...attrs}
-          >
-            <SpItemLabel>{displayName}</SpItemLabel>
-          </SpButton>
-        </div>
-      )}
-      desc={
-        <>
-          <h2>Workspace state: </h2>
-          {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
-          {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
-          {hasChildren ? <em>filled</em> : <>empty</>}
-        </>
-      }
-    />
+    <div className={`workspace ${className}`}>
+      <SpTooltip
+        anchor={(tooltipId: string) => (
+          <div className="workspace-shrinkwrap" style={style}>
+            <MapNodeGraphic
+              details={renderedNodeDetails}
+              path={path}
+              isDisplayed={isDisplayed}
+              hasFocus={hasFocus}
+            />
+            <SpButton
+              className={`workspace__button`}
+              role="tab"
+              aria-selected={isDisplayed}
+              aria-label={label}
+              aria-describedby={tooltipId}
+              {...attrs}
+            >
+              <SpItemLabel>{displayName}</SpItemLabel>
+            </SpButton>
+          </div>
+        )}
+        desc={
+          <>
+            <h2>Workspace: </h2>
+            {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
+            {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
+            {hasChildren ? <em>filled</em> : <>empty</>}
+          </>
+        }
+      />
+    </div>
   );
 };

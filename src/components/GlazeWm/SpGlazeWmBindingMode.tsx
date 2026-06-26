@@ -40,8 +40,7 @@ export const SpGlazeWmBindingMode = ({
         anchor={(id) => (
           <SpButton
             className={`glazewm-binding-mode glazewm-binding-mode--${active ? "active" : "inactive"}`}
-            highlightWhenActive
-            highlightWhenInactive
+            toggle
             aria-label={label}
             aria-pressed={!!active}
             aria-describedby={id}

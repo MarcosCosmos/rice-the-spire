@@ -9,29 +9,26 @@ export interface SpButtonProps extends DetailedHTMLProps<
   className?: string;
   children?: ReactNode;
   disabled?: boolean;
-  highlightWhenActive?: boolean;
-  highlightWhenInactive?: boolean;
+  toggle?: boolean | "inverted";
 }
-
 export const SpButton = ({
   className,
   children,
   disabled,
-  highlightWhenActive,
-  highlightWhenInactive,
+  toggle,
   ...attrs
 }: SpButtonProps) => {
   className ??= "";
-  highlightWhenActive ??= false;
-  highlightWhenInactive ??= false;
+  toggle ??= false;
   const navAttrs = useNavigationItem(disabled);
   return (
     <button
-      className={`sp-button ${highlightWhenActive ? "sp-button--highlight-active" : ""} ${highlightWhenInactive ? "sp-button--highlight-inactive" : ""} ${className}`}
+      className={`sp-button ${toggle ? "sp-button--toggle" : ""} ${toggle === "inverted" ? "sp-button--inverted" : ""} ${className}`}
       disabled={disabled}
       {...navAttrs}
       {...attrs}
     >
+      {toggle && <div className="sp-button__pulse"></div>}
       {children}
     </button>
   );

@@ -1,10 +1,4 @@
 .workspace-shrinkwrap {
-    --icon-height: var(--icon-size);
-    --max-node-size: max(var(--max-node-width), var(--max-node-height));
-    /* --max-node-size: var(--max-node-height); */
-    --graphic-scale: calc(var(--icon-height) / var(--max-node-size));
-    --scaled-width: calc(var(--graphic-scale) * var(--graphic-width));
-    --scaled-height: calc(var(--graphic-scale) * var(--graphic-height));
     --icon-width: calc(var(--graphic-scale) * var(--node-width));
 
     position: relative;
@@ -22,7 +16,8 @@
         }
     }
 
-    .workspace {
+    .workspace__button {
+        z-index: 1;
         display: inline-flex;
         flex-direction: row;
         justify-content: end;

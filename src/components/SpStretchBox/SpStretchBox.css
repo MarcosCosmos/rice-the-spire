@@ -1,16 +1,11 @@
 .stretch-box {
-    display: flex;    
-    block-size: fit-content;
-    inline-size: fit-content;
-}
-
-.stretch-box__grid {
     display: grid;
     > * {
         grid-row-start: 1;
         grid-column-start: 1;
     }
 }
+
 .stretch-box__position-wrapper {
     position: relative;
 }
@@ -25,7 +20,10 @@
     & > * {
         height: 100%;
     }
-    
+    z-index: 0;
+}
+.stretch-box__anchor {
+    z-index: 10;
 }
 .stretch-box__left-bookend, .stretch-box__right-bookend {
     flex: 0 0 auto;

@@ -1,19 +1,16 @@
 .tooltip {
-  display: flex;
+  display: grid;
   block-size: fit-content;
   inline-size: fit-content;
-}
-.tooltip__grid {
-    display: grid;
-    > * {
-        grid-column-start: 1;
-    }
+  > * {
+      grid-column-start: 1;
+  }
 }
 .tooltip__hover-wrapper {
   contain: layout;
   height: 0px;
   display: block;
-  position: relative;
+  z-index: 0;
 }
 
 
@@ -29,22 +26,15 @@
   contain: size;
   height: 0px;
   display: flex;
+  justify-content: center;
 
-  &, .anchor-tooltips-inline-start & {
+  .anchor-tooltips-inline-start & {
     justify-content: start;
   }
 
   .anchor-tooltips-inline-end & {
     justify-content: end;
   }
-}
-
-.tooltip__box-wrap {
-  display: flex;
-  position: absolute;
-  inset-block-start: 0;
-  inline-size: 100%;
-  border: 1px dotted red;
 }
 
 .tooltip__box {
