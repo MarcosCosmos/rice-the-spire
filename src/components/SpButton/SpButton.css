@@ -20,12 +20,27 @@
   }
 
   &.sp-button--highlight-active {
+    --pulse-size: calc(2 * var(--icon-scale-margin));
+    --pulse-rgb: 100, 255, 255; 
     &[aria-pressed=true], &[aria-expanded=true] {
-      box-shadow: var(--fallback-active-pulse-box-shadow);
+      @media (prefers-reduced-motion)
+      {
+        box-shadow:
+          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .1),
+          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .4),
+          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .7);
+      }
 
       @media not (prefers-reduced-motion)
       {
-          animation: var(--active-pulse-animation);
+          animation-name: active-pulse;
+          animation-timing-function: linear;
+          animation-duration: 1s;
+          animation-play-state: running;
+          animation-iteration-count: infinite;
+          animation-fill-mode: backwards;
+          animation-direction: normal;
+          animation-delay: 0s;
       }
     }
   }
@@ -36,4 +51,23 @@
     }
   }
 
+}
+
+
+
+@keyframes active-pulse {
+    0% {
+      box-shadow:
+          0px 0px 0px 0px rgba(var(--pulse-rgb), 1),
+          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25),
+          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .125);
+    }
+    100% {
+      box-shadow:
+          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .245),
+          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .125),
+          0px 0px 0px calc(4 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), 0);
+    }
 }
