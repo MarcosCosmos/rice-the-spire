@@ -35,7 +35,7 @@
       {
           animation-name: active-pulse;
           animation-timing-function: linear;
-          animation-duration: 1s;
+          animation-duration: .5s;
           animation-play-state: running;
           animation-iteration-count: infinite;
           animation-fill-mode: backwards;
@@ -59,15 +59,15 @@
     0% {
       box-shadow:
           0px 0px 0px 0px rgba(var(--pulse-rgb), 1),
-          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25),
-          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .125);
+          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .75),
+          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25);
     }
     100% {
       box-shadow:
-          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .245),
-          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .125),
+          0px 0px 0px calc(1 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .75),
+          0px 0px 0px calc(2 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .5),
+          0px 0px 0px calc(3 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), .25),
           0px 0px 0px calc(4 * var(--pulse-size) / 2) rgba(var(--pulse-rgb), 0);
     }
 }
