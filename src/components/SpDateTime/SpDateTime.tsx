@@ -45,9 +45,12 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
   useEffect(() => {
     setPreWidth(measureTextWidth(assumedText.text, assumedText.font));
   }, []);
-  const style: CSSProperties = {
-    minWidth: preWidth,
-  };
+
+  const style: CSSProperties | undefined = preWidth
+    ? {
+        minWidth: `calc(${preWidth.toString()}px + var(--text-stroke-width)`,
+      }
+    : undefined;
 
   // TODO: this needs an assumed width
   return (
@@ -57,10 +60,9 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
           className={`datetime {className}`}
           aria-label={label}
           aria-describedby={id}
-          style={style}
         >
           <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
-          <SpOutlinedText aria-hidden="true">
+          <SpOutlinedText aria-hidden="true" style={style}>
             {shortDateFormat.format(now)} {shortTimeFormat.format(now)}
           </SpOutlinedText>
         </SpNote>

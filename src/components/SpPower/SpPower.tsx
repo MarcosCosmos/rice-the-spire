@@ -30,9 +30,11 @@ export const SpPower = ({
   if (typeof path === "string") {
     path = [path];
   }
-  const style: CSSProperties = {
-    minWidth: preWidth,
-  };
+  const style: CSSProperties | undefined = preWidth
+    ? {
+        minWidth: `calc(${preWidth.toString()}px + var(--text-stroke-width))`,
+      }
+    : undefined;
   return (
     <div className={`power ${className}`} {...attrs}>
       {path.map((p) => (

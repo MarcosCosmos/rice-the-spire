@@ -1,7 +1,10 @@
-import type { ReactNode } from "react";
+import type { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
 import "./SpOutlinedText.css";
 
-export interface SpOutlinedTextProps {
+export interface SpOutlinedTextProps extends DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> {
   className?: string;
   children: ReactNode;
 }
