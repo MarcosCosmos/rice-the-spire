@@ -5,7 +5,7 @@ import {
   type CSSProperties,
   type MouseEventHandler,
 } from "react";
-import { MapNodeGraphic } from "./MapNodeGraphic";
+import { MapNodeGraphic } from "./BackgroundGraphic";
 import {
   graphicHeight,
   graphicWidth,
@@ -16,8 +16,8 @@ import {
 } from "./common";
 import "./SpWorkspace.css";
 import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
-import SpItemLabel from "../SpItemLabel";
 import SpTooltip from "../SpTooltip";
+import SpPower from "../SpPower";
 
 export interface SpWorkspaceProps extends SpButtonProps {
   className?: string;
@@ -60,19 +60,20 @@ export const SpWorkspace = ({
     setBaseNodeType(result);
   }, [displayName]);
 
-  let renderedNodeType, path;
+  let renderedNodeType, fileName;
   if (!hasChildren) {
     if (isVisited) {
       renderedNodeType = baseNodeType;
-      path = `unknown_${baseNodeType}`;
+      fileName = `unknown_${baseNodeType}`;
     } else {
       renderedNodeType = "unknown";
-      path = renderedNodeType;
+      fileName = renderedNodeType;
     }
   } else {
     renderedNodeType = baseNodeType;
-    path = baseNodeType;
+    fileName = baseNodeType;
   }
+  const path = `ui/map_nodes/map_${fileName}`;
   const renderedNodeDetails = mapNodeTypes[renderedNodeType];
 
   const label = `Workspace ${displayName}`;
@@ -92,7 +93,7 @@ export const SpWorkspace = ({
           <div className="workspace-shrinkwrap" style={style}>
             <MapNodeGraphic
               details={renderedNodeDetails}
-              path={path}
+              path={fileName}
               isDisplayed={isDisplayed}
               hasFocus={hasFocus}
             />
@@ -104,7 +105,7 @@ export const SpWorkspace = ({
               aria-describedby={tooltipId}
               {...attrs}
             >
-              <SpItemLabel>{displayName}</SpItemLabel>
+              <SpPower path={path}>{displayName}</SpPower>
             </SpButton>
           </div>
         )}

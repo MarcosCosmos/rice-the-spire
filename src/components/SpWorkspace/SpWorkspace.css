@@ -1,14 +1,12 @@
 .workspace-shrinkwrap {
-    --icon-width: calc(var(--graphic-scale) * var(--node-width));
+    --image-width: calc(var(--graphic-scale) * var(--node-width));
+    
+    --image-height: calc(var(--graphic-scale) * var(--node-height));
 
     position: relative;
     display: flex;
     align-self: flex-end;
     align-items: end;
-
-    &:not(:first-child) {
-        margin-inline-start: calc(var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) / 2);
-    }
     
     &:has(button:not(:disabled):hover) {
         .map-node {
@@ -18,23 +16,17 @@
 
     .workspace__button {
         z-index: 1;
-        display: inline-flex;
-        flex-direction: row;
-        justify-content: end;
-        align-items: end;
-        min-width: max(var(--icon-width), var(--icon-size));
-        min-height: var(--icon-size);
-        padding-inline-start: calc(var(--icon-width) / 2);
         color: #D8C5A6;
         -webkit-text-stroke-color: #2A2521;
 
+        .sp-power {           
+            min-width: max(var(--image-width), var(--icon-size));
+            min-height: max(var(--image-height), var(--icon-size));
+        }
+
         .spire-image {
-            position: absolute;
-            top: 1px;
-            left: 0;
-            height: 7em;
-            width: auto;
-            filter: brightness(.5);
+            width: var(--image-width);
+            height: var(--image-height);
         }
     }
 

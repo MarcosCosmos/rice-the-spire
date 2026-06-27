@@ -13,8 +13,9 @@ import {
   midPoint,
   pathLength,
   type MapNodeDetails,
+  maxNodeHeight,
 } from "./common";
-import "./MapNodeGraphic.css";
+import "./BackgroundGraphic.css";
 
 export interface MapNodeGraphicProps {
   details: MapNodeDetails;
@@ -24,16 +25,12 @@ export interface MapNodeGraphicProps {
 }
 
 export const MapNodeGraphic = ({
-  details,
-  path,
   isDisplayed,
   hasFocus,
 }: MapNodeGraphicProps) => {
   const config = useContext(SpireContext);
 
-  const nodeX = -details.width / 2;
-  const nodeY = -details.height / 2;
-  const markerY = -(details.height / 2 + mapMarkerDetails.height + 2);
+  const markerY = -(maxNodeHeight / 2 + mapMarkerDetails.height + 2);
 
   return (
     <svg
@@ -50,14 +47,6 @@ export const MapNodeGraphic = ({
           strokeDasharray={`${pathLength}px`}
         />
       )}
-      <image
-        className="map-node"
-        href={resolveSpireImage(`ui/map_nodes/map_${path}`)}
-        x={nodeX}
-        y={nodeY}
-        width={details.width}
-        height={details.height}
-      />
       {hasFocus && (
         <image
           className="map-pin"

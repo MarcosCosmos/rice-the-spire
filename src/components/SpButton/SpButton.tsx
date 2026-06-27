@@ -22,14 +22,18 @@ export const SpButton = ({
   toggle ??= false;
   const navAttrs = useNavigationItem(disabled);
   return (
-    <button
-      className={`sp-button ${toggle ? "sp-button--toggle" : ""} ${toggle === "inverted" ? "sp-button--inverted" : ""} ${className}`}
-      disabled={disabled}
-      {...navAttrs}
-      {...attrs}
+    <div
+      className={`sp-button ${toggle ? "sp-button--toggle" : ""} ${toggle === "inverted" ? "sp-button--inverted" : ""}`}
     >
       {toggle && <div className="sp-button__pulse"></div>}
-      {children}
-    </button>
+      <button
+        className={className}
+        disabled={disabled}
+        {...navAttrs}
+        {...attrs}
+      >
+        {children}
+      </button>
+    </div>
   );
 };

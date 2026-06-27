@@ -2,7 +2,8 @@
 .power {
   .power__image {
     position: absolute;
-    inset: 0 0;
+    inset-block-end: 0;
+    inset-inline-start: 0;
   }
 }
 

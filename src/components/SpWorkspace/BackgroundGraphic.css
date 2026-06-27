@@ -11,4 +11,8 @@
         stroke: #2A2521;
         stroke-linejoin: miter;
     }
+    
+    .map-pin {
+        filter: var(--normal-drop-shadow);
+    }
 }
