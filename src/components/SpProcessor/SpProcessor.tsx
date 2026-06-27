@@ -15,7 +15,7 @@ export const SpProcessor = () => {
     <SpTooltip
       anchor={(id) => (
         <SpNote className="cpu" aria-label={label} aria-describedby={id}>
-          <SpPower path="relics/cracked_core" assumedText={assumedText}>
+          <SpPower path="relics/cracked_core" expectedText={assumedText}>
             {usage}%
           </SpPower>
         </SpNote>

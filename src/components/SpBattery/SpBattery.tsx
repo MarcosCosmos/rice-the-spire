@@ -24,7 +24,7 @@ export const SpBattery = () => {
             aria-label={label}
             aria-describedby={id}
           >
-            <SpPower path="relics/power_cell" assumedText={assumedText}>
+            <SpPower path="relics/power_cell" expectedText={assumedText}>
               {value}%
             </SpPower>
           </SpNote>

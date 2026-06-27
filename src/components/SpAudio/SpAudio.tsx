@@ -45,7 +45,7 @@ export const SpAudio = () => {
           aria-describedby={id}
           onWheel={onWheel}
         >
-          <SpPower path={path} assumedText={assumedText}>
+          <SpPower path={path} expectedText={assumedText}>
             {displayVolume}
           </SpPower>
         </SpButton>

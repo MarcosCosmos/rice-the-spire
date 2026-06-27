@@ -4,3 +4,4 @@ export * from "./useDataSize";
 export * from "../contexts/navigation/NavigationContext";
 export * from "./measureText";
 export * from "./mount";
+export * from "./useSizeForExpectedText";

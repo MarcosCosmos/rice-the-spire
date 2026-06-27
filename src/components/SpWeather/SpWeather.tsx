@@ -74,7 +74,7 @@ export const SpWeather = ({ ...attrs }) => {
         >
           <SpPower
             path={`powers/${weatherMap[simplifiedStatus]}`}
-            assumedText={assumedText}
+            expectedText={assumedText}
           >
             {displayTemp}
           </SpPower>

@@ -24,9 +24,10 @@ body {
   --legend-heading-text-color: #15293E;
   --legend-text-color: #294667;
   --rarity-color-uncommon: #64ffff;
+  --normal-shadow-color: oklch(0 0 0 / 0.72);
 
   font-family: Kreon, Georgia, sans-serif;
-  text-shadow: oklch(0 0 0 / 0.72) 2px 1px 0px;
+  text-shadow: var(--normal-shadow-color) 1px 0px;
   line-height: normal;
   cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
   font-size: 12px;

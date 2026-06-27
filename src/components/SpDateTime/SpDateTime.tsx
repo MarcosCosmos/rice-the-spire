@@ -4,32 +4,62 @@ import SpSpireImage from "../SpSpireImage";
 import { useEffect, useState, type CSSProperties } from "react";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
-import { measureTextWidth } from "../../util/measureText";
-
-const shortDateFormat = new Intl.DateTimeFormat(undefined, {
+import { useSizeForExpectedText } from "../../util/useSizeForExpectedText";
+// timeStyle: "short",
+// hour12: false,
+const defaultShortDateFormat = new Intl.DateTimeFormat(undefined, {
   year: "2-digit",
   month: "2-digit",
   day: "2-digit",
 });
-const shortTimeFormat = new Intl.DateTimeFormat(undefined, {
-  timeStyle: "short",
+const defaultShortTimeFormat = new Intl.DateTimeFormat(undefined, {
+  hour: "2-digit",
+  minute: "2-digit",
   hour12: false,
 });
-const longFormat = new Intl.DateTimeFormat(undefined, {
+const defaultLongFormat = new Intl.DateTimeFormat(undefined, {
   dateStyle: "full",
   timeStyle: "long",
 });
+
+const expectedTimeSamples = [
+  new Date(9000, 0, 0, 0, 0, 0),
+  new Date(9000, 0, 0, 12, 50, 50),
+  new Date(9000, 0, 0, 23, 0, 0),
+  new Date(9000, 0, 0, 23, 50, 50),
+  new Date(9000, 12, 20, 12, 0, 0),
+  new Date(9000, 12, 20, 12, 50, 50),
+  new Date(9000, 12, 20, 23, 50, 50),
+  new Date(9000, 12, 20, 23, 0, 0),
+];
 export interface SpDateTimeProps {
   className?: string;
+
+  /**
+   * Used in the main display. Defaults to short 2-digit with 24-hour time because it's most game-esque.
+   */
+  shortDateFormat?: Intl.DateTimeFormat;
+  shortTimeFormat?: Intl.DateTimeFormat;
+
+  /**
+   * Used in the tooltip. Defaults to "full" date and "long" time (usually everything but the timezone)
+   */
+  longFormat?: Intl.DateTimeFormat;
 }
 
-const assumedText = {
-  text: "00/00/00 00:00",
-  font: "400 1.5rem Kreon",
-};
+const defaultFont = "400 1.5rem Kreon";
 
-export const SpDateTime = ({ className }: SpDateTimeProps) => {
+export const SpDateTime = ({
+  className,
+  shortDateFormat,
+  shortTimeFormat,
+  longFormat,
+}: SpDateTimeProps) => {
   className ??= "";
+  shortDateFormat ??= defaultShortDateFormat;
+  shortTimeFormat ??= defaultShortTimeFormat;
+  longFormat ??= defaultLongFormat;
+
   const [now, setNow] = useState<number>(Date.now());
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,18 +69,22 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
       clearInterval(interval);
     };
   });
+
+  const [samples, setSamples] = useState<string[]>([]);
+  useEffect(() => {
+    setSamples(
+      expectedTimeSamples.map(
+        (x) => `${shortDateFormat.format(x)} ${shortTimeFormat.format(x)}`,
+      ),
+    );
+  }, [shortDateFormat, shortTimeFormat]);
   const label = "Datetime";
 
-  const [preWidth, setPreWidth] = useState<number | undefined>(undefined);
-  useEffect(() => {
-    setPreWidth(measureTextWidth(assumedText.text, assumedText.font));
-  }, []);
-
-  const style: CSSProperties | undefined = preWidth
-    ? {
-        minWidth: `calc(${preWidth.toString()}px + var(--text-stroke-width)`,
-      }
-    : undefined;
+  const textStyle: CSSProperties | undefined = useSizeForExpectedText(
+    samples,
+    defaultFont,
+    "var(--text-stroke-width)",
+  );
 
   // TODO: this needs an assumed width
   return (
@@ -61,8 +95,8 @@ export const SpDateTime = ({ className }: SpDateTimeProps) => {
           aria-label={label}
           aria-describedby={id}
         >
-          <SpSpireImage className="date" path="ui/top_bar/timer_icon" />
-          <SpOutlinedText aria-hidden="true" style={style}>
+          <SpSpireImage path="ui/top_bar/timer_icon" />
+          <SpOutlinedText aria-hidden="true" style={textStyle}>
             {shortDateFormat.format(now)} {shortTimeFormat.format(now)}
           </SpOutlinedText>
         </SpNote>

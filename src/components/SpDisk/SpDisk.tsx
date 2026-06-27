@@ -28,7 +28,7 @@ export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
           aria-describedby={id}
           {...attrs}
         >
-          <SpPower path="relics/data_disk" assumedText={assumedText}>
+          <SpPower path="relics/data_disk" expectedText={assumedText}>
             {usage}%
           </SpPower>
         </SpNote>
