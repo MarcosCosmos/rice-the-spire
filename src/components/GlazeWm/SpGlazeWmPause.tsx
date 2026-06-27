@@ -3,6 +3,7 @@ import { ZebarContext } from "../../contexts";
 import { SpButton } from "../SpButton/SpButton";
 import SpSpireImage from "../SpSpireImage";
 import SpTooltip from "../SpTooltip";
+import SpPower from "../SpPower";
 
 export interface SpGlazeWmPauseProps {
   showAlways?: boolean;
@@ -29,7 +30,7 @@ export const SpGlazeWmPause = ({ showAlways }: SpGlazeWmPauseProps) => {
             aria-describedby={id}
             onClick={onClick}
           >
-            <SpSpireImage path="intents/sleep" />
+            <SpPower path="intents/sleep" />
           </SpButton>
         )}
         desc={<>{glazewm.isPaused ? "Unpause" : "Pause"} GlazeWM</>}

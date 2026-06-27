@@ -19,7 +19,7 @@
         color: #D8C5A6;
         -webkit-text-stroke-color: #2A2521;
 
-        .sp-power {           
+        .power {           
             min-width: max(var(--image-width), var(--icon-size));
             min-height: max(var(--image-height), var(--icon-size));
         }

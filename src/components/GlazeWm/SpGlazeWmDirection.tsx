@@ -3,6 +3,7 @@ import { ZebarContext } from "../../contexts";
 import SpSpireImage from "../SpSpireImage";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
+import SpPower from "../SpPower";
 
 export const SpGlazeWmDirection = () => {
   const glazewm = useContext(ZebarContext)?.glazewm;
@@ -26,7 +27,7 @@ export const SpGlazeWmDirection = () => {
             aria-describedby={id}
             onClick={onClick}
           >
-            <SpSpireImage path={path} />
+            <SpPower path={path} />
           </SpButton>
         )}
         desc={
