@@ -1,33 +1,14 @@
+@import "../../util/variables.css";
+
 body {
   overflow: hidden;
 }
 
 :root {
-
-  --icon-size: 2rem;
-  --image-size: var(--icon-size);
-  --hover-scale: 1.2;
-  --hover-transition: transform .1s;
-  --item-padding: 0px;
-  --icon-scale-margin: round(up, calc(var(--icon-size) * (var(--hover-scale) - 1) / 2), 1px);
-  --text-stroke-width: round(up, 0.2em, 1px);
-  --text-stroke-padding: calc(var(--text-stroke-width) / 2);
-  --normal-text-color: #FFF6E2;
-  --heading-text-color:#EFC851;
-  --upgrade-text-color: #7EFD01;
-  --variable-text-color: #87CEEB;
-  --normal-stroke-color: #373737;
-  --red-stroke-color: #881F20;
-  --exhaust-stroke-color: #341F2F;
-  --bar-stroke-color: #1C2B31;
-  --button-stroke-color: #a16d15;
-  --legend-heading-text-color: #15293E;
-  --legend-text-color: #294667;
-  --rarity-color-uncommon: #64ffff;
-  --normal-drop-shadow: drop-shadow(.2rem .2rem 0 hsla(0, 0%, 0%, .25));
   font-family: Kreon, Georgia, sans-serif;
   line-height: normal;
-  cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
+  cursor:
+    url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
   font-size: 12px;
   color: var(--normal-text-color);
   -webkit-text-stroke-color: var(--normal-stroke-color);
@@ -35,11 +16,15 @@ body {
 
 html,
 body,
-#root, .app {
+#root,
+.app {
   height: 100%;
 }
 
-button, [type='button'], [type='reset'], [type='submit'] {
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
   background: unset;
   border: unset;
   padding: unset;
@@ -50,7 +35,8 @@ button, [type='button'], [type='reset'], [type='submit'] {
   line-height: inherit;
   text-shadow: inherit;
   &:not([aria-disabled="true"]) {
-    cursor: url(https://cdn.spire-codex.com/ui/cursors/cursor_tilted.png), pointer;
+    cursor:
+      url(https://cdn.spire-codex.com/ui/cursors/cursor_tilted.png), pointer;
   }
 }
 
@@ -75,11 +61,15 @@ button, [type='button'], [type='reset'], [type='submit'] {
 }
 
 :focus-visible {
-  outline: #FFF solid 1px;
-  box-shadow: #FFF 0 0 5px, inset #FFF 0 0 5px;
+  outline: #fff solid 1px;
+  box-shadow:
+    #fff 0 0 5px,
+    inset #fff 0 0 5px;
 }
 
-h1, h2, .gold-text {
+h1,
+h2,
+.gold-text {
   color: var(--heading-text-color);
   display: inline;
 }
