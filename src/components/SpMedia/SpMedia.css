@@ -2,19 +2,17 @@
   display: flex;
   position: relative;
   height: 100%;
-  padding-inline: 15%;
-
-  text-shadow: 2px 2px hsla(0, 0%, 0%, 0.7);
+  padding-inline: 11%;
 }
 .media__background {
   width: 100%;
   height: auto;
   position: absolute;
   inset-inline-start: 0;
-  inset-block-end: -15%;
+  inset-block-end: -20%;
 }
 
-.media__grid {
+.media__content {
   z-index: 1;
   display: grid;
   grid-template:
@@ -24,27 +22,25 @@
   row-gap: 0;
 }
 
-.media__track-info-wrapper {
+.media__track-info {
   grid-area: info;
-  width: 24ch;
-  padding: 0;
-
-  .media__track-info {
-    max-width: 100%;
-  }
-
-  .media__track-title,
-  .media__track-artist {
-    /* color: var(--legend-heading-text-color); */
-    max-width: 100%;
-    overflow: hidden;
-    text-wrap-mode: wrap;
-  }
-  .media__track-title {
+  display: flex;
+  align-items: center;
+  .sp-note {
+    width: 26ch;
+    padding: 0;
+    -webkit-text-stroke-color: var(--event-text-stroke-color);
+    display: flex;
     font-size: 1.1rem;
-  }
-  .media__track-artist {
-    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    .outlined-text > * {
+      overflow: hidden;
+      text-wrap-mode: nowrap;
+      text-overflow: ellipsis;
+
+      max-width: 100%;
+    }
   }
 }
 
@@ -52,13 +48,15 @@
   grid-area: progress;
   display: flex;
   width: 100%;
+  padding-inline: 4.5rch;
   color: var(--event-plaque-text-color);
   align-items: center;
   font-size: 0.9rem;
   text-shadow: none;
 }
 
-.media__progress-plaque .stretch-box__background {
+.media__background,
+.media-plaque .stretch-box__background {
   filter: hue-rotate(calc(118.55deg - 183.5deg)) saturate(calc(0.4346 / 0.6023))
     brightness(calc(0.6255 / 0.6647));
 }
@@ -73,7 +71,7 @@
 .media__timeline-line {
   position: absolute;
   max-height: 0px;
-  border-color: var(--event-banner-color);
+  border-color: var(--event-plaque-color);
   box-shadow: 1px 1px 0px hsla(0, 0%, 50%, 0.5);
   border-style: solid;
   border-width: 0;
@@ -103,8 +101,9 @@
 
 .media__controls {
   grid-area: controls;
-  font-size: 2em;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   text-align: center;
+  -webkit-text-stroke-color: var(--event-text-stroke-color);
 }

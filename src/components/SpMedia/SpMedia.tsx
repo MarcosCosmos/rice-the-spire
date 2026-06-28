@@ -2,10 +2,11 @@ import { useContext, useEffect, useState, type CSSProperties } from "react";
 import { SpireContext, useNavigationGroup, ZebarContext } from "../../contexts";
 import SpSpireImage from "../SpSpireImage";
 import "./SpMedia.css";
-import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
 import SpNote from "../SpNote";
-import SpStretchBox from "../SpStretchBox";
+import SpOutlinedText from "../SpOutlinedText";
+import { Plaque } from "./Plaque";
+import SpTooltip from "../SpTooltip";
 
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
@@ -93,50 +94,42 @@ export const SpMedia = ({ className }: SpMediaProps) => {
 
     return (
       <div
-        className={`media anchor-tooltips-block-start ${className}`}
+        className={`media anchor-tooltips-block-end ${className}`}
         role="complementary"
         aria-label="Media Player"
         {...navAttrs}
       >
         <SpSpireImage
           className="media__background"
-          path="ui/compendium/card/card_frame_quest_s"
+          path="ui/compendium/card/card_banner"
         />
-        <div className="media__grid">
-          <div className="media__track-info-wrapper anchor-tooltips-inline-start">
+        <div className="media__content">
+          <div className="media__track-info">
             <SpTooltip
               anchor={(tooltipId: string) => (
-                <SpNote
-                  className="media__track-info"
-                  aria-describedby={tooltipId}
-                >
-                  <div className="media__track-title">{title}</div>
-                  <div className="media__track-artist">{artist}</div>
+                <SpNote aria-describedby={tooltipId}>
+                  <SpOutlinedText>
+                    <span>{title}</span> · <span>{artist}</span>
+                  </SpOutlinedText>
                 </SpNote>
               )}
               desc={
                 <>
                   <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
                   <strong>{currentSession.albumTitle}</strong>
-                  <br />
+                  {/* <br />
                   via session <strong>{currentSession.sessionId}</strong>
                   <br />
-                  Progress: <em>{ellapsedTime}</em> out of{" "}
-                  <strong>{totalTime}</strong>
+                  Progress: <em>{ellapsedTime}</em> out of{" "} 
+                  <strong>{totalTime}</strong>*/}
                 </>
               }
             />
           </div>
           <div className="media__progress" style={style}>
-            <SpStretchBox
-              className="media__progress-plaque"
-              path="ui/compendium/card/card_portrait_border_plaque_s"
-              width={123}
-              height={75}
-              inset={30}
-            >
+            <Plaque>
               <div className="media__duration">{ellapsedTime}</div>
-            </SpStretchBox>
+            </Plaque>
             <div className="media__timeline">
               <div className="media__timeline-line" />
               <SpSpireImage
@@ -144,25 +137,21 @@ export const SpMedia = ({ className }: SpMediaProps) => {
                 path={`ui/energy/${spire.character}_energy_icon`}
               />
             </div>
-            <SpStretchBox
-              className="media__progress-plaque"
-              path="ui/compendium/card/card_portrait_border_plaque_s"
-              width={123}
-              height={75}
-              inset={30}
-            >
+            <Plaque>
               <div className="media__duration">{totalTime}</div>
-            </SpStretchBox>
+            </Plaque>
           </div>
           <div className="media__controls">
             <SpButton className="media__previous" onClick={onPrevious}>
-              ⏮
+              <SpOutlinedText>⏮</SpOutlinedText>
             </SpButton>
             <SpButton className="media__toggle-play" onClick={onToggle}>
-              {currentSession.isPlaying ? "⏸" : "⏵"}
+              <SpOutlinedText>
+                {currentSession.isPlaying ? "⏸" : "⏵"}
+              </SpOutlinedText>
             </SpButton>
             <SpButton className="media__next" onClick={onNext}>
-              ⏭
+              <SpOutlinedText>⏭</SpOutlinedText>
             </SpButton>
           </div>
         </div>

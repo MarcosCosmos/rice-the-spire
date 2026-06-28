@@ -27,6 +27,7 @@
   --uncommon-plaque-color: hsl(183.5deg 60.23% 66.47%);
   --quest-banner-color: hsl(16, 90%, 58%);
   --quest-plaque-text-color: #561805;
-  --event-banner-color: hsl(118.55deg 43.46% 62.55%);
+  --event-plaque-color: hsl(118.55deg 43.46% 62.55%);
+  --event-text-stroke-color: #245e30;
   --event-plaque-text-color: #0c3c0f;
 }
