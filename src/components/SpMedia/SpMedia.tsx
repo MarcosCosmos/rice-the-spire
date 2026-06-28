@@ -7,6 +7,7 @@ import SpNote from "../SpNote";
 import SpOutlinedText from "../SpOutlinedText";
 import { Plaque } from "./Plaque";
 import SpTooltip from "../SpTooltip";
+import { useSizeForExpectedText } from "../../util";
 
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
@@ -61,6 +62,21 @@ export const SpMedia = ({ className }: SpMediaProps) => {
     currentSession?.trackNumber,
   ]);
 
+  const [longTimeString, setLongTimeString] = useState<string>("00:00");
+  if (currentSession) {
+    const newString = formatDuration(currentSession.endTime).replace(
+      /[1-9]/,
+      "0",
+    );
+    if (newString !== longTimeString) {
+      setLongTimeString(newString);
+    }
+  }
+  const durationWidth = useSizeForExpectedText(
+    longTimeString,
+    "400 .09rem Kreon",
+  );
+
   if (currentSession) {
     const title = currentSession.title ?? "No Title";
     const artist = currentSession.artist ?? "Unknown Artist";
@@ -70,8 +86,8 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       (position - currentSession.startTime) /
       (currentSession.endTime - currentSession.startTime);
     const style: CSSProperties = {
+      ...durationWidth,
       "--song-progress": progressPercent.toString(),
-      "--duration-width": `${totalTime.length.toFixed(0)}ch`,
     } as CSSProperties;
 
     const onPrevious = () => {

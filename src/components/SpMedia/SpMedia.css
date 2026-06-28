@@ -83,16 +83,16 @@
 }
 
 .media__time-marker {
-  --image-size: 1.4em;
+  --image-size: 1.5rem;
   position: relative;
   left: calc((100% - var(--image-size)) * var(--song-progress));
 }
 
 .media__duration {
-  min-width: var(--duration-width);
+  --inline-padding: 0.4em;
   padding-top: 0.1em;
   padding-bottom: 0.3em;
-  padding-inline: 0.4em;
+  padding-inline: var(--inline-padding);
   font-weight: bold;
 
   &:last-child {

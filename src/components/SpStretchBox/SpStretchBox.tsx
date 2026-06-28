@@ -30,7 +30,6 @@ export const SpStretchBox = ({
   const backdropUrl = resolveSpireImage(path);
   const rightInset = width - inset;
   const midWidth = width - 2 * inset;
-  console.log(width, inset, midWidth);
   const image = (
     <image href={backdropUrl} x="0" y="0" width={width} height={height} />
   );

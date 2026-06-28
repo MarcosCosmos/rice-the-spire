@@ -23,14 +23,14 @@ const defaultLongFormat = new Intl.DateTimeFormat(undefined, {
 });
 
 const expectedTimeSamples = [
-  new Date(9000, 0, 0, 0, 0, 0),
-  new Date(9000, 0, 0, 12, 50, 50),
-  new Date(9000, 0, 0, 23, 0, 0),
-  new Date(9000, 0, 0, 23, 50, 50),
-  new Date(9000, 12, 20, 12, 0, 0),
-  new Date(9000, 12, 20, 12, 50, 50),
-  new Date(9000, 12, 20, 23, 50, 50),
-  new Date(9000, 12, 20, 23, 0, 0),
+  new Date(9000, 9, 0, 0, 0, 0),
+  new Date(9000, 9, 0, 12, 50, 50),
+  new Date(9000, 9, 0, 23, 0, 0),
+  new Date(9000, 9, 0, 23, 50, 50),
+  new Date(9000, 11, 20, 12, 0, 0),
+  new Date(9000, 11, 20, 12, 50, 50),
+  new Date(9000, 11, 20, 23, 50, 50),
+  new Date(9000, 11, 20, 23, 0, 0),
 ];
 export interface SpDateTimeProps {
   className?: string;
@@ -72,12 +72,12 @@ export const SpDateTime = ({
 
   const [samples, setSamples] = useState<string[]>([]);
   useEffect(() => {
-    setSamples(
-      expectedTimeSamples.map(
-        (x) => `${shortDateFormat.format(x)} ${shortTimeFormat.format(x)}`,
-      ),
+    const newSamples = expectedTimeSamples.map(
+      (x) => `${shortDateFormat.format(x)} ${shortTimeFormat.format(x)}`,
     );
+    setSamples(newSamples);
   }, [shortDateFormat, shortTimeFormat]);
+
   const label = "Datetime";
 
   const textStyle: CSSProperties | undefined = useSizeForExpectedText(
