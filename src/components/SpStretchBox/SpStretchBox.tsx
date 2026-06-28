@@ -4,6 +4,7 @@ import resolveSpireImage from "../../util/resolveSpireImage";
 import "./SpStretchBox.css";
 
 export interface SpStretchBoxProps {
+  className?: string;
   path: string;
   height: number;
   width: number;
@@ -13,25 +14,28 @@ export interface SpStretchBoxProps {
 
 /**
  * Splices an image horizontally in 3 parts using cut points defined
- * Note: SpStretchBox is deliberately a black box that I advise against applying styles to
+ * Note: SpStretchBox is deliberately a black box that I advise against applyinglayout styles to
  * It should naturally shrink-wrap around its contents and you should try to manage styling  with boxes in and around it but not it's actual box(es)
  * @returns
  */
 export const SpStretchBox = ({
+  className,
   path,
   height,
   width,
   inset,
   children,
 }: SpStretchBoxProps) => {
+  className ??= "";
   const backdropUrl = resolveSpireImage(path);
   const rightInset = width - inset;
   const midWidth = width - 2 * inset;
+  console.log(width, inset, midWidth);
   const image = (
     <image href={backdropUrl} x="0" y="0" width={width} height={height} />
   );
   return (
-    <div className="stretch-box">
+    <div className={`stretch-box ${className}`}>
       <div className="stretch-box__position-wrapper">
         <div className="stretch-box__background">
           <svg

@@ -4,6 +4,8 @@ import SpSpireImage from "../SpSpireImage";
 import "./SpMedia.css";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
+import SpNote from "../SpNote";
+import SpStretchBox from "../SpStretchBox";
 
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
@@ -96,31 +98,45 @@ export const SpMedia = ({ className }: SpMediaProps) => {
         aria-label="Media Player"
         {...navAttrs}
       >
+        <SpSpireImage
+          className="media__background"
+          path="ui/compendium/card/card_frame_quest_s"
+        />
         <div className="media__grid">
           <div className="media__track-info-wrapper anchor-tooltips-inline-start">
             <SpTooltip
               anchor={(tooltipId: string) => (
-                <div className="media__track-info" aria-describedby={tooltipId}>
+                <SpNote
+                  className="media__track-info"
+                  aria-describedby={tooltipId}
+                >
                   <div className="media__track-title">{title}</div>
                   <div className="media__track-artist">{artist}</div>
-                </div>
+                </SpNote>
               )}
               desc={
                 <>
                   <strong>{title}</strong> by <strong>{artist}</strong> on album{" "}
                   <strong>{currentSession.albumTitle}</strong>
                   <br />
-                  via session <em>{currentSession.sessionId}</em>
+                  via session <strong>{currentSession.sessionId}</strong>
                   <br />
-                  <h2>Progress: </h2>
-                  <strong>{ellapsedTime}</strong> out of{" "}
+                  Progress: <em>{ellapsedTime}</em> out of{" "}
                   <strong>{totalTime}</strong>
                 </>
               }
             />
           </div>
           <div className="media__progress" style={style}>
-            <div className="media__duration">{ellapsedTime}</div>
+            <SpStretchBox
+              className="media__progress-plaque"
+              path="ui/compendium/card/card_portrait_border_plaque_s"
+              width={123}
+              height={75}
+              inset={30}
+            >
+              <div className="media__duration">{ellapsedTime}</div>
+            </SpStretchBox>
             <div className="media__timeline">
               <div className="media__timeline-line" />
               <SpSpireImage
@@ -128,7 +144,15 @@ export const SpMedia = ({ className }: SpMediaProps) => {
                 path={`ui/energy/${spire.character}_energy_icon`}
               />
             </div>
-            <div className="media__duration">{totalTime}</div>
+            <SpStretchBox
+              className="media__progress-plaque"
+              path="ui/compendium/card/card_portrait_border_plaque_s"
+              width={123}
+              height={75}
+              inset={30}
+            >
+              <div className="media__duration">{totalTime}</div>
+            </SpStretchBox>
           </div>
           <div className="media__controls">
             <SpButton className="media__previous" onClick={onPrevious}>

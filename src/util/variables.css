@@ -2,22 +2,31 @@
   --icon-size: 2rem;
   --image-size: var(--icon-size);
   --hover-scale: 1.2;
-  --hover-transition: transform .1s;
+  --hover-transition: transform 0.1s;
   --item-padding: 0px;
-  --icon-scale-margin: round(up, calc(var(--icon-size) * (var(--hover-scale) - 1) / 2), 1px);
+  --icon-scale-margin: round(
+    up,
+    calc(var(--icon-size) * (var(--hover-scale) - 1) / 2),
+    1px
+  );
   --text-stroke-width: round(up, 0.2em, 1px);
   --text-stroke-padding: calc(var(--text-stroke-width) / 2);
-  --normal-text-color: #FFF6E2;
-  --heading-text-color:#EFC851;
-  --upgrade-text-color: #7EFD01;
-  --variable-text-color: #87CEEB;
+  --normal-text-color: #fff6e2;
+  --keyword-text-color: #efc851;
+  --upgrade-text-color: #7efd01;
+  --variable-text-color: #87ceeb;
   --normal-stroke-color: #373737;
-  --red-stroke-color: #881F20;
-  --exhaust-stroke-color: #341F2F;
-  --bar-stroke-color: #1C2B31;
+  --red-stroke-color: #881f20;
+  --exhaust-stroke-color: #341f2f;
+  --bar-stroke-color: #1c2b31;
   --button-stroke-color: #a16d15;
-  --legend-heading-text-color: #15293E;
+  --legend-keyword-text-color: #15293e;
   --legend-text-color: #294667;
-  --rarity-color-uncommon: #64ffff;
-  --normal-drop-shadow: drop-shadow(.2rem .2rem 0 hsla(0, 0%, 0%, .25));
+  --rarity-color-uncommon: hsl(180, 100%, 70%);
+  --normal-drop-shadow: drop-shadow(0.2rem 0.2rem 0 hsla(0, 0%, 0%, 0.25));
+  --uncommon-plaque-color: hsl(183.5deg 60.23% 66.47%);
+  --quest-banner-color: hsl(16, 90%, 58%);
+  --quest-plaque-text-color: #561805;
+  --event-banner-color: hsl(118.55deg 43.46% 62.55%);
+  --event-plaque-text-color: #0c3c0f;
 }

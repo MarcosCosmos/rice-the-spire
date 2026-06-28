@@ -1,95 +1,110 @@
-.media__grid {
-    background-image: url(https://cdn.spire-codex.com/ui/compendium/map/map_legend.png);
-    background-size: 100% auto;
-    background-position: 0 25%;
-    padding-inline: 10%;
-    margin-inline: -5%;
+.media {
+  display: flex;
+  position: relative;
+  height: 100%;
+  padding-inline: 15%;
 
-    width: 368px;
-    height: 100%;
-    display: grid;
-    grid-template: 
-        "info controls" auto 
-        "progress controls" auto / auto min-content;
-    column-gap: .25rem;
-    row-gap: 0;
+  text-shadow: 2px 2px hsla(0, 0%, 0%, 0.7);
+}
+.media__background {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: -15%;
 }
 
-.media__track-info, .media__progress, .media__controls {
-    text-shadow: .1em .1em 0px hsla(0, 0%, 50%, .5);
+.media__grid {
+  z-index: 1;
+  display: grid;
+  grid-template:
+    "info controls" auto
+    "progress progress" auto / auto min-content;
+  column-gap: 0.25rem;
+  row-gap: 0;
 }
 
 .media__track-info-wrapper {
-    grid-area: info;
-    width: auto;
-    min-width: 0;
-    padding: 0;
+  grid-area: info;
+  width: 24ch;
+  padding: 0;
 
-    .media__track-info {
-        max-width: 100%;
-    }
-    
-    .media__track-title, .media__track-artist {
-        color: var(--legend-heading-text-color);
-        max-width: 100%;
-        overflow: hidden;
-        text-wrap-mode: wrap;
-    }
-    .media__track-title {
-        font-size: 1.2rem;
-    }
-    .media__track-artist {
-        font-size: 1.1rem;
-    }
+  .media__track-info {
+    max-width: 100%;
+  }
+
+  .media__track-title,
+  .media__track-artist {
+    /* color: var(--legend-heading-text-color); */
+    max-width: 100%;
+    overflow: hidden;
+    text-wrap-mode: wrap;
+  }
+  .media__track-title {
+    font-size: 1.1rem;
+  }
+  .media__track-artist {
+    font-size: 1rem;
+  }
 }
 
 .media__progress {
-    grid-area: progress;
-    display: flex;
-    width: 100%;
-    color: var(--legend-text-color);
-    align-items: center;
-    font-size: 1rem;
+  grid-area: progress;
+  display: flex;
+  width: 100%;
+  color: var(--event-plaque-text-color);
+  align-items: center;
+  font-size: 0.9rem;
+  text-shadow: none;
+}
+
+.media__progress-plaque .stretch-box__background {
+  filter: hue-rotate(calc(118.55deg - 183.5deg)) saturate(calc(0.4346 / 0.6023))
+    brightness(calc(0.6255 / 0.6647));
 }
 
 .media__timeline {
-    flex: 1 0 auto;
-    display: flex;
-    align-items: center;
-    position: relative;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .media__timeline-line {
-    position: absolute;
-    max-height: 0px;
-    border-color: var(--legend-text-color);
-    box-shadow: 1px 1px 0px hsla(0, 0%, 50%, .5);
-    border-style: solid;
-    border-width: 0;
-    border-top-width: 1px;
-    width: 100%;
+  position: absolute;
+  max-height: 0px;
+  border-color: var(--event-banner-color);
+  box-shadow: 1px 1px 0px hsla(0, 0%, 50%, 0.5);
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 1px;
+  width: calc(100% + 1em);
+  margin-inline: -0.5em;
+  z-index: -1;
 }
 
 .media__time-marker {
-    --image-size: 1lh;
-    position: relative;
-    left: calc((100% - var(--image-size)) * var(--song-progress));
+  --image-size: 1.4em;
+  position: relative;
+  left: calc((100% - var(--image-size)) * var(--song-progress));
 }
 
 .media__duration {
-    min-width: var(--duration-width);
-    font-weight: bold;
+  min-width: var(--duration-width);
+  padding-top: 0.1em;
+  padding-bottom: 0.3em;
+  padding-inline: 0.4em;
+  font-weight: bold;
 
-    &:last-child {
-        text-align: end;
-    }
+  &:last-child {
+    text-align: end;
+  }
 }
 
 .media__controls {
-    color: var(--legend-heading-text-color);
-    grid-area: controls;
-    font-size: 2em;
-    display: flex;
-    align-items: center;
-    text-align: center;
+  grid-area: controls;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  text-align: center;
 }

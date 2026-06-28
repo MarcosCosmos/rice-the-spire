@@ -70,7 +70,7 @@ button,
 h1,
 h2,
 .gold-text {
-  color: var(--heading-text-color);
+  color: var(--keyword-text-color);
   display: inline;
 }
 
