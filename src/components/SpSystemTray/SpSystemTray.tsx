@@ -1,4 +1,5 @@
 import {
+  Fragment,
   useCallback,
   useContext,
   useEffect,
@@ -125,29 +126,37 @@ export const SpSystemTray = ({
   } as CSSProperties;
 
   const parts = [
-    primaryIcons.map((data) => <SpTrayIcon key={data.id} {...data} />),
-    secondaryIcons.length > 0 ? (
-      <ExhaustButton
-        controls={secondaryIconsKey}
-        count={secondaryIcons.length}
-        expanded={expanded}
-        onClick={onExpanderClick}
-      />
-    ) : undefined,
-    secondaryIcons.length > 0 && (
-      <>
-        <div
-          className="system-tray__secondary-icons"
-          role="menu"
-          id={secondaryIconsKey}
-          key={secondaryIconsKey}
-        >
-          {secondaryIcons.map((data) => (
-            <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
-          ))}
-        </div>
-      </>
-    ),
+    <Fragment key="primary-icons">
+      {primaryIcons.map((data) => (
+        <SpTrayIcon key={data.id} {...data} />
+      ))}
+    </Fragment>,
+    <Fragment key="exhaust-button">
+      {secondaryIcons.length > 0 ? (
+        <ExhaustButton
+          controls={secondaryIconsKey}
+          count={secondaryIcons.length}
+          expanded={expanded}
+          onClick={onExpanderClick}
+        />
+      ) : undefined}
+    </Fragment>,
+    <Fragment key="secondary-icons">
+      {secondaryIcons.length > 0 && (
+        <>
+          <div
+            className="system-tray__secondary-icons"
+            role="menu"
+            id={secondaryIconsKey}
+            key={secondaryIconsKey}
+          >
+            {secondaryIcons.map((data) => (
+              <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+            ))}
+          </div>
+        </>
+      )}
+    </Fragment>,
   ];
   if (expandDirection === "start") {
     parts.reverse();
