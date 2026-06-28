@@ -1,5 +1,5 @@
 .datetime {
-  color: var(---color);
+  color: var(--keyword-text-color);
   -webkit-text-stroke-color: var(--bar-stroke-color);
 
   font-size: 1.5rem;
