@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   height: 100%;
-  padding-inline: 11%;
+  padding-inline: 12%;
 }
 .media__background {
   width: 100%;
@@ -33,7 +33,8 @@
     display: flex;
     font-size: 1.1rem;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    text-align: start;
     .outlined-text > * {
       overflow: hidden;
       text-wrap-mode: nowrap;
