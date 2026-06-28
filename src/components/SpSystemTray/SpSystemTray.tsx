@@ -62,8 +62,6 @@ export const SpSystemTray = ({
     iconLimit = undefined;
   }
 
-  const iconsToShow = !iconLimit || expanded ? undefined : iconLimit;
-
   useEffect(() => {
     if ((availableIcons?.length ?? 0) === 0 && sortedIcons.length === 0) {
       return;
