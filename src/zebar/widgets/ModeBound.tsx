@@ -44,11 +44,11 @@ const Widget = () => {
   };
   const trayPriorities = [
     "Zebar",
+    "GlazeWM",
     "Safely Remove Hardware and Eject Media",
     "Bluetooth",
     "Discord",
     "Steam",
-    "GlazeWM",
   ];
   const traySort = (a: SystrayIcon, b: SystrayIcon) => {
     const key = (icon: SystrayIcon) => {

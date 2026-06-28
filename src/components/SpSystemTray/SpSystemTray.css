@@ -4,20 +4,15 @@
     margin-top: var(--icon-scale-margin);
     --icon-size: 2rem;
     --image-size: 1rem;
-    --primary-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 1));
-    /* math for secondary-width scale-margin multipl: primary + 2 for focus-visible glow and + 1 more to create an artificial gap */
-    --secondary-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count) + 4));
-    
+    --tray-width: calc(var(--icon-size) * var(--primary-icon-count) + var(--icon-scale-margin) * (var(--primary-icon-count) + 1));
+    --primary-width: calc(var(--tray-width) + 2 * var(--icon-scale-margin));
+    --additational-width: calc(var(--icon-size) * var(--secondary-icon-count) + var(--icon-scale-margin) * (var(--secondary-icon-count)));
+    --full-width: calc(var(--primary-width) + var(--additational-width));
     &.system-tray--expand-floating {
-        width: var(--primary-width);
-        max-width: var(--primary-width);
+        width: var(--tray-width);
+        max-width: var(--tray-width);
     }
-    &.system-tray--expand-start {
-        justify-content: end;
-    }
-    &.system-tray--expand-end {
-        justify-content: start;
-    }
+
 }
 
 .system-tray__interior {
@@ -30,27 +25,23 @@
     color: var(--heading-text-color);
 }
 
-.system-tray__icons, .system-tray__secondary-icons {   
+ .system-tray__secondary-icons {
+    display: contents;
+ }
+
+.system-tray__icons {   
     display: flex;
+    overflow: hidden;
     padding: calc(var(--icon-scale-margin) * 2);
     gap: var(--icon-scale-margin);
     margin: calc(-1 * var(--icon-scale-margin));
-}
 
-.system-tray__icons:not(:first-child) {
-    padding-inline-start: 0;
-}
-.system-tray__icons:not(:last-child) {
-    padding-inline-end: 0;
-}
-
-.system-tray__secondary-icons {
-    width: 0;
-    overflow-x: hidden;
-    overflow-y: visible;
-    scrollbar-width: none;
+    min-width: var(--primary-width);
+    max-width: var(--full-width);
+    width: var(--tray-width);
+    
     .system-tray--expanded & {
-        width: var(--secondary-width);
+        width: var(--full-width);
     }
     @media not (prefers-reduced-motion) {
         transition: width .5s .5s ease-in, transform .5s .5s ease-in-out;
@@ -58,5 +49,16 @@
         .system-tray--expanded & {
             transition: width .5s .5s ease-out, transform .5s .5s ease-in-out;
         }
+    }
+}
+
+.system-tray--expand-start {
+    &, .system-tray__interior, .system-tray__icons {
+        justify-content: end;
+    }
+}
+.system-tray--expand-end & {
+    &, .system-tray__interior, .system-tray__icons {
+        justify-content: start;
     }
 }

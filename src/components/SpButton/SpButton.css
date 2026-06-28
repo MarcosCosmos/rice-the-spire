@@ -14,7 +14,7 @@
   min-height: var(--icon-size);
   border-radius: var(--icon-scale-margin);
   padding: var(--item-padding);
-  display: inline-flex;
+  display: flex;
 
   &:not(:disabled) {
     &:not(:active) {

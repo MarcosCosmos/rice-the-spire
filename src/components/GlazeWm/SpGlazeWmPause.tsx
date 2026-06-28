@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { ZebarContext } from "../../contexts";
 import { SpButton } from "../SpButton/SpButton";
-import SpSpireImage from "../SpSpireImage";
 import SpTooltip from "../SpTooltip";
 import SpPower from "../SpPower";
 

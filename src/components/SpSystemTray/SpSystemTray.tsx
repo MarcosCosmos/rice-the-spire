@@ -44,6 +44,9 @@ export const SpSystemTray = ({
 
   const [expanded, setExpanded] = useState(false);
   const [sortedIcons, setSortedIcons] = useState<SystrayIcon[]>([]);
+  const [[primaryIcons, secondaryIcons], setIconSets] = useState<
+    [SystrayIcon[], SystrayIcon[]]
+  >([[], []]);
 
   const root = useRef<HTMLElement>(null);
   const refCallback = useCallback(
@@ -65,31 +68,33 @@ export const SpSystemTray = ({
     if ((availableIcons?.length ?? 0) === 0 && sortedIcons.length === 0) {
       return;
     }
-    let result =
-      (sortComparator
-        ? availableIcons?.toSorted(sortComparator)
-        : availableIcons) ?? [];
-    if (expandDirection === "start") {
-      result = result.toReversed();
+    if (availableIcons && (sortComparator || expandDirection === "start")) {
+      const result = [...availableIcons];
+      if (sortComparator) {
+        result.sort(sortComparator);
+      }
+      if (expandDirection === "start") {
+        result.reverse();
+      }
+      setSortedIcons(result);
+    } else {
+      setSortedIcons(availableIcons ?? []);
     }
-    setSortedIcons(result);
-  }, [expanded, availableIcons, iconsToShow]);
+  }, [availableIcons, sortComparator, expandDirection]);
 
-  const [primaryIcons, secondaryIcons] =
-    expandDirection === "end"
-      ? [
-          sortedIcons.slice(0, iconLimit),
-          iconLimit ? sortedIcons.slice(iconLimit) : [],
-        ]
-      : [
-          sortedIcons.slice(iconLimit ? -iconLimit : 0),
-          iconLimit ? sortedIcons.slice(0, -iconLimit) : [],
-        ];
-
-  if (expandDirection == "start") {
-    primaryIcons.reverse();
-  }
-  secondaryIcons.reverse();
+  useEffect(() => {
+    setIconSets(
+      expandDirection === "end"
+        ? [
+            sortedIcons.slice(0, iconLimit),
+            iconLimit ? sortedIcons.slice(iconLimit) : [],
+          ]
+        : [
+            sortedIcons.slice(iconLimit ? -iconLimit : 0),
+            iconLimit ? sortedIcons.slice(0, -iconLimit) : [],
+          ],
+    );
+  }, [sortedIcons, iconLimit, expandDirection]);
 
   const onExpanderClick = () => {
     setExpanded(!expanded);
@@ -121,9 +126,34 @@ export const SpSystemTray = ({
     "--secondary-icon-count": secondaryIcons.length,
   } as CSSProperties;
 
-  // TODO: USE ARIA ACTIVE DESCENDANT TO MANAGE SELECTION WITHOUT INCURRING BLUR PENALTIES
-
-  // todo: use margin trickery tob improve expansion animation (having the items flow out from beneath each other instead of just growing?)
+  const parts = [
+    primaryIcons.map((data) => <SpTrayIcon key={data.id} {...data} />),
+    secondaryIcons.length > 0 ? (
+      <ExhaustButton
+        controls={secondaryIconsKey}
+        count={secondaryIcons.length}
+        expanded={expanded}
+        onClick={onExpanderClick}
+      />
+    ) : undefined,
+    secondaryIcons.length > 0 && (
+      <>
+        <div
+          className="system-tray__secondary-icons"
+          role="menu"
+          id={secondaryIconsKey}
+          key={secondaryIconsKey}
+        >
+          {secondaryIcons.map((data) => (
+            <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
+          ))}
+        </div>
+      </>
+    ),
+  ];
+  if (expandDirection === "start") {
+    parts.reverse();
+  }
 
   return (
     <div
@@ -138,69 +168,7 @@ export const SpSystemTray = ({
     >
       <SpStretchBox {...stretchBoxConfig}>
         <div className="system-tray__interior">
-          {expandDirection === "end" ? (
-            <>
-              <div className="system-tray__icons">
-                {primaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} />
-                ))}
-                {secondaryIcons.length > 0 && (
-                  <ExhaustButton
-                    controls={secondaryIconsKey}
-                    count={secondaryIcons.length}
-                    expanded={expanded}
-                    onClick={onExpanderClick}
-                  />
-                )}
-              </div>
-              {secondaryIcons.length > 0 && (
-                <>
-                  <div
-                    className="system-tray__secondary-icons"
-                    role="menu"
-                    id={secondaryIconsKey}
-                    key={secondaryIconsKey}
-                  >
-                    {secondaryIcons.map((data) => (
-                      <SpTrayIcon
-                        key={data.id}
-                        {...data}
-                        disabled={!expanded}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              {secondaryIcons.length > 0 && (
-                <div
-                  className="system-tray__secondary-icons"
-                  role="menu"
-                  id={secondaryIconsKey}
-                  key={secondaryIconsKey}
-                >
-                  {secondaryIcons.map((data) => (
-                    <SpTrayIcon key={data.id} {...data} disabled={!expanded} />
-                  ))}
-                </div>
-              )}
-              <div className="system-tray__icons">
-                {secondaryIcons.length > 0 && (
-                  <ExhaustButton
-                    controls={secondaryIconsKey}
-                    count={secondaryIcons.length}
-                    expanded={expanded}
-                    onClick={onExpanderClick}
-                  />
-                )}
-                {primaryIcons.map((data) => (
-                  <SpTrayIcon key={data.id} {...data} />
-                ))}
-              </div>
-            </>
-          )}
+          <div className="system-tray__icons">{parts}</div>
         </div>
       </SpStretchBox>
     </div>
