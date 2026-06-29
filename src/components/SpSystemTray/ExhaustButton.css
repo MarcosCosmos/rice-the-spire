@@ -1,15 +1,13 @@
 .pile-button {
-    --image-size: 2rem;
-    line-height: 1rem;
-    -webkit-text-stroke-color: var(--exhaust-stroke-color);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  line-height: 1rem;
+  -webkit-text-stroke-color: var(--exhaust-stroke-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
-    .spire-image {
-        width: unset;
-        position: absolute;
-    }
-    
+  .spire-image {
+    height: var(--icon-size);
+    position: absolute;
+  }
 }

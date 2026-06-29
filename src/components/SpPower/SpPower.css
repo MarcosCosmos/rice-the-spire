@@ -1,20 +1,30 @@
-
-.power {
-  .power__image {
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline-start: 0;
-  }
-}
-
 .power {
   margin-block: var(--block-margin);
   position: relative;
-  display: inline-flex;
-  flex-direction: row;
+  display: flex;
+  flex-direction: column;
   justify-content: end;
   align-items: end;
+
+  height: var(--icon-size);
   min-width: var(--icon-size);
-  min-height: var(--icon-size);
-  padding-inline-start: calc(var(--icon-size) / 2);
+  > .item-label {
+    margin-inline-start: calc(var(--icon-size) / 2);
+  }
+}
+
+.power__image-wrapper {
+  overflow: visible;
+  display: grid;
+  align-self: start;
+
+  > * {
+    grid-row-end: 1;
+    grid-column-end: 1;
+  }
+}
+
+.power__image {
+  height: var(--icon-size);
+  margin-top: calc(-1 * var(--icon-size));
 }

@@ -30,10 +30,12 @@ export const SpPower = ({
     : undefined;
   return (
     <div className={`power ${className}`} {...attrs}>
-      {path.map((p) => (
-        <SpSpireImage className="power__image" path={p} key={p} />
-      ))}
       {children && <SpItemLabel style={labelStyle}>{children}</SpItemLabel>}
+      <div className="power__image-wrapper">
+        {path.map((p) => (
+          <SpSpireImage className="power__image" path={p} key={p} />
+        ))}
+      </div>
     </div>
   );
 };

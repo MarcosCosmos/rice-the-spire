@@ -16,10 +16,8 @@
   padding: var(--item-padding);
   display: flex;
 
-  &:not(:disabled) {
-    &:not(:active) {
-      filter: var(--normal-drop-shadow);
-    }
+  &:not(:disabled, :active) {
+    filter: var(--normal-drop-shadow);
     text-shadow: none;
   }
 
@@ -35,58 +33,82 @@
 
 .sp-button__pulse {
   position: absolute;
-  height: 100%;
-  width: 100%;
+  --base-pulse-size: calc(5 * var(--icon-scale-margin));
+  --pulse-scale: 1;
+  --pulse-size: calc(var(--base-pulse-size) * var(--pulse-scale));
+  --pulse-rgb: 100, 255, 255;
+  --pulse-inset: calc(var(--base-pulse-size) / 2);
+  height: calc(100% - 2 * var(--pulse-inset));
+  width: calc(100% - 2 * var(--pulse-inset));
+  inset-block-end: var(--pulse-inset);
+  inset-inline-start: var(--pulse-inset);
   z-index: -1;
-  border-radius: var(--icon-scale-margin);
+  border-radius: calc(var(--icon-scale-margin));
 }
 
 .sp-button--toggle {
-  --pulse-size: calc(4 * var(--icon-scale-margin));
-  --pulse-rgb: 100, 255, 255; 
+  button:is([aria-pressed="true"], [aria-expanded="true"]) {
+    filter: initial;
 
-  &:not(.sp-button--inverted):has(> button:is([aria-pressed=false], [aria-expanded=false])),
-  &.sp-button--inverted:has(> button:is([aria-pressed=true], [aria-expanded=true])) {
-    filter: grayscale(1);
-  }
+    .sp-button__pulse:has(+ &) {
+      background-color: rgba(var(--pulse-rgb), 0.9);
+      @media (prefers-reduced-motion) {
+        box-shadow:
+          0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
+          0px 0px 0px calc(1 / 4 * var(--pulse-size))
+            rgba(var(--pulse-rgb), 0.5),
+          0px 0px 0px calc(2 / 4 * var(--pulse-size))
+            rgba(var(--pulse-rgb), 0.25),
+          0px 0px 0px calc(3 / 4 * var(--pulse-size))
+            rgba(var(--pulse-rgb), 0.125);
+      }
 
-  &:has(> button:is([aria-pressed=true],[aria-expanded=true])) > .sp-button__pulse {
-    @media (prefers-reduced-motion)
-    {        
-      box-shadow:
-          0px 0px 0px 0px rgba(var(--pulse-rgb), .75),
-          0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
-          0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125);
-    }
-
-    @media not (prefers-reduced-motion)
-    {
+      @media not (prefers-reduced-motion) {
         animation-name: active-pulse;
         animation-timing-function: linear;
-        animation-duration: .5s;
+        animation-duration: 0.75s;
         animation-play-state: running;
         animation-iteration-count: infinite;
         animation-fill-mode: backwards;
         animation-direction: normal;
         animation-delay: 0s;
+      }
     }
+
+    .sp-button__pulse:has(+ &:active) {
+      --pulse-scale: 0.666;
+    }
+  }
+
+  &:not(.sp-button--inverted):has(
+      > button:is(
+          :is([aria-pressed="false"], [aria-expanded="false"]):not(:active),
+          :is([aria-pressed="true"], [aria-expanded="true"]):active
+        )
+    ),
+  &.sp-button--inverted:has(
+      > button:is(
+          :is([aria-pressed="false"], [aria-expanded="false"]):active,
+          :is([aria-pressed="true"], [aria-expanded="true"]):not(active)
+        )
+    ) {
+    filter: grayscale(1);
   }
 }
 
 @keyframes active-pulse {
-    0% {
-      box-shadow:
-          0px 0px 0px 0px rgba(var(--pulse-rgb), .75),
-          0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
-          0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125);
-    }
-    100% {
-      box-shadow:
-          0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .5),
-          0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .25),
-          0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), .125),
-          0px 0px 0px calc(4 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0);
-    }
+  0% {
+    box-shadow:
+      0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
+      0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
+      0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
+      0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125);
+  }
+  100% {
+    box-shadow:
+      0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
+      0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
+      0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125),
+      0px 0px 0px calc(4 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0);
+  }
 }

@@ -83,9 +83,10 @@
 }
 
 .media__time-marker {
-  --image-size: 1.5rem;
+  --icon-size: 1.5rem;
+  height: var(--icon-size);
   position: relative;
-  left: calc((100% - var(--image-size)) * var(--song-progress));
+  left: calc((100% - var(--icon-size)) * var(--song-progress));
 }
 
 .media__duration {

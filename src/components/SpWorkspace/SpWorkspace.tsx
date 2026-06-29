@@ -78,10 +78,6 @@ export const SpWorkspace = ({
 
   const label = `Workspace ${displayName}`;
   const style: CSSProperties = {
-    "--max-node-height": `${maxNodeHeight}px`,
-    "--max-node-width": `${maxNodeWidth}px`,
-    "--graphic-width": `${graphicWidth}px`,
-    "--graphic-height": `${graphicHeight}px`,
     "--node-width": `${renderedNodeDetails.width}px`,
     "--node-height": `${renderedNodeDetails.height}px`,
   } as CSSProperties;
