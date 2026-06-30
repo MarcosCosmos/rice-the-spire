@@ -7,8 +7,6 @@ body {
 :root {
   font-family: Kreon, Georgia, sans-serif;
   line-height: normal;
-  cursor:
-    url(https://cdn.spire-codex.com/ui/cursors/cursor_default.png), default;
   font-size: 12px;
   color: var(--normal-text-color);
   -webkit-text-stroke-color: var(--normal-stroke-color);
@@ -34,10 +32,6 @@ button,
   font-size: inherit;
   line-height: inherit;
   text-shadow: inherit;
-  &:not([aria-disabled="true"]) {
-    cursor:
-      url(https://cdn.spire-codex.com/ui/cursors/cursor_tilted.png), pointer;
-  }
 }
 
 .column {
