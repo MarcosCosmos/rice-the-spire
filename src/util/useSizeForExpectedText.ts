@@ -2,7 +2,6 @@ import { useState, useEffect, type CSSProperties } from "react";
 import { measureTextWidth } from "./measureText";
 
 /**
- * /**
  * A small utility to avoid components moving or resizing when text dynamically changes
  * Note: an effect will run whenever the parameters change so if you have multiple samples but they are static, store them in a const outside of your 'pure' component render.
  * @param font canvas API font shorthand
@@ -18,16 +17,34 @@ export const useSizeForExpectedText = (
 ): CSSProperties => {
   const samplesToRun = typeof samples === "string" ? [samples] : samples;
 
+  const [loaded, setLoaded] = useState<boolean>(false);
+  if (!loaded) {
+    if (document.fonts.status === "loaded") {
+      setLoaded(true);
+    } else {
+      void (async () => {
+        try {
+          await document.fonts.ready;
+          setLoaded(true);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
+    }
+  }
+
   const [result, setResult] = useState<CSSProperties>({});
   useEffect(() => {
-    const width = Math.max(
-      ...samplesToRun.map((sample) => measureTextWidth(sample, font)),
-    );
-    setResult({
-      minWidth: extraWidth
-        ? `calc(${width.toString()}px + ${extraWidth})`
-        : `${width.toString()}px`,
-    });
-  }, [font, extraWidth, samples]);
+    if (loaded) {
+      const width = Math.max(
+        ...samplesToRun.map((sample) => measureTextWidth(sample, font)),
+      );
+      setResult({
+        minWidth: extraWidth
+          ? `calc(${width.toString()}px + ${extraWidth})`
+          : `${width.toString()}px`,
+      });
+    }
+  }, [font, loaded, extraWidth, samples]);
   return result;
 };
