@@ -8,11 +8,13 @@ export interface SpSpireImageProps extends DetailedHTMLProps<
 > {
   className?: string;
   path: string;
+  extension?: "webp" | "png";
 }
 
 export const SpSpireImage = ({
   className,
   path,
+  extension,
   ...attrs
 }: SpSpireImageProps) => {
   className ??= "";
@@ -20,7 +22,7 @@ export const SpSpireImage = ({
     <img
       aria-hidden="true"
       className={`spire-image ${className}`}
-      src={resolveSpireImage(path)}
+      src={resolveSpireImage(path, extension)}
       {...attrs}
     />
   );

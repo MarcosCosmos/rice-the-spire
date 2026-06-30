@@ -1,4 +1,5 @@
-export const resolveSpireImage = (path: string) => {
+export const resolveSpireImage = (path: string, extension?: "webp" | "png") => {
+  extension ??= "webp";
   const splitPoint = path.lastIndexOf("/");
   let [category, entry] = [
     path.substring(0, splitPoint),
@@ -17,6 +18,6 @@ export const resolveSpireImage = (path: string) => {
         break;
       }
   }
-  return `https://cdn.spire-codex.com/${category}/${entry}.webp`;
+  return `https://cdn.spire-codex.com/${category}/${entry}.${extension}`;
 };
 export default resolveSpireImage;
