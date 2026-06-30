@@ -23,14 +23,14 @@ const defaultLongFormat = new Intl.DateTimeFormat(undefined, {
 });
 
 const expectedTimeSamples = [
-  new Date(9000, 9, 0, 0, 0, 0),
-  new Date(9000, 9, 0, 12, 50, 50),
-  new Date(9000, 9, 0, 23, 0, 0),
-  new Date(9000, 9, 0, 23, 50, 50),
-  new Date(9000, 11, 20, 12, 0, 0),
-  new Date(9000, 11, 20, 12, 50, 50),
-  new Date(9000, 11, 20, 23, 50, 50),
-  new Date(9000, 11, 20, 23, 0, 0),
+  new Date(9000, 9, 9, 0, 0, 0),
+  new Date(9000, 9, 9, 12, 50, 50),
+  new Date(9000, 9, 9, 23, 0, 0),
+  new Date(9000, 9, 9, 23, 50, 50),
+  new Date(9000, 11, 30, 12, 0, 0),
+  new Date(9000, 11, 30, 12, 50, 50),
+  new Date(9000, 11, 30, 23, 50, 50),
+  new Date(9000, 11, 30, 23, 0, 0),
 ];
 export interface SpDateTimeProps {
   className?: string;
