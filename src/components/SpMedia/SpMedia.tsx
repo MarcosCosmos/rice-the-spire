@@ -1,5 +1,10 @@
 import { useContext, useEffect, useState, type CSSProperties } from "react";
-import { SpireContext, useNavigationGroup, ZebarContext } from "../../contexts";
+import {
+  type BannerColor,
+  SpireContext,
+  useNavigationGroup,
+  ZebarContext,
+} from "../../contexts";
 import SpSpireImage from "../SpSpireImage";
 import "./SpMedia.css";
 import { SpButton } from "../SpButton/SpButton";
@@ -25,6 +30,8 @@ const formatDuration = (timeInSeconds: number): string => {
   const result = durationFormat.format({ hours, minutes, seconds });
   return `${isNegative ? "-" : ""}${result}`;
 };
+
+const prefersReducedMotion = matchMedia("prefers-reduced-motion");
 
 export interface SpMediaProps {
   className?: string;
@@ -65,7 +72,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
   const [longTimeString, setLongTimeString] = useState<string>("00:00");
   if (currentSession) {
     const newString = formatDuration(currentSession.endTime).replace(
-      /[1-9]/,
+      /[1-9]/g,
       "0",
     );
     if (newString !== longTimeString) {
@@ -74,8 +81,34 @@ export const SpMedia = ({ className }: SpMediaProps) => {
   }
   const durationWidth = useSizeForExpectedText(
     longTimeString,
-    "400 .09rem Kreon",
+    "400 .9rem Kreon",
   );
+
+  const [reduceMotion, setReduceMotion] = useState<boolean>(false);
+  // watch effect in case prefers reduced motion changes
+  useEffect(() => {
+    setReduceMotion(prefersReducedMotion.matches);
+    const listener = (event: MediaQueryListEvent) => {
+      setReduceMotion(event.matches);
+    };
+    prefersReducedMotion.addEventListener("change", listener);
+    return () => {
+      prefersReducedMotion.removeEventListener("change", listener);
+    };
+  }, []);
+
+  // use media query from JS to lock to the png for prefers reduced motion, as well as when paused
+  const [showFlame, setShowFlame] = useState<boolean>(false);
+  useEffect(() => {
+    setShowFlame(!reduceMotion);
+  }, [reduceMotion]);
+
+  const [bannerColor, setBannerColor] = useState<BannerColor>("common");
+  useEffect(() => {
+    setBannerColor(
+      spire.bannerColors[Math.floor(Math.random() * spire.bannerColors.length)],
+    );
+  }, [currentSession?.sessionId, currentSession?.trackNumber]);
 
   if (currentSession) {
     const title = currentSession.title ?? "No Title";
@@ -86,8 +119,8 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       (position - currentSession.startTime) /
       (currentSession.endTime - currentSession.startTime);
     const style: CSSProperties = {
-      ...durationWidth,
       "--song-progress": progressPercent.toString(),
+      "--min-duration-width": durationWidth.minWidth,
     } as CSSProperties;
 
     const onPrevious = () => {
@@ -97,7 +130,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       if (currentSession.isPlaying) {
         zebar.media?.pause({ sessionId: currentSession.sessionId });
       } else {
-        zebar.media?.next({ sessionId: currentSession.sessionId });
+        zebar.media?.play({ sessionId: currentSession.sessionId });
       }
     };
 
@@ -110,14 +143,14 @@ export const SpMedia = ({ className }: SpMediaProps) => {
 
     return (
       <div
-        className={`media anchor-tooltips-block-end ${className}`}
+        className={`media media--${showFlame ? "flame" : "energy"} media--banner-${bannerColor} anchor-tooltips-block-end ${className}`}
         role="complementary"
         aria-label="Media Player"
         {...navAttrs}
       >
         <SpSpireImage
           className="media__background"
-          path="ui/compendium/card/card_banner"
+          path={`card-frames/banner_${bannerColor}`}
         />
         <div className="media__content">
           <div className="media__track-info">
@@ -143,18 +176,23 @@ export const SpMedia = ({ className }: SpMediaProps) => {
             />
           </div>
           <div className="media__progress" style={style}>
-            <Plaque>
-              <div className="media__duration">{ellapsedTime}</div>
+            <Plaque color={bannerColor}>
+              <div className="media__elapsed">{ellapsedTime}</div>
             </Plaque>
             <div className="media__timeline">
-              <div className="media__timeline-line" />
+              <Plaque className="media__timeline-line" color={bannerColor} />
+
               <SpSpireImage
                 className="media__time-marker"
-                path={`ui/energy/${spire.character}_energy_icon`}
+                path={
+                  showFlame
+                    ? "card-frames/ancient_flame"
+                    : `ui/energy/${spire.character}_energy_icon`
+                }
               />
             </div>
-            <Plaque>
-              <div className="media__duration">{totalTime}</div>
+            <Plaque color={bannerColor}>
+              <div className="media__song-length">{totalTime}</div>
             </Plaque>
           </div>
           <div className="media__controls">

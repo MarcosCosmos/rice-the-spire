@@ -22,6 +22,102 @@
   row-gap: 0;
 }
 
+.media--banner-common {
+  -webkit-text-stroke-color: var(--common-text-stroke-color);
+
+  .media__progress {
+    color: var(--common-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--common-text-stroke-color);
+  } */
+}
+
+.media--banner-uncommon {
+  -webkit-text-stroke-color: var(--uncommon-text-stroke-color);
+
+  .media__progress {
+    color: var(--uncommon-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--uncommon-text-stroke-color);
+  } */
+}
+
+.media--banner-rare {
+  -webkit-text-stroke-color: var(--rare-text-stroke-color);
+
+  .media__progress {
+    color: var(--rare-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--rare-text-stroke-color);
+  } */
+}
+
+.media--banner-ancient {
+  -webkit-text-stroke-color: var(--ancient-text-stroke-color);
+
+  .media__progress {
+    color: var(--ancient-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--ancient-text-stroke-color);
+  } */
+}
+
+.media--banner-curse {
+  -webkit-text-stroke-color: var(--curse-text-stroke-color);
+
+  .media__progress {
+    color: var(--curse-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--curse-text-stroke-color);
+  } */
+}
+
+.media--banner-status {
+  -webkit-text-stroke-color: var(--status-text-stroke-color);
+
+  .media__progress {
+    color: var(--status-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--status-text-stroke-color);
+  } */
+}
+
+.media--banner-event {
+  -webkit-text-stroke-color: var(--event-text-stroke-color);
+
+  .media__progress {
+    color: var(--event-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--event-text-stroke-color);
+  } */
+}
+
+.media--banner-quest {
+  -webkit-text-stroke-color: var(--quest-text-stroke-color);
+
+  .media__progress {
+    color: var(--quest-plaque-text-color);
+  }
+
+  /* .media__timeline-line {
+    border-color: var(--quest-text-stroke-color);
+  } */
+}
+
 .media__track-info {
   grid-area: info;
   display: flex;
@@ -29,7 +125,6 @@
   .sp-note {
     width: 26ch;
     padding: 0;
-    -webkit-text-stroke-color: var(--event-text-stroke-color);
     display: flex;
     font-size: 1.1rem;
     align-items: center;
@@ -50,16 +145,9 @@
   display: flex;
   width: 100%;
   padding-inline: 4.5rch;
-  color: var(--event-plaque-text-color);
   align-items: center;
   font-size: 0.9rem;
   text-shadow: none;
-}
-
-.media__background,
-.media-plaque .stretch-box__background {
-  filter: hue-rotate(calc(118.55deg - 183.5deg)) saturate(calc(0.4346 / 0.6023))
-    brightness(calc(0.6255 / 0.6647));
 }
 
 .media__timeline {
@@ -71,34 +159,45 @@
 
 .media__timeline-line {
   position: absolute;
-  max-height: 0px;
-  border-color: var(--event-plaque-color);
-  box-shadow: 1px 1px 0px hsla(0, 0%, 50%, 0.5);
-  border-style: solid;
-  border-width: 0;
-  border-top-width: 1px;
   width: calc(100% + 1em);
   margin-inline: -0.5em;
   z-index: -1;
+  height: 0.3rem;
 }
 
 .media__time-marker {
   --icon-size: 1.5rem;
-  height: var(--icon-size);
+  width: var(--icon-size);
+  height: auto;
   position: relative;
   left: calc((100% - var(--icon-size)) * var(--song-progress));
+  @media not (prefers-reduced-motion) {
+    transition: left linear 1s;
+  }
+}
+.media--flame .media__time-marker {
+  position: relative;
+  left: calc((100% - var(--icon-size)) * var(--song-progress));
+  filter: drop-shadow(0px 0px 0px black);
+  margin-top: calc(-1 * ((76 - 49) / 49) * var(--icon-size));
 }
 
-.media__duration {
+.media__elapsed,
+.media__song-length {
+  display: block;
+  min-width: calc(var(--min-duration-width) + 2 * var(--inline-padding));
   --inline-padding: 0.4em;
   padding-top: 0.1em;
   padding-bottom: 0.3em;
   padding-inline: var(--inline-padding);
   font-weight: bold;
+}
 
-  &:last-child {
-    text-align: end;
-  }
+.media__elapsed {
+  text-align: start;
+}
+.media__song-length {
+  text-align: center;
 }
 
 .media__controls {
@@ -107,5 +206,4 @@
   display: flex;
   align-items: center;
   text-align: center;
-  -webkit-text-stroke-color: var(--event-text-stroke-color);
 }
