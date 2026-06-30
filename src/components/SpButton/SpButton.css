@@ -4,10 +4,11 @@
   inline-size: fit-content;
   block-size: fit-content;
 
-  &:has(> button:not(:disabled):hover) {
+  > button:not(:disabled, :active):is(:hover, :focus-visible) {
     transform: scale(var(--hover-scale));
   }
 }
+
 .sp-button > button {
   z-index: 1;
   min-width: var(--icon-size);
@@ -15,6 +16,8 @@
   border-radius: var(--icon-scale-margin);
   padding: var(--item-padding);
   display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:not(:disabled, :active) {
     filter: var(--normal-drop-shadow);
@@ -31,10 +34,15 @@
   }
 }
 
+@property --pulse-scale {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
 .sp-button__pulse {
   position: absolute;
-  --base-pulse-size: calc(5 * var(--icon-scale-margin));
-  --pulse-scale: 1;
+  --base-pulse-size: calc(var(--icon-size) * 2 / 3);
   --pulse-size: calc(var(--base-pulse-size) * var(--pulse-scale));
   --pulse-rgb: 100, 255, 255;
   --pulse-inset: calc(var(--base-pulse-size) / 2);
@@ -44,59 +52,59 @@
   inset-inline-start: var(--pulse-inset);
   z-index: -1;
   border-radius: calc(var(--icon-scale-margin));
+  background-color: rgba(var(--pulse-rgb), 0.9);
+  box-shadow:
+    0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
+    0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
+    0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
+    0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125);
+
+  animation-name: on-pulse;
+  animation-timing-function: linear;
+  animation-duration: 0.75s;
+  animation-play-state: paused;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+  animation-direction: normal;
+  animation-delay: 0s;
+
+  --pulse-scale: 0;
+  opacity: var(--pulse-scale);
+
+  @media not (prefers-reduced-motion) {
+    transition: --pulse-scale ease-in-out 0.5s;
+  }
 }
 
 .sp-button--toggle {
   button:is([aria-pressed="true"], [aria-expanded="true"]) {
-    filter: initial;
+    /* filter: initial; */
 
     .sp-button__pulse:has(+ &) {
-      background-color: rgba(var(--pulse-rgb), 0.9);
-      @media (prefers-reduced-motion) {
-        box-shadow:
-          0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
-          0px 0px 0px calc(1 / 4 * var(--pulse-size))
-            rgba(var(--pulse-rgb), 0.5),
-          0px 0px 0px calc(2 / 4 * var(--pulse-size))
-            rgba(var(--pulse-rgb), 0.25),
-          0px 0px 0px calc(3 / 4 * var(--pulse-size))
-            rgba(var(--pulse-rgb), 0.125);
-      }
-
+      --pulse-scale: 1;
       @media not (prefers-reduced-motion) {
-        animation-name: active-pulse;
-        animation-timing-function: linear;
-        animation-duration: 0.75s;
         animation-play-state: running;
-        animation-iteration-count: infinite;
-        animation-fill-mode: backwards;
-        animation-direction: normal;
-        animation-delay: 0s;
       }
     }
 
     .sp-button__pulse:has(+ &:active) {
-      --pulse-scale: 0.666;
+      --pulse-scale: 0.75;
+      animation-direction: reverse;
     }
   }
 
-  &:not(.sp-button--inverted):has(
-      > button:is(
-          :is([aria-pressed="false"], [aria-expanded="false"]):not(:active),
-          :is([aria-pressed="true"], [aria-expanded="true"]):active
-        )
-    ),
-  &.sp-button--inverted:has(
-      > button:is(
-          :is([aria-pressed="false"], [aria-expanded="false"]):active,
-          :is([aria-pressed="true"], [aria-expanded="true"]):not(active)
-        )
-    ) {
+  &:not(.sp-button--inverted)
+    > button:is(:is([aria-pressed="false"], [aria-expanded="false"])),
+  &.sp-button--inverted
+    > button:is(:is([aria-pressed="true"], [aria-expanded="true"])) {
     filter: grayscale(1);
+    &:not(:active) {
+      filter: grayscale(1) var(--normal-drop-shadow);
+    }
   }
 }
 
-@keyframes active-pulse {
+@keyframes on-pulse {
   0% {
     box-shadow:
       0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),

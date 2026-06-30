@@ -6,14 +6,7 @@ import {
   type MouseEventHandler,
 } from "react";
 import { MapNodeGraphic } from "./BackgroundGraphic";
-import {
-  graphicHeight,
-  graphicWidth,
-  mapNodeTypes,
-  maxNodeHeight,
-  maxNodeWidth,
-  randomisableNodes,
-} from "./common";
+import { mapNodeTypes, randomisableNodes } from "./common";
 import "./SpWorkspace.css";
 import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
 import SpTooltip from "../SpTooltip";

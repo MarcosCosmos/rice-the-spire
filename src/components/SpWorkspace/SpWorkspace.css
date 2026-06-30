@@ -18,8 +18,9 @@
     z-index: 1;
     color: #d8c5a6;
     -webkit-text-stroke-color: #2a2521;
-    align-items: end;
     min-width: calc(var(--graphic-scale) * var(--max-node-width));
+    justify-content: start;
+    align-items: end;
 
     --power-size: max(var(--image-height), var(--icon-size));
     .power {
