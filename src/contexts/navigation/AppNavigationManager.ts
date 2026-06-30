@@ -757,17 +757,6 @@ export class NavigationManager {
       case "End":
         newCursor = this.findLastCursor();
         break;
-      // enter is covered by it being a button
-      //   case "Enter":
-      case "Space": {
-        const activeLeaf = this.leafAt(activeCursor);
-        activeLeaf.element.dispatchEvent(
-          new MouseEvent("click", {
-            button: 0,
-          }),
-        );
-        break;
-      }
       default:
         preventDefault = false;
     }
