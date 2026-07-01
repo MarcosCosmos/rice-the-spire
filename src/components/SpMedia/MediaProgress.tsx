@@ -78,7 +78,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
     "2 * var(--inline-padding)",
   );
 
-  const [stillFlame, setStillFlame] = useState<string>(energyIconPath);
+  const [stillFlame, setStillFlame] = useState<string | undefined>(undefined);
 
   const [reduceMotion, setReduceMotion] = useState<boolean>(false);
 
@@ -136,8 +136,8 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
   // use media query from JS to lock to the png for prefers reduced motion, as well as when paused
   const [animate, setAnimate] = useState<boolean>(false);
   useEffect(() => {
-    setAnimate(!!currentSession?.isPlaying && !reduceMotion);
-  }, [!!currentSession?.isPlaying, reduceMotion]);
+    setAnimate(!reduceMotion && !!stillFlame);
+  }, [reduceMotion, stillFlame]);
 
   if (currentSession) {
     const newString = formatDuration(currentSession.endTime).replace(
@@ -156,14 +156,14 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
     const markerStyle: CSSProperties = {
       "--song-progress": progress.toString(),
-      "--marker-height-ratio": reduceMotion ? 0 : flameExcessHeightRatio,
+      "--marker-height-ratio": animate ? 0 : flameExcessHeightRatio,
     } as CSSProperties;
 
-    const markerUrl = reduceMotion
-      ? energyIconPath
-      : animate
+    const markerUrl = animate
+      ? currentSession.isPlaying
         ? animatedFlamePath
-        : stillFlame;
+        : stillFlame
+      : energyIconPath;
     return (
       <div className={`media-progress ${className}`}>
         <Plaque color={color}>
