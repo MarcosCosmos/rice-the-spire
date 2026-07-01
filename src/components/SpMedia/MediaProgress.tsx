@@ -128,6 +128,8 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
       console.error(e);
     });
 
+    // honestly the query string probably shouldn't work but apparently it does.
+    // making it non-random to continue benefiting from zebar cache
     img.src = animatedFlamePath + "?queryForCORS";
   }, []);
 
