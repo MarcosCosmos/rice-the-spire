@@ -155,6 +155,7 @@
   display: flex;
   align-items: center;
   position: relative;
+  justify-content: start;
 }
 
 .media__timeline-line {
@@ -179,13 +180,12 @@
   position: relative;
   left: calc((100% - var(--icon-size)) * var(--song-progress));
   filter: drop-shadow(0px 0px 0px black);
-  margin-top: calc(-1 * ((76 - 49) / 49) * var(--icon-size));
+  margin-top: calc(-1 * var(--flame-height-ratio) * var(--icon-size));
 }
 
 .media__elapsed,
 .media__song-length {
   display: block;
-  min-width: calc(var(--min-duration-width) + 2 * var(--inline-padding));
   --inline-padding: 0.4em;
   padding-top: 0.1em;
   padding-bottom: 0.3em;
@@ -195,6 +195,8 @@
 
 .media__elapsed {
   text-align: start;
+
+  min-width: calc(var(--min-duration-width) + 2 * var(--inline-padding));
 }
 .media__song-length {
   text-align: center;

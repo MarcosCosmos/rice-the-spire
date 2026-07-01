@@ -12,7 +12,8 @@ import SpNote from "../SpNote";
 import SpOutlinedText from "../SpOutlinedText";
 import { Plaque } from "./Plaque";
 import SpTooltip from "../SpTooltip";
-import { useSizeForExpectedText } from "../../util";
+import { resolveSpireImage, useSizeForExpectedText } from "../../util";
+import { useMeasureImages } from "../../util/measureImages";
 
 const durationFormat = new Intl.DurationFormat(undefined, {
   style: "digital",
@@ -36,6 +37,11 @@ const prefersReducedMotion = matchMedia("prefers-reduced-motion");
 export interface SpMediaProps {
   className?: string;
 }
+
+const animatedFlamePath = resolveSpireImage(
+  "card-frames/ancient_flame",
+  "webp",
+);
 
 export const SpMedia = ({ className }: SpMediaProps) => {
   className ??= "";
@@ -79,11 +85,13 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       setLongTimeString(newString);
     }
   }
-  const durationWidth = useSizeForExpectedText(
+  const elapsedStyle = useSizeForExpectedText(
     longTimeString,
-    "400 .9rem Kreon",
+    "400 0.9rem Kreon",
+    "2 * var(--inline-padding)",
   );
 
+  console.log(longTimeString, elapsedStyle);
   const [reduceMotion, setReduceMotion] = useState<boolean>(false);
   // watch effect in case prefers reduced motion changes
   useEffect(() => {
@@ -96,6 +104,18 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       prefersReducedMotion.removeEventListener("change", listener);
     };
   }, []);
+
+  const [flameHeightRatio, setFlameHeightRatio] = useState<number>(1);
+  const flameDimensions =
+    useMeasureImages(animatedFlamePath)?.[animatedFlamePath];
+  useEffect(() => {
+    if (flameDimensions) {
+      setFlameHeightRatio(
+        (flameDimensions.height - flameDimensions.width) /
+          flameDimensions.width,
+      );
+    }
+  }, [flameDimensions]);
 
   // use media query from JS to lock to the png for prefers reduced motion, as well as when paused
   const [showFlame, setShowFlame] = useState<boolean>(false);
@@ -118,12 +138,9 @@ export const SpMedia = ({ className }: SpMediaProps) => {
     const progressPercent =
       (position - currentSession.startTime) /
       (currentSession.endTime - currentSession.startTime);
-    const progressStyle: CSSProperties = {
-      "--song-progress": progressPercent.toString(),
-    } as CSSProperties;
-
-    const elapsedStyle: CSSProperties = {
-      "--min-duration-width": durationWidth.minWidth,
+    const markerStyle: CSSProperties = {
+      "--song-progress": `${progressPercent.toString()}%`,
+      "--flame-height-ratio": flameHeightRatio,
     } as CSSProperties;
 
     const onPrevious = () => {
@@ -189,7 +206,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
 
               <SpSpireImage
                 className="media__time-marker"
-                style={progressStyle}
+                style={markerStyle}
                 path={
                   showFlame
                     ? "card-frames/ancient_flame"
