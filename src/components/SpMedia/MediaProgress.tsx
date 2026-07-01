@@ -100,7 +100,6 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
     const img = new Image();
     // weirdly this one image needs CORS
     img.setAttribute("crossOrigin", "anonymous");
-    img.src = animatedFlamePath;
     img.addEventListener("load", () => {
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
@@ -128,6 +127,8 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
     img.addEventListener("error", (e) => {
       console.error(e);
     });
+
+    img.src = animatedFlamePath + "?queryForCORS";
   }, []);
 
   // use media query from JS to lock to the png for prefers reduced motion, as well as when paused
