@@ -35,12 +35,11 @@ export const SpStretchBox = ({
   );
   return (
     <div className={`stretch-box ${className}`}>
-      <div className="stretch-box__position-wrapper">
+      <div className="stretch-box__position-wrapper" aria-hidden="true">
         <div className="stretch-box__background">
           <svg
             className="stretch-box__left-bookend"
             viewBox={`0 0 ${inset} ${height}`}
-            aria-hidden="true"
           >
             {image}
           </svg>
@@ -48,14 +47,12 @@ export const SpStretchBox = ({
             className="stretch-box__center-background"
             viewBox={`${inset} 0 ${midWidth} ${height}`}
             preserveAspectRatio="none"
-            aria-hidden="true"
           >
             {image}
           </svg>
           <svg
             className="stretch-box__right-bookend"
             viewBox={`${rightInset} 0 ${inset} ${height}`}
-            aria-hidden="true"
           >
             {image}
           </svg>

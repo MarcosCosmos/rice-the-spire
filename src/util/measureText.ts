@@ -1,4 +1,4 @@
-import { canvas } from "./common";
+const canvas = document.createElement("canvas");
 
 /**
  * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.

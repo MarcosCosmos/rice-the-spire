@@ -140,68 +140,6 @@
   }
 }
 
-.media__progress {
-  grid-area: progress;
-  display: flex;
-  width: 100%;
-  padding-inline: 4.5rch;
-  align-items: center;
-  font-size: 0.9rem;
-  text-shadow: none;
-}
-
-.media__timeline {
-  flex: 1 0 auto;
-  display: flex;
-  align-items: center;
-  position: relative;
-  justify-content: start;
-}
-
-.media__timeline-line {
-  position: absolute;
-  width: calc(100% + 1em);
-  margin-inline: -0.5em;
-  z-index: -1;
-  height: 0.3rem;
-}
-
-.media__time-marker {
-  --icon-size: 1.5rem;
-  width: var(--icon-size);
-  height: auto;
-  position: relative;
-  left: calc((100% - var(--icon-size)) * var(--song-progress));
-  @media not (prefers-reduced-motion) {
-    transition: left linear 1s;
-  }
-}
-.media--flame .media__time-marker {
-  position: relative;
-  left: calc((100% - var(--icon-size)) * var(--song-progress));
-  filter: drop-shadow(0px 0px 0px black);
-  margin-top: calc(-1 * var(--flame-height-ratio) * var(--icon-size));
-}
-
-.media__elapsed,
-.media__song-length {
-  display: block;
-  --inline-padding: 0.4em;
-  padding-top: 0.1em;
-  padding-bottom: 0.3em;
-  padding-inline: var(--inline-padding);
-  font-weight: bold;
-}
-
-.media__elapsed {
-  text-align: start;
-
-  min-width: calc(var(--min-duration-width) + 2 * var(--inline-padding));
-}
-.media__song-length {
-  text-align: center;
-}
-
 .media__controls {
   grid-area: controls;
   font-size: 1.25rem;

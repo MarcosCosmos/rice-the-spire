@@ -15,7 +15,7 @@ export const SpItemLabel = ({
 }: SpItemLabelProps) => {
   className ??= "";
   return (
-    <div className={`item-label ${className}`} aria-hidden="true" style={style}>
+    <div className={`item-label ${className}`} style={style}>
       <SpOutlinedText>{children}</SpOutlinedText>
     </div>
   );

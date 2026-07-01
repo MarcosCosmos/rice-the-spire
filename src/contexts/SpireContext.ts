@@ -30,7 +30,7 @@ export type BannerColor =
   | "event"
   | "quest";
 // | "token"; // there's no prebaked image for token on spire codex, but there were too many similar colors anyway
-export const bannerColor: BannerColor[] = [
+export const bannerColors: BannerColor[] = [
   "common",
   "uncommon",
   "rare",
@@ -45,7 +45,7 @@ export const bannerColor: BannerColor[] = [
 export const defaultSpireConfig: SpireConfig = {
   act: "overgrowth",
   character: "ironclad",
-  bannerColors: bannerColor,
+  bannerColors: bannerColors,
 };
 
 export const useRandomSpireConfig = (): SpireConfig => {
@@ -55,7 +55,7 @@ export const useRandomSpireConfig = (): SpireConfig => {
     const randomConfig: SpireConfig = {
       act: acts[Math.floor(Math.random() * acts.length)],
       character: characters[Math.floor(Math.random() * characters.length)],
-      bannerColors: bannerColor,
+      bannerColors: bannerColors,
     };
     setSpireConfig(randomConfig);
   }, []);
