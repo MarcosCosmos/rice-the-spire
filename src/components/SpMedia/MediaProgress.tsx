@@ -98,6 +98,8 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
     useState<number>(0);
   useEffect(() => {
     const img = new Image();
+    // weirdly this one image needs CORS
+    img.setAttribute("crossOrigin", "anonymous");
     img.src = animatedFlamePath;
     img.addEventListener("load", () => {
       const canvas = document.createElement("canvas");
