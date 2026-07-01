@@ -156,7 +156,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
     const markerStyle: CSSProperties = {
       "--song-progress": progress.toString(),
-      "--marker-height-ratio": animate ? 0 : flameExcessHeightRatio,
+      "--marker-height-ratio": animate ? flameExcessHeightRatio : 0,
     } as CSSProperties;
 
     const markerUrl = animate
