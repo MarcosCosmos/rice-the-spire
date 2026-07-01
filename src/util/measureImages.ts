@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export interface Dimensions {
   width: number;
@@ -7,11 +7,9 @@ export interface Dimensions {
 export const measureImages = async <T extends string>(
   ...sources: T[]
 ): Promise<Record<T, Dimensions>> => {
-  console.log("got sources", sources);
   const promises: Promise<[T, Dimensions]>[] = sources.map(
     (url) =>
       new Promise((resolve, reject) => {
-        console.log("loading image for", url);
         const img = new Image();
         img.addEventListener("load", () => {
           resolve([
@@ -47,7 +45,9 @@ export const useMeasureImages = <T extends string>(
   const [result, setResult] = useState<Record<key, Dimensions> | undefined>(
     undefined,
   );
-  if (!result) {
+  const pending = useRef(false);
+  if (!pending.current) {
+    pending.current = true;
     void (async () => {
       try {
         setResult(await measureImages(...sources));
@@ -55,7 +55,7 @@ export const useMeasureImages = <T extends string>(
       } catch (_) {
         // already logged
       }
-    });
+    })();
   }
   return result;
 };
