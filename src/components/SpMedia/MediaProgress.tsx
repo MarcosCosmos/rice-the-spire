@@ -15,7 +15,7 @@ export interface ProgressMarkerProps {
   color: BannerColor;
 }
 
-const prefersReducedMotion = matchMedia("prefers-reduced-motion");
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion)");
 const energyIconPath = resolveSpireImage("ui/energy/colorless_energy_icon");
 const animatedFlamePath = resolveSpireImage(
   "card-frames/ancient_flame",
@@ -84,8 +84,10 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
   // watch effect in case prefers reduced motion changes
   useEffect(() => {
+    console.log(prefersReducedMotion.matches);
     setReduceMotion(prefersReducedMotion.matches);
     const listener = (event: MediaQueryListEvent) => {
+      console.log(event.matches);
       setReduceMotion(event.matches);
     };
     prefersReducedMotion.addEventListener("change", listener);
@@ -116,7 +118,6 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
         (blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
-            console.log("success", url);
             setStillFlame(url);
           }
         },
