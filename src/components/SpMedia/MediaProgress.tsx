@@ -94,18 +94,19 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
     };
   }, []);
 
-  const [flameHeightRatio, setFlameHeightRatio] = useState<number>(1);
+  const [flameExcessHeightRatio, setFlameExcessHeightRatio] =
+    useState<number>(0);
   useEffect(() => {
     const img = new Image();
-    // weirdly this one image needs CORS
-    img.setAttribute("crossOrigin", "anonymous");
     img.src = animatedFlamePath;
     img.addEventListener("load", () => {
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
 
-      setFlameHeightRatio((img.height - img.width) / img.width);
+      setFlameExcessHeightRatio(
+        Math.max(0, (img.height - img.width) / img.width),
+      );
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ctx = canvas.getContext("2d")!;
@@ -150,7 +151,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
     const markerStyle: CSSProperties = {
       "--song-progress": progress.toString(),
-      "--marker-height-ratio": flameHeightRatio,
+      "--marker-height-ratio": reduceMotion ? 0 : flameExcessHeightRatio,
     } as CSSProperties;
 
     const markerUrl = reduceMotion
