@@ -5,8 +5,8 @@ import {
   type CSSProperties,
   type MouseEventHandler,
 } from "react";
-import { MapNodeGraphic } from "./BackgroundGraphic";
-import { mapNodeTypes, randomisableNodes } from "./common";
+import { BackgroundGraphic } from "./BackgroundGraphic";
+import { hiddenNodes, useMapGeometry, type MapNodeKind } from "./common";
 import "./SpWorkspace.css";
 import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
 import SpTooltip from "../SpTooltip";
@@ -31,8 +31,8 @@ export const SpWorkspace = ({
   ...attrs
 }: SpWorkspaceProps) => {
   className ??= "";
-  const [baseNodeType, setBaseNodeType] = useState("unknown");
-
+  const mapGeometry = useMapGeometry();
+  const [baseNodeType, setBaseNodeType] = useState<MapNodeKind>("unknown");
   const [isVisited, setVisited] = useState(false);
 
   useEffect(() => {
@@ -48,65 +48,64 @@ export const SpWorkspace = ({
   }, [isVisited, isDisplayed]);
 
   useEffect(() => {
-    const result =
-      randomisableNodes[Math.floor(Math.random() * randomisableNodes.length)];
+    const result = hiddenNodes[Math.floor(Math.random() * hiddenNodes.length)];
     setBaseNodeType(result);
   }, [displayName]);
 
-  let renderedNodeType, fileName;
-  if (!hasChildren) {
-    if (isVisited) {
-      renderedNodeType = baseNodeType;
-      fileName = `unknown_${baseNodeType}`;
+  if (mapGeometry) {
+    let renderedNodeKind: MapNodeKind, fileName;
+    if (!hasChildren) {
+      if (isVisited) {
+        renderedNodeKind = baseNodeType;
+        fileName = `unknown_${baseNodeType}`;
+      } else {
+        renderedNodeKind = "unknown";
+        fileName = renderedNodeKind;
+      }
     } else {
-      renderedNodeType = "unknown";
-      fileName = renderedNodeType;
+      renderedNodeKind = baseNodeType;
+      fileName = baseNodeType;
     }
-  } else {
-    renderedNodeType = baseNodeType;
-    fileName = baseNodeType;
+    const path = `ui/map_nodes/map_${fileName}`;
+    const renderedNodeDetails = mapGeometry.images[renderedNodeKind];
+
+    const label = `Workspace ${displayName}`;
+    const style: CSSProperties = {
+      "--node-width": `${renderedNodeDetails.width}px`,
+      "--node-height": `${renderedNodeDetails.height}px`,
+    } as CSSProperties;
+
+    return (
+      <div className={`workspace ${className}`}>
+        <SpTooltip
+          anchor={(tooltipId: string) => (
+            <div className="workspace-shrinkwrap" style={style}>
+              <BackgroundGraphic
+                isDisplayed={isDisplayed}
+                hasFocus={hasFocus}
+              />
+              <SpButton
+                className={`workspace__button`}
+                role="tab"
+                aria-selected={isDisplayed}
+                aria-label={label}
+                aria-describedby={tooltipId}
+                {...attrs}
+              >
+                <SpPower path={path}>{displayName}</SpPower>
+              </SpButton>
+            </div>
+          )}
+          desc={
+            <>
+              <h2>Workspace: </h2>
+              {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
+              {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
+              {hasChildren ? <em>filled</em> : <>empty</>}
+            </>
+          }
+        />
+      </div>
+    );
   }
-  const path = `ui/map_nodes/map_${fileName}`;
-  const renderedNodeDetails = mapNodeTypes[renderedNodeType];
-
-  const label = `Workspace ${displayName}`;
-  const style: CSSProperties = {
-    "--node-width": `${renderedNodeDetails.width}px`,
-    "--node-height": `${renderedNodeDetails.height}px`,
-  } as CSSProperties;
-
-  return (
-    <div className={`workspace ${className}`}>
-      <SpTooltip
-        anchor={(tooltipId: string) => (
-          <div className="workspace-shrinkwrap" style={style}>
-            <MapNodeGraphic
-              details={renderedNodeDetails}
-              path={fileName}
-              isDisplayed={isDisplayed}
-              hasFocus={hasFocus}
-            />
-            <SpButton
-              className={`workspace__button`}
-              role="tab"
-              aria-selected={isDisplayed}
-              aria-label={label}
-              aria-describedby={tooltipId}
-              {...attrs}
-            >
-              <SpPower path={path}>{displayName}</SpPower>
-            </SpButton>
-          </div>
-        )}
-        desc={
-          <>
-            <h2>Workspace: </h2>
-            {hasFocus ? <em>focused</em> : <>unfocused</>},{" "}
-            {isDisplayed ? <em>visible</em> : <>hidden</>},{" "}
-            {hasChildren ? <em>filled</em> : <>empty</>}
-          </>
-        }
-      />
-    </div>
-  );
 };

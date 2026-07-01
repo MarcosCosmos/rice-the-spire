@@ -1,18 +1,22 @@
 .map-node-graphic {
-    position: absolute;
-    width: var(--scaled-width);
-    height: var(--scaled-height);
-    left: calc(var(--graphic-scale) * (var(--node-width) - var(--graphic-width)) / 2);
-    bottom: calc(var(--graphic-scale) * (var(--node-height) - var(--graphic-height)) / 2);
-    pointer-events: none;
-    circle {
-        fill: none;
-        stroke-linecap: round;
-        stroke: #2A2521;
-        stroke-linejoin: miter;
-    }
-    
-    .map-pin {
-        filter: var(--normal-drop-shadow);
-    }
+  position: absolute;
+  width: var(--scaled-width);
+  height: var(--scaled-height);
+  left: calc(
+    var(--graphic-scale) * (var(--node-width) - var(--graphic-width)) / 2
+  );
+  bottom: calc(
+    var(--graphic-scale) * (var(--node-height) - var(--graphic-height)) / 2
+  );
+  pointer-events: none;
+  circle {
+    fill: none;
+    stroke-linecap: round;
+    stroke: #2a2521;
+    stroke-linejoin: miter;
+  }
+
+  .map-node-graphic__marker {
+    filter: var(--normal-drop-shadow);
+  }
 }

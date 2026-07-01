@@ -118,8 +118,11 @@ export const SpMedia = ({ className }: SpMediaProps) => {
     const progressPercent =
       (position - currentSession.startTime) /
       (currentSession.endTime - currentSession.startTime);
-    const style: CSSProperties = {
+    const progressStyle: CSSProperties = {
       "--song-progress": progressPercent.toString(),
+    } as CSSProperties;
+
+    const elapsedStyle: CSSProperties = {
       "--min-duration-width": durationWidth.minWidth,
     } as CSSProperties;
 
@@ -175,15 +178,18 @@ export const SpMedia = ({ className }: SpMediaProps) => {
               }
             />
           </div>
-          <div className="media__progress" style={style}>
+          <div className="media__progress">
             <Plaque color={bannerColor}>
-              <div className="media__elapsed">{ellapsedTime}</div>
+              <div className="media__elapsed" style={elapsedStyle}>
+                {ellapsedTime}
+              </div>
             </Plaque>
             <div className="media__timeline">
               <Plaque className="media__timeline-line" color={bannerColor} />
 
               <SpSpireImage
                 className="media__time-marker"
+                style={progressStyle}
                 path={
                   showFlame
                     ? "card-frames/ancient_flame"

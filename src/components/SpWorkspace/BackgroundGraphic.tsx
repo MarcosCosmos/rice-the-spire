@@ -2,61 +2,50 @@
 import { useContext } from "react";
 import SpireContext from "../../contexts/SpireContext";
 import resolveSpireImage from "../../util/resolveSpireImage";
-import {
-  mapMarkerDetails,
-  circleRadius,
-  circleStrokeWidth,
-  graphicHeight,
-  graphicWidth,
-  halfWidth,
-  markerX,
-  midPoint,
-  pathLength,
-  type MapNodeDetails,
-  maxNodeHeight,
-} from "./common";
 import "./BackgroundGraphic.css";
+import { useMapGeometry } from "./common";
 
 export interface MapNodeGraphicProps {
-  details: MapNodeDetails;
-  path: string;
   isDisplayed: boolean;
   hasFocus: boolean;
 }
 
-export const MapNodeGraphic = ({
+export const BackgroundGraphic = ({
   isDisplayed,
   hasFocus,
 }: MapNodeGraphicProps) => {
   const config = useContext(SpireContext);
 
-  const markerY = -(maxNodeHeight / 2 + mapMarkerDetails.height + 2);
+  const mapGeometry = useMapGeometry();
+  if (mapGeometry) {
+    const { images, maxNode, graphic, halfGraphic, circle } = mapGeometry;
+    const markerX = -images[config.character].width / 2;
+    const markerY = -(maxNode.height / 2 + images[config.character].height + 2);
 
-  return (
-    <svg
-      className="map-node-graphic"
-      viewBox={`-${halfWidth} -${halfWidth} ${graphicWidth} ${graphicHeight}`}
-      aria-hidden="true"
-    >
-      {isDisplayed && (
-        <circle
-          cx={midPoint}
-          cy={midPoint}
-          r={circleRadius}
-          strokeWidth={circleStrokeWidth}
-          strokeDasharray={`${pathLength}px`}
-        />
-      )}
-      {hasFocus && (
-        <image
-          className="map-pin"
-          href={resolveSpireImage(`ui/map/map_marker_${config.character}`)}
-          x={markerX}
-          y={markerY}
-          width={mapMarkerDetails.width}
-          height={mapMarkerDetails.height}
-        />
-      )}
-    </svg>
-  );
+    return (
+      <svg
+        className="map-node-graphic"
+        viewBox={`-${halfGraphic.width} -${halfGraphic.height} ${graphic.width} ${graphic.height}`}
+        aria-hidden="true"
+      >
+        {isDisplayed && (
+          <circle
+            cx={0}
+            cy={0}
+            r={circle.radius}
+            strokeWidth={circle.strokeWidth}
+            strokeDasharray={`${circle.pathLegth}px`}
+          />
+        )}
+        {hasFocus && (
+          <image
+            className="map-node-graphic__marker"
+            href={resolveSpireImage(`ui/map/map_marker_${config.character}`)}
+            x={markerX}
+            y={markerY}
+          />
+        )}
+      </svg>
+    );
+  }
 };
