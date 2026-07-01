@@ -35,12 +35,21 @@ export const SpBattery = () => {
             <strong>{value}%</strong> (
             {data.state === "charging" ? (
               <>
-                charging - <strong>{data.timeTillFull}</strong> until full
+                charging{" "}
+                {data.timeTillFull && (
+                  <>
+                    - <strong>{data.timeTillFull}</strong> until full
+                  </>
+                )}
               </>
             ) : (
               <>
-                discharging - <strong>${data.timeTillEmpty}</strong> of charge
-                remaining
+                discharging
+                {data.timeTillFull && (
+                  <>
+                    - <strong>{data.timeTillEmpty}</strong> of charge remaining
+                  </>
+                )}
               </>
             )}
             )
