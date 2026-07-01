@@ -43,7 +43,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
   className ??= "";
   const zebar = useContext(ZebarContext);
   const currentSession = zebar?.media?.currentSession;
-  const [position, setPosition] = useState(currentSession?.endTime ?? 0);
+  const [position, setPosition] = useState(currentSession?.startTime ?? 0);
   const intervalId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
