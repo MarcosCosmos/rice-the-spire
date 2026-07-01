@@ -1,10 +1,4 @@
-import {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   type BannerColor,
   SpireContext,
