@@ -63,6 +63,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
       }
     } else if (intervalId.current) {
       clearInterval(intervalId.current);
+      intervalId.current = undefined;
     }
   }, [
     currentSession?.isPlaying,
