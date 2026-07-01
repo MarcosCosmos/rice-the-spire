@@ -77,26 +77,26 @@
 }
 
 .sp-button--toggle {
-  button:is([aria-pressed="true"], [aria-expanded="true"]) {
-    /* filter: initial; */
-
-    .sp-button__pulse:has(+ &) {
-      --pulse-scale: 1;
-      @media not (prefers-reduced-motion) {
-        animation-play-state: running;
-      }
-    }
-
-    .sp-button__pulse:has(+ &:active) {
-      --pulse-scale: 0.75;
-      animation-direction: reverse;
+  &:has(button:is([aria-pressed="true"], [aria-expanded="true"]))
+    .sp-button__pulse {
+    --pulse-scale: 1;
+    opacity: var(--pulse-scale);
+    @media not (prefers-reduced-motion) {
+      animation-play-state: running;
     }
   }
 
+  &:has(button:is([aria-pressed="true"], [aria-expanded="true"]):active)
+    .sp-button__pulse {
+    --pulse-scale: 0.75;
+    opacity: var(--pulse-scale);
+    animation-direction: reverse;
+  }
+
   &:not(.sp-button--inverted)
-    > button:is(:is([aria-pressed="false"], [aria-expanded="false"])),
+    button:is([aria-pressed="false"], [aria-expanded="false"]),
   &.sp-button--inverted
-    > button:is(:is([aria-pressed="true"], [aria-expanded="true"])) {
+    button:is([aria-pressed="true"], [aria-expanded="true"]) {
     filter: grayscale(1);
     &:not(:active) {
       filter: grayscale(1) var(--normal-drop-shadow);
