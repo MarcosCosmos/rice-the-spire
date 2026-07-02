@@ -22,7 +22,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
   const spire = useContext(SpireContext);
   const navAttrs = useNavigationGroup();
 
-  const [bannerColor, setBannerColor] = useState<BannerColor>("common");
+  const [color, setBannerColor] = useState<BannerColor>("common");
 
   const zebar = useContext(ZebarContext);
   const currentSession = zebar?.media?.currentSession;
@@ -54,7 +54,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
 
     const mediaStyles = {
       backgroundImage: `url(${resolveSpireImage(
-        `card-frames/banner_${bannerColor}`,
+        `card-frames/banner_${color}`,
       )})`,
     } as CSSProperties;
 
@@ -63,7 +63,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
 
     return (
       <div
-        className={`sp-media sp-media--banner-${bannerColor} anchor-tooltips-block-end ${className}`}
+        className={`sp-media sp-media--${color} anchor-tooltips-block-end ${className}`}
         role="complementary"
         aria-label="Media Player"
         style={mediaStyles}
@@ -93,7 +93,7 @@ export const SpMedia = ({ className }: SpMediaProps) => {
               }
             />
           </div>
-          <SpMediaProgress className="sp-media__progress" color={bannerColor} />
+          <SpMediaProgress className="sp-media__progress" color={color} />
           <div className="sp-media__controls">
             <SpButton className="sp-media__previous" onClick={onPrevious}>
               <SpOutlinedText>⏮</SpOutlinedText>

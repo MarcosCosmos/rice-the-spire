@@ -6,7 +6,7 @@ import {
   type CSSProperties,
 } from "react";
 import { resolveSpireImage, useSizeForExpectedText } from "../../util";
-import { ZebarContext, type BannerColor } from "../../contexts";
+import { SpireContext, ZebarContext, type BannerColor } from "../../contexts";
 import { SpPlaque } from "./SpPlaque";
 import "./SpMediaProgress.css";
 
@@ -16,7 +16,7 @@ export interface ProgressMarkerProps {
 }
 
 const prefersReducedMotion = matchMedia("(prefers-reduced-motion)");
-const energyIconPath = resolveSpireImage("ui/energy/colorless_energy_icon");
+const fallbackMarkerIcon = resolveSpireImage("ui/energy/colorless_energy_icon");
 const animatedFlamePath = resolveSpireImage(
   "card-frames/ancient_flame",
   "webp",
@@ -42,9 +42,24 @@ const formatDuration = (timeInSeconds: number): string => {
 export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
   className ??= "";
   const zebar = useContext(ZebarContext);
+  const spire = useContext(SpireContext);
   const currentSession = zebar?.media?.currentSession;
   const [position, setPosition] = useState(currentSession?.startTime ?? 0);
+  const [characterEnergyIcon, setCharacterEnergyIcon] =
+    useState<string>(fallbackMarkerIcon);
+  const [stillFlame, setStillFlame] = useState<string | undefined>(undefined);
   const intervalId = useRef<number | undefined>(undefined);
+  const [longTimeString, setLongTimeString] = useState<string>("00:00");
+  const elapsedAttrs = useSizeForExpectedText(longTimeString);
+  const [reduceMotion, setReduceMotion] = useState<boolean>(false);
+  const [flameExcessHeightRatio, setFlameExcessHeightRatio] =
+    useState<number>(0);
+
+  useEffect(() => {
+    setCharacterEnergyIcon(
+      resolveSpireImage(`ui/energy/${spire.character}_energy_icon`),
+    );
+  }, [spire.character]);
 
   useEffect(() => {
     if (currentSession?.isPlaying) {
@@ -79,13 +94,6 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
     currentSession?.trackNumber,
   ]);
 
-  const [longTimeString, setLongTimeString] = useState<string>("00:00");
-  const elapsedAttrs = useSizeForExpectedText(longTimeString);
-
-  const [stillFlame, setStillFlame] = useState<string | undefined>(undefined);
-
-  const [reduceMotion, setReduceMotion] = useState<boolean>(false);
-
   // watch effect in case prefers reduced motion changes
   useEffect(() => {
     setReduceMotion(prefersReducedMotion.matches);
@@ -97,9 +105,6 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
       prefersReducedMotion.removeEventListener("change", listener);
     };
   }, []);
-
-  const [flameExcessHeightRatio, setFlameExcessHeightRatio] =
-    useState<number>(0);
   useEffect(() => {
     const img = new Image();
     // weirdly this one image needs CORS
@@ -136,12 +141,6 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
     img.src = animatedFlamePath + "?queryForCORS";
   }, []);
 
-  // use media query from JS to lock to the png for prefers reduced motion, as well as when paused
-  const [animate, setAnimate] = useState<boolean>(false);
-  useEffect(() => {
-    setAnimate(!reduceMotion && !!stillFlame);
-  }, [reduceMotion, stillFlame]);
-
   if (currentSession) {
     const newString = formatDuration(currentSession.endTime).replace(
       /[1-9]/g,
@@ -164,16 +163,25 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
     const markerStyle: CSSProperties = {
       "--song-progress": progress.toString(),
-      "--marker-height-ratio": animate ? flameExcessHeightRatio : 0,
+      "--marker-height-ratio":
+        reduceMotion || !stillFlame ? 0 : flameExcessHeightRatio,
     } as CSSProperties;
 
-    const markerUrl = animate
-      ? currentSession.isPlaying
-        ? animatedFlamePath
-        : stillFlame
-      : energyIconPath;
+    /**
+     * Logic for image selection is as follows:
+     * With reduced motion you get the configurable character icon
+     * Otherwise, if processing the flame to create a still succeeded, you get the animated/still flame (still when paused)
+     * Finally, if the flame isn't operational in both states, you get the colorless energy as a special fallback
+     */
+    const markerUrl = reduceMotion
+      ? characterEnergyIcon
+      : ((stillFlame && currentSession.isPlaying
+          ? animatedFlamePath
+          : stillFlame) ?? fallbackMarkerIcon);
     return (
-      <div className={`sp-media-progress ${className}`}>
+      <div
+        className={`sp-media-progress sp-media-progress--${color} ${className}`}
+      >
         <SpPlaque color={color}>
           <div className="sp-media-progress__elapsed" {...elapsedAttrs}>
             {ellapsedTime}

@@ -54,3 +54,35 @@
 .sp-media__song-length {
   text-align: center;
 }
+
+.sp-media-progress--common {
+  color: var(--common-plaque-text-color);
+}
+
+.sp-media-progress--uncommon {
+  color: var(--uncommon-plaque-text-color);
+}
+
+.sp-media-progress--rare {
+  color: var(--rare-plaque-text-color);
+}
+
+.sp-media-progress--ancient {
+  color: var(--ancient-plaque-text-color);
+}
+
+.sp-media-progress--curse {
+  color: var(--curse-plaque-text-color);
+}
+
+.sp-media-progress--status {
+  color: var(--status-plaque-text-color);
+}
+
+.sp-media-progress--event {
+  color: var(--event-plaque-text-color);
+}
+
+.sp-media-progress--quest {
+  color: var(--quest-plaque-text-color);
+}

@@ -18,68 +18,36 @@
   row-gap: 0;
 }
 
-.sp-media--banner-common {
+.sp-media--common {
   -webkit-text-stroke-color: var(--common-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--common-plaque-text-color);
-  }
 }
 
-.sp-media--banner-uncommon {
+.sp-media--uncommon {
   -webkit-text-stroke-color: var(--uncommon-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--uncommon-plaque-text-color);
-  }
 }
 
-.sp-media--banner-rare {
+.sp-media--rare {
   -webkit-text-stroke-color: var(--rare-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--rare-plaque-text-color);
-  }
 }
 
-.sp-media--banner-ancient {
+.sp-media--ancient {
   -webkit-text-stroke-color: var(--ancient-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--ancient-plaque-text-color);
-  }
 }
 
-.sp-media--banner-curse {
+.sp-media--curse {
   -webkit-text-stroke-color: var(--curse-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--curse-plaque-text-color);
-  }
 }
 
-.sp-media--banner-status {
+.sp-media--status {
   -webkit-text-stroke-color: var(--status-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--status-plaque-text-color);
-  }
 }
 
-.sp-media--banner-event {
+.sp-media--event {
   -webkit-text-stroke-color: var(--event-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--event-plaque-text-color);
-  }
 }
 
-.sp-media--banner-quest {
+.sp-media--quest {
   -webkit-text-stroke-color: var(--quest-text-stroke-color);
-
-  .sp-media__progress {
-    color: var(--quest-plaque-text-color);
-  }
 }
 
 .sp-media__track-info {
