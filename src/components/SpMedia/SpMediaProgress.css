@@ -5,6 +5,7 @@
   padding-inline: 4.5rch;
   font-size: 1rem;
   text-shadow: none;
+  isolation: isolate;
 }
 
 .sp-media-progress__timeline {
@@ -20,6 +21,7 @@
   width: calc(100% + 1em);
   margin-inline: -0.5em;
   height: 0.3rem;
+  z-index: -1;
 }
 
 .sp-media-progress__marker {
