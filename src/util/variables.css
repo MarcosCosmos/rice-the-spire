@@ -1,14 +1,24 @@
 :root {
-  --icon-size: 2rem;
-  --image-size: var(--icon-size);
+  --default-font-family: Kreon, Georgia, sans-serif;
+  --default-font-size: 12px;
+  --default-font-weight: 400;
+  --default-font: var(--default-font-weight) var(--default-font-size)
+    var(--default-font-family);
+
+  --app-height: calc(14 / 3 * 1rem);
+  --item-size: 2rem;
   --hover-scale: 1.25;
   --hover-transition: transform 0.1s;
-  --item-padding: 0px;
-  --icon-scale-margin: calc(var(--icon-size) * (var(--hover-scale) - 1) / 2);
+  --item-padding: 0;
+  --border-radius: 0.25rem;
+  --item-scale-margin: calc(var(--item-size) * (var(--hover-scale) - 1) / 2);
   --text-stroke-width: round(up, 0.2em, 1px);
   --text-stroke-padding: calc(var(--text-stroke-width) / 2);
   --normal-drop-shadow: drop-shadow(0.2rem 0.2rem 0 hsla(0, 0%, 0%, 0.25));
 
+  --button-pulse-rgb: 100, 255, 255;
+
+  --map-circle-color: #2a2521;
   --normal-text-color: #fff6e2;
   --keyword-text-color: #efc851;
   --upgrade-text-color: #7efd01;

@@ -1,5 +1,5 @@
 import { useContext, type KeyboardEvent, type MouseEvent } from "react";
-import "./SpTrayIcon.css";
+import "./SpTrayItem.css";
 import { ZebarContext } from "../../contexts";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
@@ -40,7 +40,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
     <SpTooltip
       anchor={(tooltipId) => (
         <SpButton
-          className="tray-icon"
+          className="sp-tray-item"
           role="menuitem"
           disabled={disabled}
           aria-label={tooltip}
@@ -54,7 +54,7 @@ export const SpTrayIcon = ({ id, iconUrl, tooltip, disabled }: IconProps) => {
           onKeyDown={onKeyDown}
         >
           <img
-            className="tray-icon__src-icon"
+            className="sp-tray-item__icon"
             src={iconUrl}
             aria-hidden="true"
           />

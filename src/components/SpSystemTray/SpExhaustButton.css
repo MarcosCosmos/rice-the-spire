@@ -1,4 +1,4 @@
-.pile-button {
+.sp-exhaust-button {
   line-height: 1rem;
   -webkit-text-stroke-color: var(--exhaust-stroke-color);
   display: inline-flex;
@@ -6,8 +6,8 @@
   justify-content: center;
   text-align: center;
 
-  .spire-image {
-    height: var(--icon-size);
+  .sp-exhaust-button__icon {
+    height: var(--item-size);
     position: absolute;
   }
 }

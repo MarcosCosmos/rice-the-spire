@@ -1,17 +1,17 @@
-.outlined-text {
+.sp-outlined-text {
   display: grid;
   -webkit-text-stroke-width: var(--text-stroke-width);
+  padding: var(--text-stroke-padding);
   * {
     grid-column-start: 1;
     grid-row-start: 1;
-    padding: var(--text-stroke-padding);
   }
-  .outlined-text__foreground {
+  .sp-outlined-text__foreground {
     -webkit-text-stroke-width: inherit;
     -webkit-text-stroke-color: transparent;
   }
 
-  .outlined-text__background {
+  .sp-outlined-text__background {
     -webkit-text-stroke-width: inherit;
     -webkit-text-stroke-color: inherit;
   }

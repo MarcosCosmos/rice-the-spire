@@ -1,14 +1,12 @@
-.media-progress {
-  grid-area: progress;
+.sp-media-progress {
   display: flex;
   width: 100%;
   padding-inline: 4.5rch;
-  align-items: center;
   font-size: 0.9rem;
   text-shadow: none;
 }
 
-.media-progress__timeline {
+.sp-media-progress__timeline {
   flex: 1 0 auto;
   display: flex;
   align-items: center;
@@ -16,29 +14,28 @@
   justify-content: start;
 }
 
-.media-progress__timeline-line {
+.sp-media-progress__rail {
   position: absolute;
   width: calc(100% + 1em);
   margin-inline: -0.5em;
-  z-index: -1;
   height: 0.3rem;
 }
 
-.media-progress__marker {
-  --icon-size: 1.5rem;
-  width: var(--icon-size);
+.sp-media-progress__marker {
+  --item-size: 1.5rem;
+  width: var(--item-size);
   height: auto;
   position: relative;
-  left: calc((100% - var(--icon-size)) * var(--song-progress));
-  filter: drop-shadow(0px 0px 0px black);
-  margin-top: calc(-1 * var(--marker-height-ratio) * var(--icon-size));
+  left: calc((100% - var(--item-size)) * var(--song-progress));
+  filter: drop-shadow(0 0 0 black);
+  margin-top: calc(-1 * var(--marker-height-ratio) * var(--item-size));
   @media not (prefers-reduced-motion) {
     transition: left ease-in-out 1s;
   }
 }
 
-.media-progress__elapsed,
-.media-progress__song-length {
+.sp-media-progress__elapsed,
+.sp-media-progress__song-length {
   display: block;
   --inline-padding: 0.4em;
   padding-top: 0.1em;
@@ -47,11 +44,11 @@
   font-weight: bold;
 }
 
-.media-progress__elapsed {
+.sp-media-progress__elapsed {
   text-align: start;
 
   min-width: calc(var(--min-duration-width) + 2 * var(--inline-padding));
 }
-.media__song-length {
+.sp-media__song-length {
   text-align: center;
 }

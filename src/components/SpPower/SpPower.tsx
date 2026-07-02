@@ -1,12 +1,12 @@
-import SpSpireImage from "../SpSpireImage";
-import SpItemLabel from "../SpItemLabel";
+import SpIcon from "../SpIcon";
 import "./SpPower.css";
 import { useSizeForExpectedText } from "../../util/useSizeForExpectedText";
 import type { ReactNode } from "react";
+import SpOutlinedText from "../SpOutlinedText";
 export interface SpPowerProps {
   className?: string;
   path: string | string[];
-  expectedText?: { text: string; font: string };
+  expectedText?: string;
   children?: ReactNode;
 }
 
@@ -21,19 +21,19 @@ export const SpPower = ({
   if (typeof path === "string") {
     path = [path];
   }
-  const labelStyle = expectedText
-    ? useSizeForExpectedText(
-        expectedText.text,
-        expectedText.font,
-        "var(--text-stroke-width)",
-      )
+  const labelAttrs = expectedText
+    ? useSizeForExpectedText(expectedText)
     : undefined;
   return (
-    <div className={`power ${className}`} {...attrs}>
-      {children && <SpItemLabel style={labelStyle}>{children}</SpItemLabel>}
-      <div className="power__image-wrapper">
+    <div className={`sp-power ${className}`} {...attrs}>
+      {children && (
+        <SpOutlinedText className="sp-power__label" {...labelAttrs}>
+          {children}
+        </SpOutlinedText>
+      )}
+      <div className="sp-power__icon-set">
         {path.map((p) => (
-          <SpSpireImage className="power__image" path={p} key={p} />
+          <SpIcon className="sp-power__icon" path={p} key={p} />
         ))}
       </div>
     </div>

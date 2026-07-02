@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, type CSSProperties } from "react";
 import {
   type BannerColor,
   SpireContext,
   useNavigationGroup,
   ZebarContext,
 } from "../../contexts";
-import SpSpireImage from "../SpSpireImage";
 import "./SpMedia.css";
 import { SpButton } from "../SpButton/SpButton";
 import SpNote from "../SpNote";
 import SpOutlinedText from "../SpOutlinedText";
 import SpTooltip from "../SpTooltip";
-import { MediaProgress } from "./MediaProgress";
+import { SpMediaProgress } from "./SpMediaProgress";
+import { resolveSpireImage } from "../../util";
 
 export interface SpMediaProps {
   className?: string;
@@ -52,22 +52,25 @@ export const SpMedia = ({ className }: SpMediaProps) => {
       zebar.media?.next({ sessionId: currentSession.sessionId });
     };
 
+    const mediaStyles = {
+      backgroundImage: `url(${resolveSpireImage(
+        `card-frames/banner_${bannerColor}`,
+      )})`,
+    } as CSSProperties;
+
     // todo: this needs improved accessibility that I haven't quite figured out yet; might have to refer to some examples!
     // toolbar is probably not quite right
 
     return (
       <div
-        className={`media media--banner-${bannerColor} anchor-tooltips-block-end ${className}`}
+        className={`sp-media sp-media--banner-${bannerColor} anchor-tooltips-block-end ${className}`}
         role="complementary"
         aria-label="Media Player"
+        style={mediaStyles}
         {...navAttrs}
       >
-        <SpSpireImage
-          className="media__background"
-          path={`card-frames/banner_${bannerColor}`}
-        />
-        <div className="media__content">
-          <div className="media__track-info">
+        <div className="sp-media__content">
+          <div className="sp-media__track-info">
             <SpTooltip
               anchor={(tooltipId: string) => (
                 <SpNote
@@ -89,17 +92,17 @@ export const SpMedia = ({ className }: SpMediaProps) => {
               }
             />
           </div>
-          <MediaProgress className="media__progress" color={bannerColor} />
-          <div className="media__controls">
-            <SpButton className="media__previous" onClick={onPrevious}>
+          <SpMediaProgress className="sp-media__progress" color={bannerColor} />
+          <div className="sp-media__controls">
+            <SpButton className="sp-media__previous" onClick={onPrevious}>
               <SpOutlinedText>⏮</SpOutlinedText>
             </SpButton>
-            <SpButton className="media__toggle-play" onClick={onToggle}>
+            <SpButton className="sp-media__toggle-play" onClick={onToggle}>
               <SpOutlinedText>
                 {currentSession.isPlaying ? "⏸" : "⏵"}
               </SpOutlinedText>
             </SpButton>
-            <SpButton className="media__next" onClick={onNext}>
+            <SpButton className="sp-media__next" onClick={onNext}>
               <SpOutlinedText>⏭</SpOutlinedText>
             </SpButton>
           </div>

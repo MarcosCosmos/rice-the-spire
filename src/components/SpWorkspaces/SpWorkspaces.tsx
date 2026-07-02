@@ -8,6 +8,7 @@ import {
   type SpWorkspaceProps,
 } from "../SpWorkspace";
 import { useNavigationGroup } from "../../contexts";
+import { resolveSpireImage } from "../../util";
 
 export interface WorkspaceProps extends SpWorkspaceProps {
   key: string;
@@ -22,21 +23,20 @@ export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
   const config = useContext(SpireContext);
   const navAttrs = useNavigationGroup();
   const mapGeometry = useMapGeometry();
+
+  const backgroundImage = `url(${resolveSpireImage("ui/map_backgrounds/map_middle_" + config.act)})`;
   if (mapGeometry) {
     const style: CSSProperties = {
       "--max-node-width": `${mapGeometry.maxNode.width}px`,
       "--max-node-height": `${mapGeometry.maxNode.height}px`,
       "--graphic-width": `${mapGeometry.graphic.width}px`,
       "--graphic-height": `${mapGeometry.graphic.height}px`,
+      backgroundImage,
     } as CSSProperties;
     return (
-      <nav
-        tabIndex={-1}
-        className={`workspaces workspaces--${config.act} ${className}`}
-        style={style}
-      >
+      <nav tabIndex={-1} className={`sp-workspaces ${className}`} style={style}>
         <div
-          className="workspaces__content anchor-tooltips-block-start"
+          className="sp-workspaces__content anchor-tooltips-block-start"
           role="tablist"
           aria-label="Workspaces"
           {...navAttrs}

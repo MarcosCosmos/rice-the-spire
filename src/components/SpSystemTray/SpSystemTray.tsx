@@ -11,11 +11,11 @@ import {
   type KeyboardEvent,
 } from "react";
 import { useNavigationGroup, ZebarContext } from "../../contexts";
-import { SpTrayIcon } from "./SpTrayIcon";
+import { SpTrayIcon } from "./SpTrayItem";
 import type { SystrayIcon } from "zebar";
 import { SpStretchBox } from "../SpStretchBox";
 import "./SpSystemTray.css";
-import { ExhaustButton } from "./ExhaustButton";
+import { SpExhaustButton } from "./SpExhaustButton";
 
 export interface SpSystemTrayProps {
   iconLimit?: number;
@@ -121,19 +121,19 @@ export const SpSystemTray = ({
   const secondaryIconsKey = `systray-${id}__secondary-icons`;
 
   const style: CSSProperties = {
-    "--primary-icon-count": 1 + Math.min(iconLimit ?? 0, sortedIcons.length),
-    "--secondary-icon-count": secondaryIcons.length,
+    "--primary-item-count": 1 + Math.min(iconLimit ?? 0, sortedIcons.length),
+    "--secondary-item-count": secondaryIcons.length,
   } as CSSProperties;
 
   const parts = [
-    <Fragment key="primary-icons">
+    <Fragment key="primary-itemss">
       {primaryIcons.map((data) => (
         <SpTrayIcon key={data.id} {...data} />
       ))}
     </Fragment>,
     <Fragment key="exhaust-button">
       {secondaryIcons.length > 0 ? (
-        <ExhaustButton
+        <SpExhaustButton
           controls={secondaryIconsKey}
           count={secondaryIcons.length}
           expanded={expanded}
@@ -141,11 +141,11 @@ export const SpSystemTray = ({
         />
       ) : undefined}
     </Fragment>,
-    <Fragment key="secondary-icons">
+    <Fragment key="secondary-items">
       {secondaryIcons.length > 0 && (
         <>
           <div
-            className="system-tray__secondary-icons"
+            className="system-tray__secondary-items"
             role="menu"
             id={secondaryIconsKey}
             key={secondaryIconsKey}
@@ -175,7 +175,7 @@ export const SpSystemTray = ({
     >
       <SpStretchBox {...stretchBoxConfig}>
         <div className="system-tray__interior">
-          <div className="system-tray__icons">{parts}</div>
+          <div className="system-tray__items">{parts}</div>
         </div>
       </SpStretchBox>
     </div>

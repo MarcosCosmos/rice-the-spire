@@ -1,6 +1,6 @@
 import type { DetailedHTMLProps, ImgHTMLAttributes } from "react";
 import resolveSpireImage from "../../util/resolveSpireImage";
-import "./SpSpireImage.css";
+import "./SpIcon.css";
 
 export interface SpSpireImageProps extends DetailedHTMLProps<
   ImgHTMLAttributes<HTMLImageElement>,
@@ -11,7 +11,7 @@ export interface SpSpireImageProps extends DetailedHTMLProps<
   extension?: "webp" | "png";
 }
 
-export const SpSpireImage = ({
+export const SpIcon = ({
   className,
   path,
   extension,
@@ -21,7 +21,7 @@ export const SpSpireImage = ({
   return (
     <img
       aria-hidden="true"
-      className={`spire-image ${className}`}
+      className={`sp-icon ${className}`}
       src={resolveSpireImage(path, extension)}
       {...attrs}
     />

@@ -21,7 +21,7 @@ export const SpGlazeWmDirection = () => {
       <SpTooltip
         anchor={(id) => (
           <SpButton
-            className={`glazewm-tiling-direction glazewm-tiling-direction--${direction}`}
+            className={`sp-glazewm-tiling-direction sp-glazewm-tiling-direction--${direction}`}
             aria-label={label}
             aria-describedby={id}
             onClick={onClick}

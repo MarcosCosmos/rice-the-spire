@@ -1,7 +1,7 @@
 import SpOutlinedText from "../SpOutlinedText";
 import "./SpDateTime.css";
-import SpSpireImage from "../SpSpireImage";
-import { useEffect, useState, type CSSProperties } from "react";
+import SpIcon from "../SpIcon";
+import { useEffect, useState } from "react";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
 import { useSizeForExpectedText } from "../../util/useSizeForExpectedText";
@@ -47,8 +47,6 @@ export interface SpDateTimeProps {
   longFormat?: Intl.DateTimeFormat;
 }
 
-const defaultFont = "400 1.5rem Kreon";
-
 export const SpDateTime = ({
   className,
   shortDateFormat,
@@ -80,23 +78,19 @@ export const SpDateTime = ({
 
   const label = "Datetime";
 
-  const textStyle: CSSProperties | undefined = useSizeForExpectedText(
-    samples,
-    defaultFont,
-    "var(--text-stroke-width)",
-  );
+  const textAttrs = useSizeForExpectedText(samples);
 
   // TODO: this needs an assumed width
   return (
     <SpTooltip
       anchor={(id) => (
         <SpNote
-          className={`datetime {className}`}
+          className={`sp-datetime ${className}`}
           aria-label={label}
           aria-describedby={id}
         >
-          <SpSpireImage path="ui/top_bar/timer_icon" />
-          <SpOutlinedText aria-hidden="true" style={textStyle}>
+          <SpIcon path="ui/top_bar/timer_icon" />
+          <SpOutlinedText aria-hidden="true" {...textAttrs}>
             {shortDateFormat.format(now)} {shortTimeFormat.format(now)}
           </SpOutlinedText>
         </SpNote>

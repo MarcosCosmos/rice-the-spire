@@ -34,31 +34,31 @@ export const SpStretchBox = ({
     <image href={backdropUrl} x="0" y="0" width={width} height={height} />
   );
   return (
-    <div className={`stretch-box ${className}`}>
-      <div className="stretch-box__position-wrapper" aria-hidden="true">
-        <div className="stretch-box__background">
+    <div className={`sp-stretch-box ${className}`}>
+      <div className="sp-stretch-box__position-wrapper" aria-hidden="true">
+        <div className="sp-stretch-box__background">
           <svg
-            className="stretch-box__left-bookend"
+            className="sp-stretch-box__left-bookend"
             viewBox={`0 0 ${inset} ${height}`}
           >
             {image}
           </svg>
           <svg
-            className="stretch-box__center-background"
+            className="sp-stretch-box__center-background"
             viewBox={`${inset} 0 ${midWidth} ${height}`}
             preserveAspectRatio="none"
           >
             {image}
           </svg>
           <svg
-            className="stretch-box__right-bookend"
+            className="sp-stretch-box__right-bookend"
             viewBox={`${rightInset} 0 ${inset} ${height}`}
           >
             {image}
           </svg>
         </div>
       </div>
-      <div className="stretch-box__anchor">{children}</div>
+      <div className="sp-stretch-box__anchor">{children}</div>
     </div>
   );
 };

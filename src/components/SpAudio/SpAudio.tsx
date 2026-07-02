@@ -1,11 +1,10 @@
 import { useContext, type WheelEvent } from "react";
 import ZebarContext from "../../contexts/ZebarContext";
 import SpPower from "../SpPower";
-import "./SpAudio.css";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
 
-const assumedText = { text: "100%", font: "400 12px Kreon" };
+const assumedText = "100%";
 
 export const SpAudio = () => {
   const zebar = useContext(ZebarContext);
@@ -38,7 +37,7 @@ export const SpAudio = () => {
     <SpTooltip
       anchor={(id) => (
         <SpButton
-          className="volume"
+          className="sp-audio"
           onClick={onClick}
           aria-pressed={device.isMuted}
           aria-label={label}

@@ -1,7 +1,6 @@
-.workspace-shrinkwrap {
-  --image-width: calc(var(--graphic-scale) * var(--node-width));
-
-  --image-height: calc(var(--graphic-scale) * var(--node-height));
+.sp-workspace__shrinkwrap {
+  --scaled-node-width: calc(var(--graphic-scale) * var(--node-width));
+  --scaled-node-height: calc(var(--graphic-scale) * var(--node-height));
 
   position: relative;
   display: flex;
@@ -14,23 +13,14 @@
     }
   }
 
-  .workspace__button {
-    z-index: 1;
+  .sp-workspace__button {
     color: #d8c5a6;
     -webkit-text-stroke-color: #2a2521;
     min-width: calc(var(--graphic-scale) * var(--max-node-width));
     justify-content: start;
     align-items: end;
-
-    --power-size: max(var(--image-height), var(--icon-size));
-    .power {
-      --icon-size: var(--image-height);
-    }
-  }
-
-  .map-node {
-    @media not (prefers-reduced-motion) {
-      transition: var(--hover-transition);
+    .sp-workspace__power {
+      --item-size: var(--scaled-node-height);
     }
   }
 }

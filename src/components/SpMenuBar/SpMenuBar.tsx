@@ -1,9 +1,11 @@
 import {
+  type CSSProperties,
   type DetailedHTMLProps,
   type HTMLAttributes,
   type ReactNode,
 } from "react";
 import "./SpMenuBar.css";
+import { resolveSpireImage } from "../../util";
 export interface SpMenuBarProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -11,6 +13,8 @@ export interface SpMenuBarProps extends DetailedHTMLProps<
   className?: string;
   children: ReactNode;
 }
+
+const backgroundImage = `url(${resolveSpireImage("ui/top_bar/top_bar")})`;
 
 /**
  * Not actually an aria menubar, which would not be advantageous since the app has the role app anyway
@@ -23,10 +27,13 @@ export const SpMenuBar = ({
   ...attrs
 }: SpMenuBarProps) => {
   className ??= "";
+
+  const style: CSSProperties = {
+    backgroundImage,
+  };
   return (
-    <div className={`menubar ${className}`} {...attrs}>
-      <div className="menubar__background" />
-      <div className="menubar__content">{children}</div>
+    <div className={`sp-menubar ${className}`} style={style} {...attrs}>
+      <div className="sp-menubar__content">{children}</div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import SpPower from "../SpPower";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
 
-const assumedText = { text: "100%", font: "400 12px Kreon" };
+const assumedText = "100%";
 
 export const SpMemory = () => {
   const zebar = useContext(ZebarContext);
@@ -15,7 +15,7 @@ export const SpMemory = () => {
   return (
     <SpTooltip
       anchor={(id) => (
-        <SpNote className="memory" aria-label={label} aria-describedby={id}>
+        <SpNote className="sp-memory" aria-label={label} aria-describedby={id}>
           <SpPower path="relics/emotion_chip" expectedText={assumedText}>
             {usage}%
           </SpPower>

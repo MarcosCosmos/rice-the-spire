@@ -15,11 +15,11 @@ export const SpOutlinedText = ({
 }: SpOutlinedTextProps) => {
   className ??= "";
   return (
-    <span className={`outlined-text ${className}`} {...attrs}>
-      <span className="outlined-text__background" aria-hidden="true">
+    <span className={`sp-outlined-text ${className}`} {...attrs}>
+      <span className="sp-outlined-text__background" aria-hidden="true">
         {children}
       </span>
-      <span className="outlined-text__foreground">{children}</span>
+      <span className="sp-outlined-text__foreground">{children}</span>
     </span>
   );
 };

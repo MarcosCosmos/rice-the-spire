@@ -1,19 +1,22 @@
-.power {
+.sp-power {
   margin-block: var(--block-margin);
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: end;
   align-items: end;
 
-  height: var(--icon-size);
-  min-width: var(--icon-size);
-  > .item-label {
-    margin-inline-start: calc(var(--icon-size) / 2);
-  }
+  height: var(--item-size);
+  min-width: var(--item-size);
+  isolation: isolate;
 }
 
-.power__image-wrapper {
+.sp-power__label {
+  z-index: 5;
+  text-align: start;
+  margin-inline-start: calc(var(--item-size) / 2);
+}
+
+.sp-power__icon-set {
   overflow: visible;
   display: grid;
   align-self: start;
@@ -24,7 +27,6 @@
   }
 }
 
-.power__image {
-  height: var(--icon-size);
-  margin-top: calc(-1 * var(--icon-size));
+.sp-power__icon {
+  margin-top: calc(-1 * var(--item-size));
 }

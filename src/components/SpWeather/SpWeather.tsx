@@ -17,10 +17,7 @@ const weatherMap = {
   unknown: "child_of_the_stars",
 };
 
-const assumedText = {
-  text: `${widestDigit}${widestDigit}.${widestDigit}°C`,
-  font: `400 12px Kreon`,
-};
+const assumedText = `${widestDigit}${widestDigit}.${widestDigit}°C`;
 
 export const SpWeather = ({ ...attrs }) => {
   const zebar = useContext(ZebarContext);
@@ -67,7 +64,7 @@ export const SpWeather = ({ ...attrs }) => {
     <SpTooltip
       anchor={(id) => (
         <SpNote
-          className={`weather weather--${simplifiedStatus}`}
+          className={`sp-weather sp-weather--${simplifiedStatus}`}
           aria-label={label}
           aria-describedby={id}
           {...attrs}

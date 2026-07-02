@@ -20,7 +20,7 @@ export const SpApp = ({ zebarProviders, children }: SpAppProps) => {
   const { activeDescendant } = useNavigationApp();
   return (
     <div
-      className="app"
+      className="sp-app"
       role="application"
       aria-label="Zebar (Rice the Spire)"
       aria-activedescendant={activeDescendant ?? ""}

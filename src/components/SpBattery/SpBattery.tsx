@@ -4,7 +4,7 @@ import SpPower from "../SpPower";
 import "./SpBattery.css";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
-const assumedText = { text: "100%", font: "400 12px Kreon" };
+const assumedText = "100%";
 
 export const SpBattery = () => {
   const zebar = useContext(ZebarContext);
@@ -20,7 +20,7 @@ export const SpBattery = () => {
       <SpTooltip
         anchor={(id) => (
           <SpNote
-            className={`battery battery--${data.state}`}
+            className={`sp-battery sp-battery--${data.state}`}
             aria-label={label}
             aria-describedby={id}
           >

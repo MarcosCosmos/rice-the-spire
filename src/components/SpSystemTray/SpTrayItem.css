@@ -1,0 +1,10 @@
+.sp-tray-item {
+  align-items: center;
+  justify-content: center;
+  --icon-size: calc(var(--item-size) / 2);
+  .sp-tray-item__icon {
+    height: var(--icon-size);
+    width: var(--icon-size);
+    pointer-events: none;
+  }
+}

@@ -9,7 +9,7 @@ export interface DiskProps {
   label?: string;
 }
 
-const assumedText = { text: "100%", font: "400 12px Kreon" };
+const assumedText = "100%";
 
 export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
   label ??= "Disk";
@@ -23,7 +23,7 @@ export const SpDisk = ({ data, label, ...attrs }: DiskProps) => {
     <SpTooltip
       anchor={(id) => (
         <SpNote
-          className="disk"
+          className="sp-disk"
           aria-label="Disk"
           aria-describedby={id}
           {...attrs}

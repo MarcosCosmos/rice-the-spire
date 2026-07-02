@@ -5,7 +5,7 @@ import {
   type CSSProperties,
   type MouseEventHandler,
 } from "react";
-import { BackgroundGraphic } from "./BackgroundGraphic";
+import { SpWorkspaceBackgroundGraphic } from "./SpWorkspaceBackgroundGraphic";
 import { hiddenNodes, useMapGeometry, type MapNodeKind } from "./common";
 import "./SpWorkspace.css";
 import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
@@ -76,23 +76,25 @@ export const SpWorkspace = ({
     } as CSSProperties;
 
     return (
-      <div className={`workspace ${className}`}>
+      <div className={`sp-workspace ${className}`}>
         <SpTooltip
           anchor={(tooltipId: string) => (
-            <div className="workspace-shrinkwrap" style={style}>
-              <BackgroundGraphic
+            <div className="sp-workspace__shrinkwrap" style={style}>
+              <SpWorkspaceBackgroundGraphic
                 isDisplayed={isDisplayed}
                 hasFocus={hasFocus}
               />
               <SpButton
-                className={`workspace__button`}
+                className={`sp-workspace__button`}
                 role="tab"
                 aria-selected={isDisplayed}
                 aria-label={label}
                 aria-describedby={tooltipId}
                 {...attrs}
               >
-                <SpPower path={path}>{displayName}</SpPower>
+                <SpPower className="sp-workspace__power" path={path}>
+                  {displayName}
+                </SpPower>
               </SpButton>
             </div>
           )}

@@ -1,28 +1,28 @@
 import type { MouseEventHandler } from "react";
 import { SpButton } from "../SpButton/SpButton";
-import SpSpireImage from "../SpSpireImage";
+import SpIcon from "../SpIcon";
 import SpTooltip from "../SpTooltip";
-import "./ExhaustButton.css";
+import "./SpExhaustButton.css";
 import SpOutlinedText from "../SpOutlinedText";
 
-export interface PileButtonProps {
+export interface SpExhaustButtonProps {
   controls: string;
   count: number;
   expanded: boolean;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
-export const ExhaustButton = ({
+export const SpExhaustButton = ({
   controls,
   count,
   expanded,
   onClick,
-}: PileButtonProps) => {
+}: SpExhaustButtonProps) => {
   const label = `Additional Icons (${count.toFixed(0)})`;
   return (
     <SpTooltip
       anchor={(tooltipId) => (
         <SpButton
-          className="pile-button"
+          className="sp-exhaust-button"
           role="menuitem"
           aria-label={label}
           aria-describedby={tooltipId}
@@ -31,7 +31,10 @@ export const ExhaustButton = ({
           onClick={onClick}
           toggle
         >
-          <SpSpireImage path="ui/compendium/exhaust_pile" />
+          <SpIcon
+            className="sp-exhaust-button__icon"
+            path="ui/compendium/exhaust_pile"
+          />
           <SpOutlinedText>{count}</SpOutlinedText>
         </SpButton>
       )}

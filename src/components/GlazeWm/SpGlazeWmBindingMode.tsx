@@ -39,7 +39,7 @@ export const SpGlazeWmBindingMode = ({
       <SpTooltip
         anchor={(id) => (
           <SpButton
-            className={`glazewm-binding-mode glazewm-binding-mode--${active ? "active" : "inactive"}`}
+            className={`sp-glazewm-binding-mode sp-glazewm-binding-mode--${active ? "active" : "inactive"}`}
             toggle
             aria-label={label}
             aria-pressed={!!active}

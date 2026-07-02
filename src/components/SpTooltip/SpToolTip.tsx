@@ -29,16 +29,16 @@ export const SpTooltip = ({ anchor, desc }: SpTooltipProps) => {
   };
   return (
     <div
-      className={`tooltip ${isFocal ? "tooltip--focal" : ""}`}
+      className={`sp-tooltip ${isFocal ? "sp-tooltip--focal" : ""}`}
       onFocus={takeFocal}
       onMouseEnter={takeFocal}
     >
-      <div className="tooltip__hover-wrapper">
-        <div className="tooltip__hover-zone"></div>
+      <div className="sp-tooltip__hover-wrapper">
+        <div className="sp-tooltip__hover-zone"></div>
       </div>
-      <div className="tooltip__anchor">{anchor(id)}</div>
-      <div className="tooltip__box-wrapper">
-        <div id={id} className="tooltip__box" role="tooltip" key={id}>
+      <div className="sp-tooltip__anchor">{anchor(id)}</div>
+      <div className="sp-tooltip__box-wrapper">
+        <div id={id} className="sp-tooltip__box" role="tooltip" key={id}>
           {desc}
         </div>
       </div>

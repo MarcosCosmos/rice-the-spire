@@ -1,0 +1,15 @@
+.sp-workspace-background-graphic {
+  position: absolute;
+  width: var(--scaled-graphic-width);
+  height: var(--scaled-graphic-height);
+  left: calc((var(--scaled-node-width) - var(--scaled-graphic-width)) / 2);
+  bottom: calc((var(--scaled-node-height) - var(--scaled-graphic-height)) / 2);
+  pointer-events: none;
+}
+
+.sp-workspace-background-graphic__circle {
+  fill: none;
+  stroke-linecap: round;
+  stroke: var(--map-circle-color);
+  stroke-linejoin: miter;
+}

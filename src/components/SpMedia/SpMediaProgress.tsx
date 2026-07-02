@@ -7,8 +7,8 @@ import {
 } from "react";
 import { resolveSpireImage, useSizeForExpectedText } from "../../util";
 import { ZebarContext, type BannerColor } from "../../contexts";
-import { Plaque } from "./Plaque";
-import "./MediaProgress.css";
+import { SpPlaque } from "./SpPlaque";
+import "./SpMediaProgress.css";
 
 export interface ProgressMarkerProps {
   className?: string;
@@ -39,7 +39,7 @@ const formatDuration = (timeInSeconds: number): string => {
   return `${isNegative ? "-" : ""}${result}`;
 };
 
-export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
+export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
   className ??= "";
   const zebar = useContext(ZebarContext);
   const currentSession = zebar?.media?.currentSession;
@@ -73,11 +73,7 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
   ]);
 
   const [longTimeString, setLongTimeString] = useState<string>("00:00");
-  const elapsedStyle = useSizeForExpectedText(
-    longTimeString,
-    "400 0.9rem Kreon",
-    "2 * var(--inline-padding)",
-  );
+  const elapsedAttrs = useSizeForExpectedText(longTimeString);
 
   const [stillFlame, setStillFlame] = useState<string | undefined>(undefined);
 
@@ -85,10 +81,8 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
   // watch effect in case prefers reduced motion changes
   useEffect(() => {
-    console.log(prefersReducedMotion.matches);
     setReduceMotion(prefersReducedMotion.matches);
     const listener = (event: MediaQueryListEvent) => {
-      console.log(event.matches);
       setReduceMotion(event.matches);
     };
     prefersReducedMotion.addEventListener("change", listener);
@@ -167,32 +161,32 @@ export const MediaProgress = ({ className, color }: ProgressMarkerProps) => {
         : stillFlame
       : energyIconPath;
     return (
-      <div className={`media-progress ${className}`}>
-        <Plaque color={color}>
-          <div className="media-progress__elapsed" style={elapsedStyle}>
+      <div className={`sp-media-progress ${className}`}>
+        <SpPlaque color={color}>
+          <div className="sp-media-progress__elapsed" {...elapsedAttrs}>
             {ellapsedTime}
           </div>
-        </Plaque>
+        </SpPlaque>
         <div
-          className="media-progress__timeline"
+          className="sp-media-progress__timeline"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={progress * 100}
           aria-valuetext={`${(progress * 100).toFixed(0)}% (${formatDuration(currentSession.endTime - currentSession.position)} remaining)`}
         >
-          <Plaque className="media-progress__timeline-line" color={color} />
+          <SpPlaque className="sp-media-progress__rail" color={color} />
 
           <img
             aria-hidden="true"
-            className="media-progress__marker"
+            className="sp-media-progress__marker"
             style={markerStyle}
             src={markerUrl}
           />
         </div>
-        <Plaque color={color}>
-          <div className="media-progress__song-length">{totalTime}</div>
-        </Plaque>
+        <SpPlaque color={color}>
+          <div className="sp-media-progress__song-length">{totalTime}</div>
+        </SpPlaque>
       </div>
     );
   }

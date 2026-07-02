@@ -21,7 +21,7 @@ export const SpGlazeWmPause = ({ showAlways }: SpGlazeWmPauseProps) => {
       <SpTooltip
         anchor={(id) => (
           <SpButton
-            className={`glazewm-pause glazewm-pause--${glazewm.isPaused ? "paused" : "unpaused"}`}
+            className={`sp-glazewm-pause sp-glazewm-pause--${glazewm.isPaused ? "paused" : "unpaused"}`}
             toggle
             aria-label="paused"
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

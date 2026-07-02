@@ -21,7 +21,7 @@ export const SpToolbar = ({
   const navAttrs = useNavigationGroup();
   return (
     <div
-      className={`toolbar ${className}`}
+      className={`sp-toolbar ${className}`}
       role="toolbar"
       aria-label={ariaLabel}
       {...navAttrs}

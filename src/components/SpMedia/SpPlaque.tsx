@@ -7,11 +7,11 @@ export interface PlaqueProps {
   color: BannerColor;
   children?: ReactNode;
 }
-export const Plaque = ({ className, color, children }: PlaqueProps) => {
+export const SpPlaque = ({ className, color, children }: PlaqueProps) => {
   className ??= "";
   return (
     <SpStretchBox
-      className={`media-plaque ${className}`}
+      className={`sp-plaque ${className}`}
       path={`card-frames/plaque_${color}`}
       width={123}
       height={75}

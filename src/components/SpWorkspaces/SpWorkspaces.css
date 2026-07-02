@@ -1,42 +1,32 @@
-.workspaces {
+.sp-workspaces {
   background-size: 100% auto;
 
   display: grid;
   grid-template-columns: 7fr 86fr 7fr;
   background-size: 120%;
-  background-position: top 0px left 40%;
+  background-position: top 0 left 40%;
 
   --max-node-size: max(var(--max-node-width), var(--max-node-height));
-  --graphic-scale: calc(var(--icon-size) / var(--max-node-height));
-  --scaled-width: calc(var(--graphic-scale) * var(--graphic-width));
-  --scaled-height: calc(var(--graphic-scale) * var(--graphic-height));
+  --graphic-scale: calc(var(--item-size) / var(--max-node-height));
+  --scaled-graphic-width: calc(var(--graphic-scale) * var(--graphic-width));
+  --scaled-graphic-height: calc(var(--graphic-scale) * var(--graphic-height));
 
   &::before {
-    content: '';
+    content: "";
   }
   &::after {
-    content: '';
+    content: "";
   }
 
-  &.workspaces--overgrowth {
-    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_overgrowth.webp);
-  }
-  &.workspaces--underdocks {
-    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_underdocks.webp);
-  }
-  &.workspaces--hive {
-    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_hive.webp);
-  }
-  &.workspaces--glory {
-    background-image: url(https://spire-codex.com/static/images/ui/map_backgrounds/map_middle_glory.webp);
-  }
-
-  .workspaces__content {
+  .sp-workspaces__content {
     display: flex;
     min-width: 20vw;
-    gap: calc(var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) / 2 + .1rem);
+    gap: calc(
+      var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) /
+        2 + 0.1rem
+    );
     justify-content: space-between;
     align-items: end;
-    padding-block-end: var(--icon-scale-margin);
+    padding-block-end: var(--item-scale-margin);
   }
 }

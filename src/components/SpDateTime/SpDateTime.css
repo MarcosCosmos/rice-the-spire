@@ -1,4 +1,4 @@
-.datetime {
+.sp-datetime {
   color: var(--keyword-text-color);
   -webkit-text-stroke-color: var(--bar-stroke-color);
 
@@ -6,8 +6,4 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  .spire-image {
-    height: var(--icon-size);
-  }
 }

@@ -1,7 +1,7 @@
-.battery--charging {
+.sp-battery--charging {
   color: rgb(136, 204, 170);
 }
 
-.battery--discharging {
+.sp-battery--discharging {
   color: rgb(224, 136, 136);
 }

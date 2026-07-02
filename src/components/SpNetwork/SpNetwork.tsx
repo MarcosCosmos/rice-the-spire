@@ -7,11 +7,7 @@ import { widestDigit, widestUnitChar } from "../../util/measureText";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
 
-const assumedText = {
-  text: `${widestDigit.repeat(2)}.${widestDigit.repeat(2)}${widestUnitChar}B`,
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  font: `400 ${0.9 * 12}px Kreon`,
-};
+const assumedText = `${widestDigit.repeat(2)}.${widestDigit.repeat(2)}${widestUnitChar}B`;
 
 export const SpNetwork = () => {
   const zebar = useContext(ZebarContext);
@@ -27,7 +23,7 @@ export const SpNetwork = () => {
   return (
     <SpTooltip
       anchor={(id) => (
-        <SpNote className="network" aria-label={label} aria-describedby={id}>
+        <SpNote className="sp-network" aria-label={label} aria-describedby={id}>
           <SpPower path={path} expectedText={assumedText}>
             {traffic?.transmitted ? useDataSize(traffic.transmitted) : "-"}
             <br />

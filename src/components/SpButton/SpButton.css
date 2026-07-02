@@ -10,10 +10,10 @@
 }
 
 .sp-button > button {
-  z-index: 1;
-  min-width: var(--icon-size);
-  min-height: var(--icon-size);
-  border-radius: var(--icon-scale-margin);
+  z-index: 5;
+  min-width: var(--item-size);
+  min-height: var(--item-size);
+  border-radius: var(--border-radius);
   padding: var(--item-padding);
   display: flex;
   align-items: center;
@@ -42,22 +42,21 @@
 
 .sp-button__pulse {
   position: absolute;
-  --base-pulse-size: calc(var(--icon-size) * 2 / 3);
+  z-index: 0;
+  --base-pulse-size: calc(var(--item-size) * 2 / 3);
   --pulse-size: calc(var(--base-pulse-size) * var(--pulse-scale));
-  --pulse-rgb: 100, 255, 255;
   --pulse-inset: calc(var(--base-pulse-size) / 2);
   height: calc(100% - 2 * var(--pulse-inset));
   width: calc(100% - 2 * var(--pulse-inset));
   inset-block-end: var(--pulse-inset);
   inset-inline-start: var(--pulse-inset);
-  z-index: -1;
-  border-radius: calc(var(--icon-scale-margin));
-  background-color: rgba(var(--pulse-rgb), 0.9);
+  border-radius: var(--border-radius);
+  background-color: rgba(var(--button-pulse-rgb), 0.9);
   box-shadow:
-    0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
-    0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
-    0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
-    0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125);
+    0 0 0 0 rgba(var(--button-pulse-rgb), 0.75),
+    0 0 0 calc(1 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.5),
+    0 0 0 calc(2 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.25),
+    0 0 0 calc(3 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.125);
 
   animation-name: on-pulse;
   animation-timing-function: linear;
@@ -107,16 +106,16 @@
 @keyframes on-pulse {
   0% {
     box-shadow:
-      0px 0px 0px 0px rgba(var(--pulse-rgb), 0.75),
-      0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
-      0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
-      0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125);
+      0 0 0 0 rgba(var(--button-pulse-rgb), 0.75),
+      0 0 0 calc(1 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.5),
+      0 0 0 calc(2 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.25),
+      0 0 0 calc(3 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.125);
   }
   100% {
     box-shadow:
-      0px 0px 0px calc(1 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.5),
-      0px 0px 0px calc(2 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.25),
-      0px 0px 0px calc(3 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0.125),
-      0px 0px 0px calc(4 / 4 * var(--pulse-size)) rgba(var(--pulse-rgb), 0);
+      0 0 0 calc(1 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.5),
+      0 0 0 calc(2 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.25),
+      0 0 0 calc(3 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0.125),
+      0 0 0 calc(4 / 4 * var(--pulse-size)) rgba(var(--button-pulse-rgb), 0);
   }
 }

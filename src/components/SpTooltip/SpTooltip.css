@@ -1,30 +1,29 @@
-.tooltip {
+.sp-tooltip {
   display: grid;
   block-size: fit-content;
   inline-size: fit-content;
   > * {
-      grid-column-start: 1;
+    grid-column-start: 1;
   }
 }
-.tooltip__hover-wrapper {
+.sp-tooltip__hover-wrapper {
   contain: layout;
-  height: 0px;
+  height: 0;
   display: block;
   z-index: 0;
 }
 
-
-.tooltip__hover-zone {
+.sp-tooltip__hover-zone {
   position: absolute;
   display: block;
   inline-size: 100%;
   block-size: 200vh;
-  inset-block-start: -100vh;
+  inset-block-start: calc(-1 * var(--app-height));
 }
 
-.tooltip__box-wrapper {
+.sp-tooltip__box-wrapper {
   contain: size;
-  height: 0px;
+  height: 0;
   display: flex;
   justify-content: center;
 
@@ -37,29 +36,30 @@
   }
 }
 
-.tooltip__box {
+.sp-tooltip__box {
   visibility: hidden;
   position: absolute;
   z-index: 100;
   width: max-content;
 
-  background: #222E33;
-  border-width: 3px;
+  background: #222e33;
+  border-width: 0.25rem;
   border-style: solid;
-  border-left-color: #475D66;
-  border-right-color: #475D66;
-  border-top-color: #516B76;
-  border-bottom-color: #31505C;
-  border-radius: 5px;
+  border-left-color: #475d66;
+  border-right-color: #475d66;
+  border-top-color: #516b76;
+  border-bottom-color: #31505c;
+  border-radius: var(--border-radius);
   padding: calc(1rlh - 1rem);
   padding-top: 0;
-  box-shadow: inset oklch(0 0 0 / 0.25) 0px 0px 2px;
+  box-shadow: inset oklch(0 0 0 / 0.25) 0 0 0.15rem;
 
-  .tooltip--focal:is(:hover, :focus-within) & {
+  .sp-tooltip--focal:is(:hover, :focus-within) & {
     visibility: visible;
   }
 
-  &, .anchor-tooltips-block-end & {
+  &,
+  .anchor-tooltips-block-end & {
     inset-block-end: 0;
   }
 
@@ -68,4 +68,3 @@
     inset-block-end: unset;
   }
 }
-  

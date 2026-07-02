@@ -1,0 +1,4 @@
+.sp-icon {
+  object-fit: contain;
+  height: var(--item-size);
+}

@@ -4,7 +4,7 @@ import SpPower from "../SpPower";
 import SpTooltip from "../SpTooltip";
 import SpNote from "../SpNote";
 
-const assumedText = { text: "100%", font: "400 12px Kreon" };
+const assumedText = "100%";
 
 export const SpProcessor = () => {
   const zebar = useContext(ZebarContext);
@@ -14,7 +14,11 @@ export const SpProcessor = () => {
   return (
     <SpTooltip
       anchor={(id) => (
-        <SpNote className="cpu" aria-label={label} aria-describedby={id}>
+        <SpNote
+          className="sp-processor"
+          aria-label={label}
+          aria-describedby={id}
+        >
           <SpPower path="relics/cracked_core" expectedText={assumedText}>
             {usage}%
           </SpPower>

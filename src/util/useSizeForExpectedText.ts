@@ -1,4 +1,10 @@
-import { useState, useEffect, type CSSProperties } from "react";
+import {
+  useState,
+  useEffect,
+  type RefCallback,
+  useCallback,
+  type CSSProperties,
+} from "react";
 import { measureTextWidth } from "./measureText";
 
 /**
@@ -12,10 +18,28 @@ import { measureTextWidth } from "./measureText";
  */
 export const useSizeForExpectedText = (
   samples: string | string[],
-  font: string,
-  extraWidth?: string,
-): CSSProperties => {
+): { style: CSSProperties; ref: RefCallback<HTMLElement> } => {
   const samplesToRun = typeof samples === "string" ? [samples] : samples;
+  const [fontToUse, setFontToUse] = useState<string>("");
+  const [extraSize, setExtraSize] = useState<string>("0px");
+
+  if (fontToUse === "") {
+    // start with the default font of the whole page so we have something to work with
+    setFontToUse(getComputedStyle(document.body).font);
+  }
+  const refCallback = useCallback((target: HTMLElement | null) => {
+    if (target) {
+      const styles = getComputedStyle(target);
+      setFontToUse(styles.font);
+      if (styles.boxSizing === "border-box") {
+        setExtraSize(
+          `${styles.paddingInlineStart} + ${styles.paddingInlineEnd}`,
+        );
+      } else {
+        setExtraSize("0px");
+      }
+    }
+  }, []);
 
   const [loaded, setLoaded] = useState<boolean>(false);
   if (!loaded) {
@@ -33,18 +57,18 @@ export const useSizeForExpectedText = (
     }
   }
 
-  const [result, setResult] = useState<CSSProperties>({});
+  const [minInlineSize, setMinInlineSize] = useState<string>("");
   useEffect(() => {
     if (loaded) {
+      console.log(fontToUse, extraSize);
       const width = Math.max(
-        ...samplesToRun.map((sample) => measureTextWidth(sample, font)),
+        ...samplesToRun.map((sample) => measureTextWidth(sample, fontToUse)),
       );
-      setResult({
-        minWidth: extraWidth
-          ? `calc(${width.toString()}px + ${extraWidth})`
-          : `${width.toString()}px`,
-      });
+      setMinInlineSize(`calc(${width.toString()}px + ${extraSize})`);
     }
-  }, [font, loaded, extraWidth, samples]);
-  return result;
+  }, [fontToUse, loaded, extraSize, samples]);
+  return {
+    style: { minInlineSize },
+    ref: refCallback,
+  };
 };
