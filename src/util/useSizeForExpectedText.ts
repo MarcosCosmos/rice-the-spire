@@ -60,7 +60,6 @@ export const useSizeForExpectedText = (
   const [minInlineSize, setMinInlineSize] = useState<string>("");
   useEffect(() => {
     if (loaded) {
-      console.log(fontToUse, extraSize);
       const width = Math.max(
         ...samplesToRun.map((sample) => measureTextWidth(sample, fontToUse)),
       );
