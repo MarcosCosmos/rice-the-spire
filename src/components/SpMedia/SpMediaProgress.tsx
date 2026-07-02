@@ -49,12 +49,19 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
   useEffect(() => {
     if (currentSession?.isPlaying) {
       let counter = currentSession.position;
-      if (!intervalId.current || Math.abs(position - counter) > 1) {
+      if (
+        !intervalId.current ||
+        Math.abs(currentSession.position - counter) > 1
+      ) {
         clearInterval(intervalId.current);
         setPosition(counter);
         intervalId.current = setInterval(() => {
-          counter += 1;
-          setPosition(Math.max(counter, 0));
+          counter = Math.max(0, Math.min(currentSession.endTime, counter + 1));
+          setPosition(counter);
+          if (counter === currentSession.endTime) {
+            clearInterval(intervalId.current);
+            intervalId.current = undefined;
+          }
         }, 1000);
         return () => {
           clearInterval(intervalId.current);
@@ -146,9 +153,14 @@ export const SpMediaProgress = ({ className, color }: ProgressMarkerProps) => {
 
     const ellapsedTime = formatDuration(position);
     const totalTime = formatDuration(currentSession.endTime);
-    const progress =
-      (position - currentSession.startTime) /
-      (currentSession.endTime - currentSession.startTime);
+    const progress = Math.max(
+      0,
+      Math.min(
+        1,
+        (position - currentSession.startTime) /
+          (currentSession.endTime - currentSession.startTime),
+      ),
+    );
 
     const markerStyle: CSSProperties = {
       "--song-progress": progress.toString(),
