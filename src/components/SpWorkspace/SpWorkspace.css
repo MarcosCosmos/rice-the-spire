@@ -7,12 +7,6 @@
   align-self: flex-end;
   align-items: end;
 
-  &:has(button:not(:disabled):hover) {
-    .map-node {
-      transform: scale(var(--hover-scale));
-    }
-  }
-
   .sp-workspace__button {
     color: #d8c5a6;
     -webkit-text-stroke-color: #2a2521;
