@@ -8,7 +8,7 @@ export interface SpGlazeWmWorkspacesProps {
   /**
    * Roughly corresponds to GlazeWM's keep-alive but over all workspaces: will show on the bar even if glazewm doesn't report it.
    */
-  showAlways: boolean;
+  showAlways?: boolean;
 }
 export const SpGlazeWmWorkspaces = ({
   className,
