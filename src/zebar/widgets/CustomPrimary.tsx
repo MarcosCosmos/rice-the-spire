@@ -4,22 +4,23 @@ import {
   SpBattery,
   SpDateTime,
   SpFullestDisk,
-  SpGlazeWmWorkspaces,
   SpireContext,
   SpMemory,
-  SpMenuBar,
   SpNetwork,
   SpProcessor,
   SpWeather,
   SpToolbar,
   useRandomSpireConfig,
   SpSystemTray,
-  SpGlazeWmPause,
   SpGlazeWmDirection,
+  SpGlazeWmPause,
   SpGlazeWmBindingModes,
-  SpMedia,
+  SpGlazeWmWorkspaces,
+  SpMenuBar,
+  type SpGlazeWmBindingModeConfig,
 } from "@rice-the-spire";
-import { createProviderGroup } from "zebar";
+import { createProviderGroup, type SystrayIcon } from "zebar";
+import type { SpWorkspaceConfig } from "../../components/SpWorkspace";
 
 const providers = createProviderGroup({
   glazewm: { type: "glazewm" },
@@ -27,38 +28,65 @@ const providers = createProviderGroup({
   battery: { type: "battery" },
   memory: { type: "memory" },
   weather: { type: "weather" },
-  media: { type: "media" },
   audio: { type: "audio" },
   disk: { type: "disk" },
   network: { type: "network" },
   systray: { type: "systray" },
 });
+
 const Widget = () => {
-  const randomSpireConfig = useRandomSpireConfig();
+  const randomConfig = useRandomSpireConfig();
+  const bindingModes: Record<string, SpGlazeWmBindingModeConfig> = {
+    edit: {
+      path: "intents/summon",
+    },
+  };
+  const workspaces: Record<string, SpWorkspaceConfig> = {
+    "6": { displayName: "6|code" },
+    "7": { displayName: "7|web" },
+    "8": {},
+    "9": { displayName: "9|what" },
+    "0": { displayName: "0|cord" },
+  };
+  const trayPriorities = [
+    "Zebar",
+    "GlazeWM",
+    "Safely Remove Hardware and Eject Media",
+    "Bluetooth",
+    "Discord",
+    "Steam",
+  ];
+  const traySort = (a: SystrayIcon, b: SystrayIcon) => {
+    const key = (icon: SystrayIcon) => {
+      const hint = trayPriorities.findIndex((x) => icon.tooltip.startsWith(x));
+      return hint === -1 ? trayPriorities.length : hint;
+    };
+    return key(a) - key(b);
+  };
 
   return (
     <SpApp zebarProviders={providers}>
-      <SpireContext value={randomSpireConfig}>
+      <SpireContext value={randomConfig}>
         <SpMenuBar>
           <div className="column">
-            <SpGlazeWmWorkspaces />
+            <SpGlazeWmWorkspaces configMap={workspaces} />
             <SpToolbar
               className="wm-controls"
               aria-label="Window Manager controls"
+              style={{ marginInline: "5rch" }}
             >
               <SpGlazeWmDirection />
-              <SpGlazeWmPause />
-              <SpGlazeWmBindingModes />
+              <SpGlazeWmPause showAlways />
+              <SpGlazeWmBindingModes configMap={bindingModes} showAlways />
             </SpToolbar>
           </div>
-          <div className="column">
-            <SpMedia />
-          </div>
+          <div className="column"></div>
           <div className="column">
             <SpSystemTray
               iconLimit={3}
-              expandFloating
+              sortComparator={traySort}
               expandDirection="start"
+              expandFloating
             />
 
             <SpToolbar

@@ -1,0 +1,16 @@
+{
+  "name": "default",
+  "anchor": "top_left",
+  "offsetX": "0px",
+  "offsetY": "0px",
+  "width": "100%",
+  "height": "56px",
+  "monitorSelection": {
+    "type": "secondary"
+  },
+  "dockToEdge": {
+    "enabled": false,
+    "edge": null,
+    "windowMargin": "0px"
+  }
+}

@@ -23,10 +23,18 @@ export const SpGlazeWmBindingModes = ({
     const resolvedEntries = new Map<string, SpGlazeWmBindingModeConfig>([
       ...Object.entries(configMap ?? {}),
       ...glazewm.bindingModes.map(
-        ({ name, displayName }): [string, SpGlazeWmBindingModeConfig] => [
-          name,
-          { path: fallbackIcon, ...configMap?.[name], displayName },
-        ],
+        ({ name, displayName }): [string, SpGlazeWmBindingModeConfig] => {
+          const config = configMap?.[name];
+          return [
+            name,
+            {
+              path: fallbackIcon,
+              ...config,
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              displayName: displayName ?? config?.displayName,
+            },
+          ];
+        },
       ),
     ]);
 

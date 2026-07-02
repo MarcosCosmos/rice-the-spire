@@ -3,14 +3,14 @@
   "previewImages": [],
   "widgets": [
     {
-      "name": "prod",
-      "htmlPath": "prod.html",
+      "name": "default",
+      "htmlPath": "default.html",
       "zOrder": "top_most",
       "shownInTaskbar": false,
       "focused": false,
       "resizable": false,
       "transparent": true,
-      "includeFiles": ["prod.html", "assets/**"],
+      "includeFiles": ["default.html", "assets/**"],
       "caching": {
         "defaultDuration": 604800,
         "rules": []

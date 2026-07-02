@@ -7,43 +7,34 @@ const baseWidget = baseZPack.widgets[0];
 
 const resultZPackWidgets = [];
 
-if (process.argv[2] === "--dev") {
-  const devSource = fs.readFileSync("./src/zebar/dev.html", "utf8");
+const [htmlSource, imports, useContent] =
+  process.argv[2] === "--dev"
+    ? [fs.readFileSync("./src/zebar/dev.html", "utf8"), devImports, false]
+    : [fs.readFileSync("./src/zebar/prod.html", "utf8"), prodImports, true];
 
-  const mediaSource = fs.readFileSync(
-    "./src/zebar/media-player-full.html",
-    "utf8",
-  );
-
+const widgetFiles = fs
+  .readdirSync("./src/zebar/widgets")
+  .filter((x) => x.endsWith(".tsx"));
+for (const fileName of widgetFiles) {
+  const [shortName] = fileName.split(".");
+  const lowerCaseName = shortName.toLowerCase();
+  const contents = useContent
+    ? fs.readFileSync(`./src/zebar/widgets/${fileName}`, "utf8")
+    : shortName;
+  const resultHtml = transformHtml(htmlSource, imports, contents);
+  fs.writeFileSync(`dist/${lowerCaseName}.html`, resultHtml);
+  const { default: preset } = (await import(
+    `../zebar/widgets/${shortName}.preset.json`,
+    {
+      with: { type: "json" },
+    }
+  )) as { default: object };
   resultZPackWidgets.push({
     ...baseWidget,
-    name: "dev",
-    htmlPath: "dev.html",
-    includeFiles: ["dev.html", "assets/**"],
-  });
-
-  fs.writeFileSync(`dist/dev.html`, transformHtml(devSource, devImports));
-  fs.writeFileSync(
-    `dist/media-player-full.html`,
-    transformHtml(mediaSource, devImports),
-  );
-}
-
-const prodSource = fs.readFileSync("./src/zebar/prod.html", "utf8");
-const widgetFiles = fs.readdirSync("./src/zebar/widgets").map((x) => ({
-  fileName: x,
-  contents: fs.readFileSync(`./src/zebar/widgets/${x}`, "utf8"),
-}));
-
-for (const { fileName, contents } of widgetFiles) {
-  const [shortName] = fileName.toLowerCase().split(".");
-  const prodHtml = transformHtml(prodSource, prodImports, contents);
-  fs.writeFileSync(`dist/${shortName}.html`, prodHtml);
-  resultZPackWidgets.push({
-    ...baseWidget,
-    name: shortName,
-    htmlPath: `${shortName}.html`,
-    includeFiles: [`${shortName}.html`, "assets/**"],
+    name: lowerCaseName,
+    htmlPath: `${lowerCaseName}.html`,
+    includeFiles: [`${lowerCaseName}.html`, "assets/**"],
+    presets: [preset],
   });
 }
 

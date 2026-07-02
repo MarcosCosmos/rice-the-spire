@@ -20,11 +20,11 @@ export interface SpWorkspacesProps {
 
 export const SpWorkspaces = ({ className, workspaces }: SpWorkspacesProps) => {
   className ??= "";
-  const config = useContext(SpireContext);
+  const spire = useContext(SpireContext);
   const navAttrs = useNavigationGroup();
   const mapGeometry = useMapGeometry();
 
-  const backgroundImage = `url(${resolveSpireImage("ui/map_backgrounds/map_middle_" + config.act)})`;
+  const backgroundImage = `url(${resolveSpireImage("ui/map_backgrounds/map_middle_" + spire.act)})`;
   if (mapGeometry) {
     const style: CSSProperties = {
       "--max-node-width": `${mapGeometry.maxNode.width}px`,

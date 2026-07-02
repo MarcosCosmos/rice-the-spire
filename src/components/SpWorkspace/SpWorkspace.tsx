@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import {
-  useState,
-  useEffect,
-  type CSSProperties,
-  type MouseEventHandler,
-} from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { SpWorkspaceBackgroundGraphic } from "./SpWorkspaceBackgroundGraphic";
 import { hiddenNodes, useMapGeometry, type MapNodeKind } from "./common";
 import "./SpWorkspace.css";
@@ -12,19 +7,27 @@ import { SpButton, type SpButtonProps } from "../SpButton/SpButton";
 import SpTooltip from "../SpTooltip";
 import SpPower from "../SpPower";
 
-export interface SpWorkspaceProps extends SpButtonProps {
+/**
+ * For prefilling workspaces that haven't been reported by the WM yet (similar to the feature available for binding modes).
+ * Will always get matched against live data from the WM if available.
+ * It allows allows you to set the node kind/icon (leave blank for randomly revealed from unknown, if you manually set unknown it will not randomise)
+ */
+export interface SpWorkspaceConfig {
+  displayName?: string;
+  nodeKind?: MapNodeKind;
+}
+
+export interface SpWorkspaceProps extends SpWorkspaceConfig, SpButtonProps {
   className?: string;
-  disabled?: boolean;
-  displayName: string;
   hasFocus: boolean;
   isDisplayed: boolean;
   hasChildren: boolean;
-  onClick: MouseEventHandler;
 }
 
 export const SpWorkspace = ({
   className,
   displayName,
+  nodeKind,
   hasFocus,
   isDisplayed,
   hasChildren,
@@ -32,7 +35,10 @@ export const SpWorkspace = ({
 }: SpWorkspaceProps) => {
   className ??= "";
   const mapGeometry = useMapGeometry();
-  const [baseNodeType, setBaseNodeType] = useState<MapNodeKind>("unknown");
+  console.log(displayName, nodeKind);
+  const [underlyingNodeKind, setUnderlyingNodeKind] = useState<MapNodeKind>(
+    nodeKind ?? "unknown",
+  );
   const [isVisited, setVisited] = useState(false);
 
   useEffect(() => {
@@ -48,23 +54,27 @@ export const SpWorkspace = ({
   }, [isVisited, isDisplayed]);
 
   useEffect(() => {
-    const result = hiddenNodes[Math.floor(Math.random() * hiddenNodes.length)];
-    setBaseNodeType(result);
-  }, [displayName]);
+    setUnderlyingNodeKind(
+      nodeKind ?? hiddenNodes[Math.floor(Math.random() * hiddenNodes.length)],
+    );
+    if (nodeKind) {
+      setVisited(true); // disable the hidden state
+    }
+  }, [displayName, nodeKind]);
 
   if (mapGeometry) {
     let renderedNodeKind: MapNodeKind, fileName;
     if (!hasChildren) {
       if (isVisited) {
-        renderedNodeKind = baseNodeType;
-        fileName = `unknown_${baseNodeType}`;
+        renderedNodeKind = underlyingNodeKind;
+        fileName = `unknown_${underlyingNodeKind}`;
       } else {
         renderedNodeKind = "unknown";
         fileName = renderedNodeKind;
       }
     } else {
-      renderedNodeKind = baseNodeType;
-      fileName = baseNodeType;
+      renderedNodeKind = underlyingNodeKind;
+      fileName = underlyingNodeKind;
     }
     const path = `ui/map_nodes/map_${fileName}`;
     const renderedNodeDetails = mapGeometry.images[renderedNodeKind];

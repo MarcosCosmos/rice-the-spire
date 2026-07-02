@@ -3,7 +3,7 @@ import { ZebarContext } from "../../contexts";
 import SpPower from "../SpPower";
 import SpTooltip from "../SpTooltip";
 import { SpButton } from "../SpButton/SpButton";
-export const defaultIconPath = "intents/status";
+export const defaultIconPath = "intents/unknown";
 
 export interface SpGlazeWmBindingModeConfig {
   displayName?: string;
@@ -22,16 +22,16 @@ export const SpGlazeWmBindingMode = ({
   showAlways,
 }: SpGlazeWmBindingModeProps) => {
   const zebar = useContext(ZebarContext);
-  const active = zebar?.glazewm?.bindingModes.find(
+  const resolvedState = zebar?.glazewm?.bindingModes.find(
     ({ name: modeName }) => name === modeName,
   );
 
-  if (active || showAlways) {
-    displayName ??= active?.displayName ?? name;
+  if (resolvedState || showAlways) {
+    displayName ??= resolvedState?.displayName ?? name;
     const resolvedPath = path ?? defaultIconPath;
     const onClick = () => {
       void zebar?.glazewm?.runCommand(
-        `wm-${active ? "disable" : "enable"}-binding-mode --name ${name}`,
+        `wm-${resolvedState ? "disable" : "enable"}-binding-mode --name ${name}`,
       );
     };
     const label = `${displayName} mode`;
@@ -39,10 +39,10 @@ export const SpGlazeWmBindingMode = ({
       <SpTooltip
         anchor={(id) => (
           <SpButton
-            className={`sp-glazewm-binding-mode sp-glazewm-binding-mode--${active ? "active" : "inactive"}`}
+            className={`sp-glazewm-binding-mode sp-glazewm-binding-mode--${resolvedState ? "active" : "inactive"}`}
             toggle
             aria-label={label}
-            aria-pressed={!!active}
+            aria-pressed={!!resolvedState}
             aria-describedby={id}
             onClick={onClick}
           >
@@ -54,7 +54,7 @@ export const SpGlazeWmBindingMode = ({
         desc={
           <>
             <strong>{displayName}</strong> mode{" "}
-            {active ? (
+            {resolvedState ? (
               <>
                 is <em>on</em> (click to disable)
               </>

@@ -2,7 +2,7 @@
   background-size: 100% auto;
 
   display: grid;
-  grid-template-columns: 7fr 86fr 7fr;
+  grid-template-columns: 10fr 80fr 10fr;
   background-size: 120%;
   background-position: top 0 left 40%;
 
@@ -20,10 +20,10 @@
 
   .sp-workspaces__content {
     display: flex;
-    min-width: 20vw;
+    min-width: 40rch;
     gap: calc(
       var(--graphic-scale) * (var(--graphic-width) - var(--max-node-width)) /
-        2 + 0.1rem
+        2 + 0.2rem
     );
     justify-content: space-between;
     align-items: end;

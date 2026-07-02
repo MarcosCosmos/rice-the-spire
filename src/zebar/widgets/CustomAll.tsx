@@ -18,6 +18,7 @@ import {
   SpGlazeWmBindingModes,
   SpGlazeWmWorkspaces,
   SpMenuBar,
+  type SpGlazeWmBindingModeConfig,
 } from "@rice-the-spire";
 import { createProviderGroup, type SystrayIcon } from "zebar";
 
@@ -36,9 +37,8 @@ const providers = createProviderGroup({
 
 const Widget = () => {
   const randomConfig = useRandomSpireConfig();
-  const bindingModes = {
-    focus: {
-      displayName: "focus",
+  const bindingModes: Record<string, SpGlazeWmBindingModeConfig> = {
+    edit: {
       path: "intents/summon",
     },
   };
@@ -104,4 +104,5 @@ const Widget = () => {
     </SpApp>
   );
 };
+
 export default Widget;
