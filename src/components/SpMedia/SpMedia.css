@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   height: 100%;
-  padding-inline: 12%;
+  padding-inline: 13%;
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: top 45% center;
@@ -106,7 +106,7 @@
 
 .sp-media__progress {
   grid-area: progress;
-  align-items: end;
+  align-self: end;
 }
 
 .sp-media__controls {

@@ -1,8 +1,9 @@
 .sp-media-progress {
   display: flex;
   width: 100%;
+  align-items: center;
   padding-inline: 4.5rch;
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-shadow: none;
 }
 
@@ -22,7 +23,7 @@
 }
 
 .sp-media-progress__marker {
-  --item-size: 1.5rem;
+  --item-size: 1.6rem;
   width: var(--item-size);
   height: auto;
   position: relative;
@@ -37,10 +38,9 @@
 .sp-media-progress__elapsed,
 .sp-media-progress__song-length {
   display: block;
-  --inline-padding: 0.4em;
   padding-top: 0.1em;
   padding-bottom: 0.3em;
-  padding-inline: var(--inline-padding);
+  padding-inline: 0.4em;
   font-weight: bold;
 }
 
