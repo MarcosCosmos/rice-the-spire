@@ -16,7 +16,7 @@
   --text-stroke-padding: calc(var(--text-stroke-width) / 2);
   --normal-drop-shadow: drop-shadow(0.2rem 0.2rem 0 hsla(0, 0%, 0%, 0.25));
 
-  --button-pulse-rgb: 100, 255, 255;
+  --button-pulse-hsl: 182, 82%, 68%;
 
   --map-circle-color: #2a2521;
   --normal-text-color: #fff6e2;
