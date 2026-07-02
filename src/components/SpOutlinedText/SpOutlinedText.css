@@ -5,6 +5,12 @@
   * {
     grid-column-start: 1;
     grid-row-start: 1;
+    padding: var(--text-stroke-padding);
+    margin: calc(-1 * var(--text-stroke-padding));
+
+    overflow: inherit;
+    text-wrap-mode: inherit;
+    text-overflow: inherit;
   }
   .sp-outlined-text__foreground {
     -webkit-text-stroke-width: inherit;

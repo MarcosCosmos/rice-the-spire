@@ -74,12 +74,13 @@ export const SpMedia = ({ className }: SpMediaProps) => {
             <SpTooltip
               anchor={(tooltipId: string) => (
                 <SpNote
+                  className="sp-media__song"
                   aria-label="Song"
                   aria-describedby={tooltipId}
                   aria-live="polite"
                   aria-relevant="text"
                 >
-                  <SpOutlinedText>
+                  <SpOutlinedText className="sp-media__song-text">
                     <span>{title}</span> · <span>{artist}</span>
                   </SpOutlinedText>
                 </SpNote>

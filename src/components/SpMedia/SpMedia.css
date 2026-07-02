@@ -86,22 +86,22 @@
   grid-area: info;
   display: flex;
   align-items: center;
-  .sp-note {
-    width: 26ch;
-    padding: 0;
-    display: flex;
-    font-size: 1.1rem;
-    align-items: center;
-    justify-content: start;
-    text-align: start;
-    .outlined-text > * {
-      overflow: hidden;
-      text-wrap-mode: nowrap;
-      text-overflow: ellipsis;
+}
 
-      max-width: 100%;
-    }
-  }
+.sp-media__song {
+  width: 26ch;
+  padding: 0;
+  display: flex;
+  font-size: 1.1rem;
+  align-items: center;
+  justify-content: start;
+  text-align: start;
+}
+
+.sp-media__song-text {
+  overflow: hidden;
+  text-wrap-mode: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sp-media__progress {
